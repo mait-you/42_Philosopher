@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 20:09:34 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 15:51:13 by mait-you         ###   ########.fr       */
+/*   Created: 2025/03/12 16:06:42 by mait-you          #+#    #+#             */
+/*   Updated: 2025/03/12 16:06:45 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,18 @@ static bool init_philosopher(t_program *program)
 {
 	unsigned int	i;
 
-    i = 0;
+	i = 0;
 	while (i < program->table.nb_philos)
 	{
 		program->philos[i].id = i + 1;
-		program->philos[i].left_fork = &program->forks
-			[program->philos[i].id].fork_lock;
+		program->philos[i].left_fork = &program->forks[i].fork_lock;
 		program->philos[i].right_fork = &program->forks
-			[(program->philos[i].id % program->table.nb_philos) + 1].fork_lock;
+			[(i + 1) % program->table.nb_philos].fork_lock;
+		program->philos[i].meals_eaten = 0;
+		program->philos[i].eating = 0;
+		program->philos[i].dead = 0;
+		program->philos[i].num_times_to_eat = program->table.must_eat_count;
+		program->philos[i].last_meal = get_time_in_ms(program);
 		program->philos[i].table = &program->table;
 		program->philos[i].program = program;
 		i++;
@@ -35,14 +39,14 @@ static bool init_forks(t_program *program, t_fork *forks)
 {
 	unsigned int	i;
 
-    i = 0;
-    while (i < program->table.nb_philos)
-    {
+	i = 0;
+	while (i < program->table.nb_philos)
+	{
 		forks[i].id = i + 1;
-        if (ft_pthread_mutex_init(program, &forks[i].fork_lock))
-            return (false);
-        i++;
-    }
+		if (ft_pthread_mutex_init(program, &forks[i].fork_lock))
+			return (false);
+		i++;
+	}
 	return (true);
 }
 
@@ -68,6 +72,7 @@ static int	init_table(t_program *program, t_table *table, int ac, char **av)
 	else if (ac == 5)
 		table->must_eat_count = -1;
 	table->program = program;
+	table->simulation_done = false;
 	return (0);
 }
 

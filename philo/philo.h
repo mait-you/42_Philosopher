@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 15:42:05 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 15:42:49 by mait-you         ###   ########.fr       */
+/*   Created: 2025/03/12 16:09:44 by mait-you          #+#    #+#             */
+/*   Updated: 2025/03/14 00:20:03 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@
 # endif
 
 /* ANSI color codes for terminal */
-#define RED     "\033[1;31m"
-#define YELLOW  "\033[1;35m"
-#define CYAN    "\033[1;36m"
-#define GRAYL   "\033[90m"
-#define RESET   "\033[0m"
+#define RED     "\e[1;31m"
+#define YELLOW  "\e[1;35m"
+#define CYAN    "\e[1;36m"
+#define GRAYL   "\e[90m"
+#define RESET   "\e[0m"
 
 /* Errors messages */
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \

@@ -6,13 +6,13 @@
 #    By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/08 15:40:01 by mait-you          #+#    #+#              #
-#    Updated: 2025/03/12 12:47:11 by mait-you         ###   ########.fr        #
+#    Updated: 2025/03/14 00:28:15 by mait-you         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ### Compiler and Flags
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS		:= -Wall -Wextra -Werror -fsanitize=thread -g #-fsanitize=address -g
 RM			:= rm -rf
 
 ### dirs

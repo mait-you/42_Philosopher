@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 19:49:20 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 14:40:53 by mait-you         ###   ########.fr       */
+/*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
+/*   Updated: 2025/03/12 16:06:38 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int free_resources(t_program *program)
 
 	if (!program)
 		return (0);
-	// ft_pthread_mutex_destroy(program, &program->dead_lock);
-	// ft_pthread_mutex_destroy(program, &program->meal_lock);
-	// ft_pthread_mutex_destroy(program, &program->write_lock);
+	ft_pthread_mutex_destroy(program, &program->dead_lock);
+	ft_pthread_mutex_destroy(program, &program->meal_lock);
+	ft_pthread_mutex_destroy(program, &program->write_lock);
 	i = 0;
 	while (i < program->table.nb_philos)
 	{
-		// ft_pthread_mutex_destroy(program, &program->forks[i].fork_lock);
+		ft_pthread_mutex_destroy(program, &program->forks[i].fork_lock);
 		i++;
 	}
 	return (0);

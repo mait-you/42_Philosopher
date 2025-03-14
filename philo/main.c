@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/08 15:41:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 14:33:23 by mait-you         ###   ########.fr       */
+/*   Created: 2025/03/12 16:00:59 by mait-you          #+#    #+#             */
+/*   Updated: 2025/03/14 00:25:58 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,6 @@ int	main(int ac, char **av)
 		return (1);
 	if (!init_program(&program, ac, av))
 		return (1);
-	printf(YELLOW"[%u]\n"RESET, program.table.nb_philos);
-	printf(YELLOW"[%u]\n"RESET, program.table.time_to_die);
-	printf(YELLOW"[%u]\n"RESET, program.table.time_to_eat);
-	printf(YELLOW"[%u]\n"RESET, program.table.time_to_sleep);
-	printf(YELLOW"[%d]\n"RESET, program.table.must_eat_count);
-	for (unsigned int i = 0; i < program.table.nb_philos; i++)
-		printf(CYAN"philos id[%2u]\n"RESET, program.philos[i].id);
-	for (unsigned int i = 0; i < program.table.nb_philos; i++)
-		printf(CYAN"forks id [%2u]\n"RESET, program.forks[i].id);
 	if (start_simulation(&program) != 0)
 		return (1);
 	stop_simulation(&program);
