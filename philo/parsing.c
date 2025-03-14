@@ -6,13 +6,19 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 16:09:40 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 16:16:58 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	get_arg_as_num(char *str)
+/**
+ * Convert string argument to integer
+ * 
+ * @param str String to convert
+ * @return Integer value or -1 if invalid
+ */
+int	get_arg_as_num(const char *str)
 {
 	int		i;
 	long	r;
@@ -29,7 +35,13 @@ int	get_arg_as_num(char *str)
 	return ((int)(r));
 }
 
-static bool	is_contains_non_digits(char *av)
+/**
+ * Check if a string contains only digits
+ * 
+ * @param av String to check
+ * @return true if contains non-digits, false otherwise
+ */
+static bool	is_contains_non_digits(const char *av)
 {
 	while (av && *av)
 	{
@@ -40,6 +52,13 @@ static bool	is_contains_non_digits(char *av)
 	return (false);
 }
 
+/**
+ * Parse and validate command line arguments
+ * 
+ * @param ac Argument count
+ * @param av Argument vector
+ * @return true if valid, false otherwise
+ */
 bool	parsing(int ac, char **av)
 {
 	int	i;
@@ -49,12 +68,15 @@ bool	parsing(int ac, char **av)
 	while (i < ac)
 	{
 		if (is_contains_non_digits(av[i]))
-			return(error_msg("invalid arguments", av[i], PAR_MSG_1), false);
+			return(error_msg("invalid arguments", av[i], "the argument must be \
+unsigned integer between 0 and 2147483647"), false);
 		num = get_arg_as_num(av[i]);
 		if (i == 1 && (num == -1 || num > MAX_PHILO))
-			return(error_msg("invalid arguments", av[i], PAR_MSG_2), false);
+			return(error_msg("invalid arguments", av[i],
+				"<number_of_philosophers> is more than 200"), false);
 		if (num == -1)
-			return(error_msg("invalid arguments", av[i], PAR_MSG_3), false);
+			return(error_msg("invalid arguments", av[i], "the argument is more \
+than 2147483647"), false);
 		i++;
 	}
 	return (true);

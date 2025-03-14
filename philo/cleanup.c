@@ -6,12 +6,18 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 16:06:38 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:56:08 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/**
+ * Free all resources used by the program
+ * 
+ * @param program The main program structure
+ * @return 0 on success
+ */
 int free_resources(t_program *program)
 {
 	unsigned int	i;
@@ -21,15 +27,30 @@ int free_resources(t_program *program)
 	ft_pthread_mutex_destroy(program, &program->dead_lock);
 	ft_pthread_mutex_destroy(program, &program->meal_lock);
 	ft_pthread_mutex_destroy(program, &program->write_lock);
-	i = 0;
-	while (i < program->table.nb_philos)
-	{
+	i = -1;
+	while (program->forks && ++i < program->table.num_of_philos)
 		ft_pthread_mutex_destroy(program, &program->forks[i].fork_lock);
-		i++;
+	if (program->philos)
+	{
+		free(program->philos);
+		program->philos = NULL;
+	}
+	if (program->forks)
+	{
+		free(program->forks);
+		program->forks = NULL;
 	}
 	return (0);
 }
 
+/**
+ * Print error message with formatting
+ * 
+ * @param msg_type Type of message
+ * @param the_error Error description
+ * @param msg Additional message
+ * @return 0 on success
+ */
 int error_msg(char *msg_type, char *the_error, char *msg)
 {
 	if (msg_type && the_error && msg)
@@ -58,6 +79,15 @@ int error_msg(char *msg_type, char *the_error, char *msg)
 	return (0);
 }
 
+/**
+ * Print error and cleanup resources
+ * 
+ * @param program The main program structure
+ * @param msg_type Type of message
+ * @param the_error Error description
+ * @param msg Additional message
+ * @return 1 for error
+ */
 int error_cleanup(t_program *program, char *msg_type, char *the_error, char *msg)
 {
 	error_msg(msg_type, the_error, msg);
