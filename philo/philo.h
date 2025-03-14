@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:44 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 16:13:57 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 20:43:55 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ struct s_philo
 {
 	unsigned int	id;
 	unsigned int	eating;
-	unsigned int	dead;
 	int				meals_eaten;
 	int				num_times_to_eat;
 	time_t			last_meal;

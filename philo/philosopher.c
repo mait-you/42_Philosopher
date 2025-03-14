@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:49 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 20:29:45 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 20:38:46 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ static void	*handle_single_philo(t_philo *philo)
  * @param philo Philosopher
  * @return NULL
  */
-static void	*eating(t_philo *philo)
+static void *eating(t_philo *philo)
 {
 	if (philo->table->num_of_philos == 1)
-		return (handle_single_philo(philo));
+		return (handle_single_philo(philo), NULL);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->right_fork);
@@ -105,16 +105,14 @@ static void	*eating(t_philo *philo)
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, TAKE_FORK);
 	}
-	philo->eating = 1;
-	print_status(philo, EATING);
 	pthread_mutex_lock(&philo->program->meal_lock);
 	philo->last_meal = get_time_in_ms(philo->program);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->program->meal_lock);
+	print_status(philo, EATING);
 	smart_usleep(philo->program, philo->table->time_to_eat);
-	philo->eating = 0;
-	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 16:04:01 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 20:46:49 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,17 @@ time."), -1);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int	smart_usleep(t_program *program, time_t ms)
+int smart_usleep(t_program *program, time_t ms)
 {
-	time_t	start;
+	time_t start;
 
 	start = get_time_in_ms(program);
 	while ((get_time_in_ms(program) - start) <= ms)
-		usleep(500);
+	{
+		if (is_simulation_done(program))
+			return (0);
+		usleep(100);
+	}
 	return (0);
 }
 
