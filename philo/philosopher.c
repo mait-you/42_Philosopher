@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:49 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 16:09:52 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:00:30 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void print_status(t_philo *philo, t_state status)
 {
+	time_t	current_time;
+
 	if (is_simulation_done(philo->program))
-		return;
-	ft_pthread_mutex_lock(philo->program, &philo->program->write_lock);
-	time_t current_time = get_time_in_ms(philo->program)
+		return ;
+	pthread_mutex_lock(&philo->program->write_lock);
+	current_time = get_time_in_ms(philo->program)
 		- philo->table->simulation_start;
 	if (status == TAKE_FORK)
 		printf("%ld %u has taken a fork\n", current_time, philo->id);
@@ -29,7 +31,7 @@ void print_status(t_philo *philo, t_state status)
 		printf("%ld %u is thinking\n", current_time, philo->id);
 	else if (status == DIED)
 		printf("%ld %u died\n", current_time, philo->id);
-	ft_pthread_mutex_unlock(philo->program, &philo->program->write_lock);
+	pthread_mutex_unlock(&philo->program->write_lock);
 }
 
 static void *thinking(t_philo *philo)
@@ -47,32 +49,27 @@ static void *sleeping(t_philo *philo)
 
 static void *eating(t_philo *philo)
 {
-	if (ft_pthread_mutex_lock(philo->program, philo->right_fork))
-		return (NULL);
+	pthread_mutex_lock(philo->right_fork);
 	print_status(philo, TAKE_FORK);
 	if (philo->table->nb_philos == 1)
 	{
 		while (!is_simulation_done(philo->program))
 			smart_usleep(philo->program, philo->table->time_to_die);
-		ft_pthread_mutex_unlock(philo->program, philo->right_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		return (NULL);
 	}
-	if (ft_pthread_mutex_lock(philo->program, philo->left_fork))
-	{
-		ft_pthread_mutex_unlock(philo->program, philo->right_fork);
-		return (NULL);
-	}
+	pthread_mutex_lock(philo->left_fork);
 	print_status(philo, TAKE_FORK);
 	philo->eating = 1;
 	print_status(philo, EATING);
-	ft_pthread_mutex_lock(philo->program, &philo->program->meal_lock);
+	pthread_mutex_lock(&philo->program->meal_lock);
 	philo->last_meal = get_time_in_ms(philo->program);
 	philo->meals_eaten++;
-	ft_pthread_mutex_unlock(philo->program, &philo->program->meal_lock);
+	pthread_mutex_unlock(&philo->program->meal_lock);
 	smart_usleep(philo->program, philo->table->time_to_eat);
 	philo->eating = 0;
-	ft_pthread_mutex_unlock(philo->program, philo->left_fork);
-	ft_pthread_mutex_unlock(philo->program, philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	return (NULL);
 }
 
@@ -81,7 +78,10 @@ void *philosopher_routine(void *philo_ptr)
 	t_philo *philo;
 
 	philo = (t_philo *)philo_ptr;
-	philo->last_meal = get_time_in_ms(philo->program);
+	pthread_mutex_lock(&philo->program->meal_lock);
+	philo->table->simulation_start = get_time_in_ms(philo->program);
+	philo->last_meal = philo->table->simulation_start;
+	pthread_mutex_unlock(&philo->program->meal_lock);
 	if (philo->id % 2 == 0)
 		smart_usleep(philo->program, philo->table->time_to_eat / 2);
 	while (!is_simulation_done(philo->program))

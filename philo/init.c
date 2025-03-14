@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 16:06:45 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:51:56 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,5 @@ bool	init_program(t_program *program, int ac, char **av)
 		return (false);
 	if (!init_philosopher(program))
 		return (false);
-	program->table.simulation_start = get_time_in_ms(program);
 	return (true);
 }

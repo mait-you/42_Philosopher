@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:44 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 00:20:03 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:37:26 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ int			ft_pthread_create(t_program *program, pthread_t *thread, \
 void *(*start_routine)(void *), void *arg);
 int			ft_pthread_join(t_program *program, pthread_t *thread);
 int			ft_pthread_mutex_init(t_program *program, t_mtx *mutex);
-int			ft_pthread_mutex_lock(t_program *program, t_mtx *mutex);
-int			ft_pthread_mutex_unlock(t_program *program, t_mtx *mutex);
 int			ft_pthread_mutex_destroy(t_program *program, t_mtx *mutex);
 int			smart_usleep(t_program *program, time_t ms);
 

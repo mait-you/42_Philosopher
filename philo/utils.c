@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/12 16:10:10 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:36:55 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,33 +104,5 @@ int	ft_pthread_mutex_destroy(t_program *program, t_mtx *mutex)
 	if (re == EPERM)
 		return (error_cleanup(program, NULL, "ft_pthread_mutex_destroy",
 		"Mutex is locked."));
-	return (0);
-}
-
-int	ft_pthread_mutex_lock(t_program *program, t_mtx *mutex)
-{
-	int	re;
-
-	re = pthread_mutex_lock(mutex);
-	if (re == EINVAL)
-		return (error_cleanup(program, NULL, "ft_pthread_mutex_lock",
-		"The value specified by mutex is invalid."));
-	if (re == EPERM)
-		return (error_cleanup(program, NULL, "ft_pthread_mutex_lock",
-		"A deadlock would occur if the thread blocked waiting for mutex."));
-	return (0);
-}
-
-int	ft_pthread_mutex_unlock(t_program *program, t_mtx *mutex)
-{
-	int	re;
-
-	re = pthread_mutex_unlock(mutex);
-	if (re == EINVAL)
-		return (error_cleanup(program, NULL, "ft_pthread_mutex_unlock",
-		"The value specified by mutex is invalid."));
-	if (re == EPERM)
-		return (error_cleanup(program, NULL, "ft_pthread_mutex_unlock",
-		"The current thread does not hold a lock on mutex."));
 	return (0);
 }

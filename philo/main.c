@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:00:59 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 00:25:58 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:58:57 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int start_simulation(t_program *program)
 	{
 		if (ft_pthread_create(program, &program->philos[i].philo_thread,
 			philosopher_routine, &program->philos[i]) != 0)
-				return (1);
+			return (1);
 		i++;
 	}
 	if (ft_pthread_create(program, &program->table.monitor_thread,
-			monitor_routine, program) != 0)
-				return (1);
+		monitor_routine, program) != 0)
+		return (1);
 	return (0);
 }
 
