@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:07:06 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 20:55:43 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/14 21:02:21 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,26 @@ bool	is_simulation_done(t_program *program)
  * @param philos Array of philosophers
  * @return 1 if all ate enough, 0 otherwise
  */
-static int	check_if_all_ate(t_program *program, t_philo *philos)
+static int check_if_all_ate(t_program *program, t_philo *philos)
 {
-	unsigned int    i;
-	unsigned int    finished_eating;
+    unsigned int	i;
+    unsigned int	finished_eating;
 
-	i = 0;
-	finished_eating = 0;
-	if (program->table.must_eat_count == -1)
-		return (0);
-	while (i < program->table.num_of_philos)
-	{
-		if (philos[i].meals_eaten >= program->table.must_eat_count)
-			finished_eating++;
-		i++;
-	}
-	if (finished_eating == program->table.num_of_philos)
-		return (set_simulation_done(program), 1);
-	return (0);
+    i = 0;
+    finished_eating = 0;
+    if (program->table.must_eat_count == -1)
+        return (0);
+    while (i < program->table.num_of_philos)
+    {
+        pthread_mutex_lock(&program->meal_lock);
+        if (philos[i].meals_eaten >= program->table.must_eat_count)
+            finished_eating++;
+        pthread_mutex_unlock(&program->meal_lock);
+        i++;
+    }
+    if (finished_eating == program->table.num_of_philos)
+        return (set_simulation_done(program), 1);
+    return (0);
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 15:16:23 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 10:35:35 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * Initialize each philosopher with their properties
  * 
  * @param program The main program structure
+ * @param philos philosopher structure
  * @return true on success, false on failure
  */
 static bool init_philosopher(t_program *program, t_philo *philos)
@@ -76,16 +77,9 @@ static bool init_mutexes(t_program *program)
 	if (ft_pthread_mutex_init(program, &program->dead_lock))
 		return (false);
 	if (ft_pthread_mutex_init(program, &program->meal_lock))
-	{
-		pthread_mutex_destroy(&program->dead_lock);
 		return (false);
-	}
 	if (ft_pthread_mutex_init(program, &program->write_lock))
-	{
-		pthread_mutex_destroy(&program->dead_lock);
-		pthread_mutex_destroy(&program->meal_lock);
 		return (false);
-	}
 	return (true);
 }
 
