@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:49 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 20:38:46 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:19:00 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void *eating(t_philo *philo)
 	}
 	pthread_mutex_lock(&philo->program->meal_lock);
 	philo->last_meal = get_time_in_ms(philo->program);
-	philo->meals_eaten++;
+	philo->table->num_of_times_to_eat++;
 	pthread_mutex_unlock(&philo->program->meal_lock);
 	print_status(philo, EATING);
 	smart_usleep(philo->program, philo->table->time_to_eat);

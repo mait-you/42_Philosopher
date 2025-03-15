@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:07:06 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 21:02:21 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:25:05 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,17 @@ bool	is_simulation_done(t_program *program)
  * @param philos Array of philosophers
  * @return 1 if all ate enough, 0 otherwise
  */
-static int check_if_all_ate(t_program *program, t_philo *philos)
+static int check_if_all_ate(t_program *program)
 {
-    unsigned int	i;
-    unsigned int	finished_eating;
+    unsigned int	totale_of_times_to_eat;
 
-    i = 0;
-    finished_eating = 0;
     if (program->table.must_eat_count == -1)
         return (0);
-    while (i < program->table.num_of_philos)
-    {
-        pthread_mutex_lock(&program->meal_lock);
-        if (philos[i].meals_eaten >= program->table.must_eat_count)
-            finished_eating++;
-        pthread_mutex_unlock(&program->meal_lock);
-        i++;
-    }
-    if (finished_eating == program->table.num_of_philos)
+	pthread_mutex_lock(&program->meal_lock);
+    totale_of_times_to_eat
+		= program->table.num_of_times_to_eat * program->table.must_eat_count;
+	pthread_mutex_unlock(&program->meal_lock);
+    if (totale_of_times_to_eat == program->table.num_of_philos)
         return (set_simulation_done(program), 1);
     return (0);
 }
@@ -131,8 +124,8 @@ void *monitor_routine(void *program_ptr)
     while (!is_simulation_done(program))
     {
         if (check_if_dead(program, program->philos) ||
-            check_if_all_ate(program, program->philos))
-            break;
+            check_if_all_ate(program))
+            break ;
     }
-    return NULL;
+    return (NULL);
 }

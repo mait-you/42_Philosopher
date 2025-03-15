@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:44 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 20:43:55 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:18:33 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ struct s_fork
 struct s_philo
 {
 	unsigned int	id;
-	unsigned int	eating;
-	int				meals_eaten;
-	int				num_times_to_eat;
 	time_t			last_meal;
 	pthread_t		philo_thread;
 	t_mtx			*right_fork;
@@ -88,6 +85,7 @@ struct s_table
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
 	int				must_eat_count;
+	unsigned int	num_of_times_to_eat;
 	bool			simulation_done;
 	time_t			simulation_start;
 	pthread_t		monitor_thread;
