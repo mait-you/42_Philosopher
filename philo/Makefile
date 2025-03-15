@@ -6,7 +6,7 @@
 #    By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/08 15:40:01 by mait-you          #+#    #+#              #
-#    Updated: 2025/03/15 12:22:11 by mait-you         ###   ########.fr        #
+#    Updated: 2025/03/15 15:12:55 by mait-you         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS_DIR	:= obj
 NAME		:= philo
 
 ### Source Files
-SRCS		:= main.c cleanup.c utils.c init.c parsing.c philosopher.c monitor.c
+SRCS		:= main.c cleanup.c utils.c init.c parsing.c philosopher.c monitor.c utils_2.c
 
 ### Object Files
 OBJS		:= $(SRCS:%.c=$(OBJS_DIR)/%.o)

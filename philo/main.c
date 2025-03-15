@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:00:59 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 22:44:23 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:15:06 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param program The main program structure
  * @return 0 on success, 1 on failure
  */
-int start_simulation(t_program *program)
+int	start_simulation(t_program *program)
 {
 	unsigned int	i;
 
@@ -28,12 +28,12 @@ int start_simulation(t_program *program)
 	{
 		program->philos[i].last_meal = program->table.simulation_start;
 		if (ft_pthread_create(program, &program->philos[i].philo_thread,
-			philosopher_routine, &program->philos[i]) != 0)
+				philosopher_routine, &program->philos[i]) != 0)
 			return (0);
 		i++;
 	}
 	if (ft_pthread_create(program, &program->table.monitor_thread,
-		monitor_routine, program) != 0)
+			monitor_routine, program) != 0)
 		return (0);
 	return (1);
 }
@@ -44,19 +44,19 @@ int start_simulation(t_program *program)
  * @param program The main program structure
  * @return 0 on success, 1 on failure
  */
-int stop_simulation(t_program *program)
+int	stop_simulation(t_program *program)
 {
-	unsigned int    i;
-	
+	unsigned int	i;
+
 	i = 0;
 	while (i < program->table.num_of_philos)
 	{
 		if (ft_pthread_join(program, &program->philos[i].philo_thread) != 0)
-				return (1);
+			return (1);
 		i++;
 	}
 	if (ft_pthread_join(program, &program->table.monitor_thread) != 0)
-				return (1);
+		return (1);
 	return (0);
 }
 
@@ -67,9 +67,9 @@ int stop_simulation(t_program *program)
  * @param av Argument vector
  * @return 0 on success, 1 on failure
  */
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_program   program;
+	t_program	program;
 
 	if (ac != 5 && ac != 6)
 		return (error_msg("Usage", NULL, ARGS_ERROR), 1);

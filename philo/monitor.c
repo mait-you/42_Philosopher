@@ -6,41 +6,11 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:07:06 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/15 12:44:29 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:12:32 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/**
- * Set the simulation as done
- *
- * @param program The main program structure
- */
-void	set_simulation_done(t_program *program)
-{
-	pthread_mutex_lock(&program->dead_lock);
-	program->table.simulation_done = true;
-	pthread_mutex_unlock(&program->dead_lock);
-}
-
-/**
- * Check if the simulation is done
- *
- * @param program The main program structure
- * @return true if done, false otherwise
- */
-bool	is_simulation_done(t_program *program)
-{
-	bool	r;
-
-	r = false;
-	pthread_mutex_lock(&program->dead_lock);
-	if (program->table.simulation_done == true)
-		r = true;
-	pthread_mutex_unlock(&program->dead_lock);
-	return (r);
-}
 
 /**
  * Check if all philosophers have eaten enough
@@ -49,26 +19,27 @@ bool	is_simulation_done(t_program *program)
  * @param philos Array of philosophers
  * @return 1 if all ate enough, 0 otherwise
  */
-static int waiter(t_program *program, t_philo *philos)
+static int	waiter(t_program *program, t_philo *philos)
 {
-    unsigned int	i;
-    unsigned int	finished_eating;
+	unsigned int	i;
+	unsigned int	finished_eating;
 
-    i = 0;
-    finished_eating = 0;
-    if (program->table.must_eat_count == -1)
-        return (0);
-    while (i < program->table.num_of_philos)
-    {
-        pthread_mutex_lock(&program->meal_lock);
-        if (philos[i].num_times_to_eat >= (unsigned)program->table.must_eat_count)
-            finished_eating++;
-        pthread_mutex_unlock(&program->meal_lock);
-        i++;
-    }
-    if (finished_eating == program->table.num_of_philos)
-        return (set_simulation_done(program), 1);
-    return (0);
+	i = 0;
+	finished_eating = 0;
+	if (program->table.must_eat_count == -1)
+		return (0);
+	while (i < program->table.num_of_philos)
+	{
+		pthread_mutex_lock(&program->meal_lock);
+		if (philos[i].num_times_to_eat
+			>= (unsigned)program->table.must_eat_count)
+			finished_eating++;
+		pthread_mutex_unlock(&program->meal_lock);
+		i++;
+	}
+	if (finished_eating == program->table.num_of_philos)
+		return (set_simulation_done(program), 1);
+	return (0);
 }
 
 /**
@@ -78,7 +49,7 @@ static int waiter(t_program *program, t_philo *philos)
  * @param time_to_die Time limit before death
  * @return true if dead, false otherwise
  */
-static bool is_philo_dead(t_philo *philo, time_t time_to_die)
+static bool	is_philo_dead(t_philo *philo, time_t time_to_die)
 {
 	bool	re;
 	time_t	current_time;
@@ -101,7 +72,7 @@ static bool is_philo_dead(t_philo *philo, time_t time_to_die)
  */
 static int	angel_of_death(t_program *program, t_philo *philos)
 {
-	unsigned int    i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < program->table.num_of_philos)
@@ -123,16 +94,16 @@ static int	angel_of_death(t_program *program, t_philo *philos)
  * @param program_ptr Pointer to the program structure
  * @return NULL
  */
-void *monitor_routine(void *program_ptr)
+void	*monitor_routine(void *program_ptr)
 {
-    t_program *program;
-    program = (t_program *)program_ptr;
-    
-    while (!is_simulation_done(program))
-    {
-        if (angel_of_death(program, program->philos) ||
-            waiter(program, program->philos))
-            break;
-    }
-    return NULL;
+	t_program	*program;
+
+	program = (t_program *)program_ptr;
+	while (!is_simulation_done(program))
+	{
+		if (angel_of_death(program, program->philos)
+			|| waiter(program, program->philos))
+			break ;
+	}
+	return (NULL);
 }

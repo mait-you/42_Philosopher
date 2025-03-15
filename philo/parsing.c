@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 16:16:58 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:21:00 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,17 @@ bool	parsing(int ac, char **av)
 	while (i < ac)
 	{
 		if (is_contains_non_digits(av[i]))
-			return(error_msg("invalid arguments", av[i], "the argument must be \
-unsigned integer between 0 and 2147483647"), false);
+			return (error_msg("invalid arguments", av[i],
+					"the argument must be unsigned \
+integer between 0 and 2147483647"),
+				false);
 		num = get_arg_as_num(av[i]);
 		if (i == 1 && (num == -1 || num > MAX_PHILO))
-			return(error_msg("invalid arguments", av[i],
-				"<number_of_philosophers> is more than 200"), false);
+			return (error_msg("invalid arguments", av[i],
+					"<number_of_philosophers> is more than 200"), false);
 		if (num == -1)
-			return(error_msg("invalid arguments", av[i], "the argument is more \
-than 2147483647"), false);
+			return (error_msg("invalid arguments", av[i],
+					"the argument is more than 2147483647"), false);
 		i++;
 	}
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 20:46:49 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:05:07 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ time."), -1);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int smart_usleep(t_program *program, time_t ms)
+int	smart_usleep(t_program *program, time_t ms)
 {
-	time_t start;
+	time_t	start;
 
 	start = get_time_in_ms(program);
 	while ((get_time_in_ms(program) - start) <= ms)
@@ -97,19 +97,5 @@ int	ft_pthread_mutex_init(t_program *program, t_mtx *mutex)
 		return (error_cleanup(program, NULL, "ft_pthread_mutex_init",
 				"The process cannot allocate enough memory to create another \
 mutex."));
-	return (0);
-}
-
-int	ft_pthread_mutex_destroy(t_program *program, t_mtx *mutex)
-{
-	int	re;
-
-	re = pthread_mutex_destroy(mutex);
-	if (re == EINVAL)
-		return (error_cleanup(program, NULL, "ft_pthread_mutex_destroy",
-				"The value specified by mutex is invalid."));
-	if (re == EPERM)
-		return (error_cleanup(program, NULL, "ft_pthread_mutex_destroy",
-				"Mutex is locked."));
 	return (0);
 }

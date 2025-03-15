@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/14 15:56:08 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:18:00 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param program The main program structure
  * @return 0 on success
  */
-int free_resources(t_program *program)
+int	free_resources(t_program *program)
 {
 	unsigned int	i;
 
@@ -51,30 +51,30 @@ int free_resources(t_program *program)
  * @param msg Additional message
  * @return 0 on success
  */
-int error_msg(char *msg_type, char *the_error, char *msg)
+int	error_msg(char *msg_type, char *the_error, char *msg)
 {
 	if (msg_type && the_error && msg)
-		printf("%sphilo: %s%s: %s'%s'%s: %s%s\n", 
+		printf("%sphilo: %s%s: %s'%s'%s: %s%s\n",
 			RED, YELLOW, msg_type,
 			CYAN, the_error,
 			GRAYL, msg, RESET);
 	else if (msg_type && the_error)
-		printf("%sphilo: %s%s%s: '%s'%s\n", 
+		printf("%sphilo: %s%s%s: '%s'%s\n",
 			RED, YELLOW, msg_type,
 			GRAYL, the_error, RESET);
 	else if (msg_type && msg)
-		printf("%sphilo: %s%s%s: %s%s\n", 
-			RED, YELLOW, msg_type, 
+		printf("%sphilo: %s%s%s: %s%s\n",
+			RED, YELLOW, msg_type,
 			GRAYL, msg, RESET);
 	else if (msg_type)
 		printf("%sphilo: %s%s%s\n",
 			RED, YELLOW, msg_type, RESET);
 	else if (the_error && msg)
-		printf("%sphilo: %s'%s'%s: %s%s\n", 
+		printf("%sphilo: %s'%s'%s: %s%s\n",
 			RED, CYAN, the_error,
 			GRAYL, msg, RESET);
 	else if (msg)
-		printf("%sphilo: %s%s%s\n", 
+		printf("%sphilo: %s%s%s\n",
 			RED, GRAYL, msg, RESET);
 	return (0);
 }
@@ -88,7 +88,9 @@ int error_msg(char *msg_type, char *the_error, char *msg)
  * @param msg Additional message
  * @return 1 for error
  */
-int error_cleanup(t_program *program, char *msg_type, char *the_error, char *msg)
+int	error_cleanup(
+	t_program *program, char *msg_type, char *the_error, char *msg
+	)
 {
 	error_msg(msg_type, the_error, msg);
 	free_resources(program);

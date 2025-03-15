@@ -6,39 +6,11 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:49 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/15 12:34:16 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 15:12:46 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/**
- * Print the status of a philosopher with timestamp
- * 
- * @param philo Philosopher
- * @param status Status to print
- */
-void	print_status(t_philo *philo, t_state status)
-{
-	time_t	current_time;
-
-	if (is_simulation_done(philo->program) && status != DIED)
-		return ;
-	pthread_mutex_lock(&philo->program->write_lock);
-	current_time
-		= get_time_in_ms(philo->program) - philo->table->simulation_start;
-	if (status == TAKE_FORK)
-		printf("%ld %u has taken a fork\n", current_time, philo->id);
-	else if (status == EATING)
-		printf("%ld %u is eating\n", current_time, philo->id);
-	else if (status == SLEEPING)
-		printf("%ld %u is sleeping\n", current_time, philo->id);
-	else if (status == THINKING)
-		printf("%ld %u is thinking\n", current_time, philo->id);
-	else if (status == DIED)
-		printf("%ld %u died\n", current_time, philo->id);
-	pthread_mutex_unlock(&philo->program->write_lock);
-}
 
 /**
  * Philosopher thinking phase
@@ -49,7 +21,8 @@ void	print_status(t_philo *philo, t_state status)
 static void	*thinking(t_philo *philo)
 {
 	print_status(philo, THINKING);
-	usleep(500);
+	usleep(50);
+	usleep(50);
 	return (NULL);
 }
 
@@ -87,7 +60,7 @@ static void	*handle_single_philo(t_philo *philo)
  * @param philo Philosopher
  * @return NULL
  */
-static void *eating(t_philo *philo)
+static void	*eating(t_philo *philo)
 {
 	if (philo->table->num_of_philos == 1)
 		return (handle_single_philo(philo), NULL);
