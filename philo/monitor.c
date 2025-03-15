@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:07:06 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/15 12:25:05 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:44:29 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,24 @@ bool	is_simulation_done(t_program *program)
  * @param philos Array of philosophers
  * @return 1 if all ate enough, 0 otherwise
  */
-static int check_if_all_ate(t_program *program)
+static int waiter(t_program *program, t_philo *philos)
 {
-    unsigned int	totale_of_times_to_eat;
+    unsigned int	i;
+    unsigned int	finished_eating;
 
+    i = 0;
+    finished_eating = 0;
     if (program->table.must_eat_count == -1)
         return (0);
-	pthread_mutex_lock(&program->meal_lock);
-    totale_of_times_to_eat
-		= program->table.num_of_times_to_eat * program->table.must_eat_count;
-	pthread_mutex_unlock(&program->meal_lock);
-    if (totale_of_times_to_eat == program->table.num_of_philos)
+    while (i < program->table.num_of_philos)
+    {
+        pthread_mutex_lock(&program->meal_lock);
+        if (philos[i].num_times_to_eat >= (unsigned)program->table.must_eat_count)
+            finished_eating++;
+        pthread_mutex_unlock(&program->meal_lock);
+        i++;
+    }
+    if (finished_eating == program->table.num_of_philos)
         return (set_simulation_done(program), 1);
     return (0);
 }
@@ -73,16 +80,16 @@ static int check_if_all_ate(t_program *program)
  */
 static bool is_philo_dead(t_philo *philo, time_t time_to_die)
 {
-	time_t	last_meal_time;
+	bool	re;
 	time_t	current_time;
 
+	re = false;
 	pthread_mutex_lock(&philo->program->meal_lock);
-	last_meal_time = philo->last_meal;
-	pthread_mutex_unlock(&philo->program->meal_lock);
 	current_time = get_time_in_ms(philo->program);
-	if ((current_time - last_meal_time) >= time_to_die)
-		return (true);
-	return (false);
+	if ((current_time - philo->last_meal) >= time_to_die)
+		re = true;
+	pthread_mutex_unlock(&philo->program->meal_lock);
+	return (re);
 }
 
 /**
@@ -92,7 +99,7 @@ static bool is_philo_dead(t_philo *philo, time_t time_to_die)
  * @param philos Array of philosophers
  * @return 1 if a philosopher died, 0 otherwise
  */
-static int	check_if_dead(t_program *program, t_philo *philos)
+static int	angel_of_death(t_program *program, t_philo *philos)
 {
 	unsigned int    i;
 
@@ -123,9 +130,9 @@ void *monitor_routine(void *program_ptr)
     
     while (!is_simulation_done(program))
     {
-        if (check_if_dead(program, program->philos) ||
-            check_if_all_ate(program))
-            break ;
+        if (angel_of_death(program, program->philos) ||
+            waiter(program, program->philos))
+            break;
     }
-    return (NULL);
+    return NULL;
 }

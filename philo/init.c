@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/03/15 12:11:20 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/03/15 12:35:31 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static bool init_philosopher(t_program *program, t_philo *philos)
 		program->philos[i].left_fork = &program->forks[i].fork_lock;
 		program->philos[i].right_fork = &program->forks
 			[(i + 1) % program->table.num_of_philos].fork_lock;
-		// program->philos[i].num_times_to_eat = program->table.must_eat_count;
 		program->philos[i].table = &program->table;
 		program->philos[i].program = program;
 		i++;
