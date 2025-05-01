@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 15:29:16 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:11:36 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	*philosopher_routine(void *arg)
 	{
 		eat(philo);
 		if (check_simulation_done(philo))
-			break;
+			break ;
 		print_status(philo, SLEEPING);
 		smart_usleep_check_simulation(philo, philo->shared->time_to_sleep);
 		print_status(philo, THINKING);

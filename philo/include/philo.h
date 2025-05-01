@@ -6,10 +6,9 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 15:41:21 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:10:41 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -62,7 +61,7 @@ enum e_state
 	EATING,
 	SLEEPING,
 	THINKING,
-	DIED, 
+	DIED,
 };
 
 struct s_philo
@@ -107,7 +106,8 @@ void	smart_usleep_check_simulation(t_philo *philo, time_t time);
 int		init_table(t_table *table, int ac, char **av);
 time_t	get_time_in_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);
-int		error_cleanup(t_table *table, char *msg_type, char *the_error, char *msg);
+int		error_cleanup(\
+	t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
 int		get_arg_as_num(const char *str);
 int		check_simulation_done(t_philo *philo);

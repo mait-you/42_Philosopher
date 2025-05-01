@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 15:40:34 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:11:18 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ int	init_table(t_table *table, int ac, char **av)
 		return (ERROR);
 	table->simulation_start = get_time_in_ms();
 	table->forks
-		 = (t_mtx *)malloc(table->num_of_philos * sizeof(t_mtx));
+		= (t_mtx *)malloc(table->num_of_philos * sizeof(t_mtx));
 	if (!table->forks)
 		return (error_cleanup(table, NULL, NULL, NULL));
 	table->philos
-		 = (t_philo *)malloc(table->num_of_philos * sizeof(t_philo));
+		= (t_philo *)malloc(table->num_of_philos * sizeof(t_philo));
 	if (!table->philos)
 		return (error_cleanup(table, NULL, NULL, NULL));
 	if (init_forks_and_philos(table) == ERROR)
-		return(ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }
