@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 16:10:41 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:15:03 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,9 @@ struct s_table
 };
 
 /* ************************************************************************** */
-/* 							Data Structures                                   */
+/* 							Function Prototypes                               */
 /* ************************************************************************** */
 
-int		parse_philo(int ac, char **av, t_table *table);
 void	print_status(t_philo *philo, t_state status);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
