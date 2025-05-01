@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 18:05:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:15:53 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int	check_philosophers(t_table *table, int *philos_done_eating)
+static int	reaper_of_souls(t_table *table, int *philos_done_eating)
 {
 	time_t	time_lived;
 	int		i;
@@ -62,7 +62,7 @@ void	*monitor_routine(void *arg)
 	while (!check_simulation_done(table->philos))
 	{
 		philos_done_eating = 0;
-		if (check_philosophers(table, &philos_done_eating))
+		if (reaper_of_souls(table, &philos_done_eating))
 			return (NULL);
 		if (should_stop(table, philos_done_eating) == 0)
 			return (NULL);
