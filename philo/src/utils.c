@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:40:31 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:06:18 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	print_status(t_philo *philo, t_state status)
 	if (check_simulation_done(philo))
 		return ;
 	pthread_mutex_lock(&philo->table->print_lock);
-	pthread_mutex_lock(&philo->table->simulation_mutex);
 	current_time = get_time_in_ms() - philo->table->simulation_start;
 	if (!philo->table->simulation_done && status == TAKE_FORK)
 		printf("%ld %u has taken a fork\n", current_time, philo->id);
@@ -53,7 +52,6 @@ void	print_status(t_philo *philo, t_state status)
 		printf("%ld %u is thinking\n", current_time, philo->id);
 	else if (!philo->table->simulation_done && status == DIED)
 		printf("%ld %u died\n", current_time, philo->id);
-	pthread_mutex_unlock(&philo->table->simulation_mutex);
 	pthread_mutex_unlock(&philo->table->print_lock);
 }
 
