@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:24:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:40:42 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ enum e_state
 struct s_philo
 {
 	int				id;
-	pthread_t		philo_thread;
 	int				num_times_to_eat;
-	time_t			last_meal;
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
 	t_mtx			meal_lock;
+	time_t			last_meal;
+	pthread_t		philo_thread;
 	t_table			*table;
 };
 
@@ -86,11 +86,10 @@ struct s_table
 	int				simulation_done;
 	time_t			simulation_start;
 	t_mtx			print_lock;
-	t_mtx			stop_mutex;
-	t_mtx			shared_mutex;
-	pthread_t		monitor_thread;
+	t_mtx			simulation_mutex;
 	t_mtx			*forks;
 	t_philo			*philos;
+	pthread_t		monitor_thread;
 };
 
 /* ************************************************************************** */
@@ -100,7 +99,6 @@ struct s_table
 void	print_status(t_philo *philo, t_state status);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
-void	smart_sleep(time_t time);
 void	smart_usleep_check_simulation(t_philo *philo, time_t time);
 int		init_table(t_table *table, int ac, char **av);
 time_t	get_time_in_ms(void);

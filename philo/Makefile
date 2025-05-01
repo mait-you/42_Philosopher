@@ -4,13 +4,10 @@ CFLAGS		:= -Wall -Wextra -Werror
 RM			:= rm -rf
 
 ### dirs
-INC_DIR		:= include/
-SRC_DIR		:= src/
 OBJS_DIR	:= obj
 
 ### Executable Name
 NAME		:= philo
-HEADERS		:= $(INC_DIR)philo.h
 
 ### Source Files
 SRCS =	main.c \
@@ -40,7 +37,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(RED)$(BOLD)$(NAME) $(GREEN)compiled successfully!$(RESET)"
 
-$(OBJS_DIR)/%.o: %.c $(HEADERS) | $(OBJS_DIR)
+$(OBJS_DIR)/%.o: %.c include/philo.h | $(OBJS_DIR)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(BLUE)Compiling: $(WHITE)$<$(RESET)"

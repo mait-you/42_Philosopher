@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 15:40:50 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:53:59 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/philo.h"
 
-int	start_simulation(t_table *table)
+static int	start_simulation(t_table *table)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ int	start_simulation(t_table *table)
 	return (0);
 }
 
-int	stop_simulation(t_table *table)
+static int	stop_simulation(t_table *table)
 {
 	int	i;
 

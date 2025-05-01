@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 16:11:27 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:53:49 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	check_philosophers(t_table *table, int *philosophers_done_eating)
+static int	check_philosophers(t_table *table, int *philosophers_done_eating)
 {
 	time_t	time_lived;
 	int		i;
@@ -25,9 +25,9 @@ int	check_philosophers(t_table *table, int *philosophers_done_eating)
 		if (time_lived > table->time_to_die)
 		{
 			print_status(&table->philos[i], DIED);
-			pthread_mutex_lock(&table->stop_mutex);
+			pthread_mutex_lock(&table->simulation_mutex);
 			table->simulation_done = 1;
-			pthread_mutex_unlock(&table->stop_mutex);
+			pthread_mutex_unlock(&table->simulation_mutex);
 			pthread_mutex_unlock(&table->philos[i].meal_lock);
 			return (1);
 		}
@@ -40,14 +40,14 @@ int	check_philosophers(t_table *table, int *philosophers_done_eating)
 	return (0);
 }
 
-int	should_stop(t_table *table, int philosophers_done_eating)
+static int	should_stop(t_table *table, int philosophers_done_eating)
 {
 	if (table->eat_count > 0 \
 			&& philosophers_done_eating == table->num_of_philos)
 	{
-		pthread_mutex_lock(&table->stop_mutex);
+		pthread_mutex_lock(&table->simulation_mutex);
 		table->simulation_done = 1;
-		pthread_mutex_unlock(&table->stop_mutex);
+		pthread_mutex_unlock(&table->simulation_mutex);
 		return (0);
 	}
 	return (1);

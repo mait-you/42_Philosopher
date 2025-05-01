@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:24:56 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:31:43 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ static int	init_mutexes(t_table *table)
 {
 	if (pthread_mutex_init(&table->print_lock, NULL) != 0)
 		return (ERROR);
-	if (pthread_mutex_init(&table->stop_mutex, NULL) != 0)
-		return (ERROR);
-	if (pthread_mutex_init(&table->shared_mutex, NULL) != 0)
+	if (pthread_mutex_init(&table->simulation_mutex, NULL) != 0)
 		return (ERROR);
 	return (SUCCESS);
 }
