@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:48:06 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 16:12:03 by mait-you         ###   ########.fr       */
+/*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
+/*   Updated: 2025/05/01 17:25:14 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,29 @@ void	print_status(t_philo *philo, t_state status)
 
 	if (check_simulation_done(philo))
 		return ;
-	pthread_mutex_lock(&philo->shared->print_lock);
-	pthread_mutex_lock(&philo->shared->stop_mutex);
-	current_time = get_time_in_ms() - philo->shared->simulation_start;
-	if (!philo->shared->simulation_done && status == TAKE_FORK)
-		printf("%12ld %12u has taken a fork\n", current_time, philo->id);
-	else if (!philo->shared->simulation_done && status == EATING)
-		printf("%12ld %12u is eating\n", current_time, philo->id);
-	else if (!philo->shared->simulation_done && status == SLEEPING)
-		printf("%12ld %12u is sleeping\n", current_time, philo->id);
-	else if (!philo->shared->simulation_done && status == THINKING)
-		printf("%12ld %12u is thinking\n", current_time, philo->id);
-	else if (!philo->shared->simulation_done && status == DIED)
-		printf("%12ld %12u died\n", current_time, philo->id);
-	pthread_mutex_unlock(&philo->shared->stop_mutex);
-	pthread_mutex_unlock(&philo->shared->print_lock);
+	pthread_mutex_lock(&philo->table->print_lock);
+	pthread_mutex_lock(&philo->table->stop_mutex);
+	current_time = get_time_in_ms() - philo->table->simulation_start;
+	if (!philo->table->simulation_done && status == TAKE_FORK)
+		printf("%ld %u has taken a fork\n", current_time, philo->id);
+	else if (!philo->table->simulation_done && status == EATING)
+		printf("%ld %u is eating\n", current_time, philo->id);
+	else if (!philo->table->simulation_done && status == SLEEPING)
+		printf("%ld %u is sleeping\n", current_time, philo->id);
+	else if (!philo->table->simulation_done && status == THINKING)
+		printf("%ld %u is thinking\n", current_time, philo->id);
+	else if (!philo->table->simulation_done && status == DIED)
+		printf("%ld %u died\n", current_time, philo->id);
+	pthread_mutex_unlock(&philo->table->stop_mutex);
+	pthread_mutex_unlock(&philo->table->print_lock);
 }
 
 int	check_simulation_done(t_philo *philo)
 {
 	int	should_stop;
 
-	pthread_mutex_lock(&philo->shared->stop_mutex);
-	should_stop = philo->shared->simulation_done;
-	pthread_mutex_unlock(&philo->shared->stop_mutex);
+	pthread_mutex_lock(&philo->table->stop_mutex);
+	should_stop = philo->table->simulation_done;
+	pthread_mutex_unlock(&philo->table->stop_mutex);
 	return (should_stop);
 }

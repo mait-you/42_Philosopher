@@ -1,6 +1,6 @@
 ### Compiler and Flags
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -fsanitize=address -g #-fsanitize=thread -g 
+CFLAGS		:= -Wall -Wextra -Werror
 RM			:= rm -rf
 
 ### dirs

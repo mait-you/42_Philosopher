@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 16:11:36 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:25:06 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	eat(t_philo *philo)
 	print_status(philo, EATING);
 	philo->last_meal = get_time_in_ms();
 	pthread_mutex_unlock(&philo->meal_lock);
-	smart_sleep(philo->shared->time_to_eat);
+	smart_sleep(philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_lock(&philo->meal_lock);
@@ -42,10 +42,10 @@ void	eat(t_philo *philo)
 
 void	eat_one_philo(t_philo *philo)
 {
-	if (philo->shared->num_of_philos == 1)
+	if (philo->table->num_of_philos == 1)
 	{
 		print_status(philo, TAKE_FORK);
-		smart_sleep(philo->shared->time_to_die);
+		smart_sleep(philo->table->time_to_die);
 		print_status(philo, DIED);
 	}
 	return ;
@@ -56,17 +56,17 @@ void	*philosopher_routine(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->shared->num_of_philos == 1)
+	if (philo->table->num_of_philos == 1)
 		return (eat_one_philo(philo), NULL);
 	if (philo->id % 2 == 0)
-		smart_sleep(philo->shared->time_to_eat);
+		smart_sleep(philo->table->time_to_eat);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);
 		if (check_simulation_done(philo))
 			break ;
 		print_status(philo, SLEEPING);
-		smart_usleep_check_simulation(philo, philo->shared->time_to_sleep);
+		smart_usleep_check_simulation(philo, philo->table->time_to_sleep);
 		print_status(philo, THINKING);
 	}
 	return (NULL);

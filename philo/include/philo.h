@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 16:15:03 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:24:47 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ struct s_philo
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
 	t_mtx			meal_lock;
-	t_table			*shared;
+	t_table			*table;
 };
 
 struct s_table

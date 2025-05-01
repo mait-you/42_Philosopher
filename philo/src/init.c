@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 16:11:18 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:24:56 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	init_forks_and_philos(t_table *table)
 		table->philos[i].id = i + 1;
 		table->philos[i].num_times_to_eat = 0;
 		table->philos[i].last_meal = get_time_in_ms();
-		table->philos[i].shared = table;
+		table->philos[i].table = table;
 		if (pthread_mutex_init(&table->philos[i].meal_lock, NULL) != 0)
 			return (ERROR);
 		table->philos[i].left_fork = &table->forks[i];
@@ -38,7 +38,7 @@ static int	init_forks_and_philos(t_table *table)
 	return (SUCCESS);
 }
 
-static void	get_args(t_table *table, int ac, char **av)
+static int	get_args(t_table *table, int ac, char **av)
 {
 	table->eat_count = -1;
 	table->num_of_philos = get_arg_as_num(av[1]);
@@ -47,6 +47,9 @@ static void	get_args(t_table *table, int ac, char **av)
 	table->time_to_sleep = get_arg_as_num(av[4]);
 	if (ac == 6)
 		table->eat_count = get_arg_as_num(av[5]);
+	if (table->eat_count == 0)
+		return (ERROR);
+	return (SUCCESS);
 }
 
 static int	init_mutexes(t_table *table)
@@ -63,7 +66,8 @@ static int	init_mutexes(t_table *table)
 int	init_table(t_table *table, int ac, char **av)
 {
 	memset(table, 0, sizeof(t_table));
-	get_args(table, ac, av);
+	if (get_args(table, ac, av))
+		return (ERROR);
 	if (init_mutexes(table) == ERROR)
 		return (ERROR);
 	table->simulation_start = get_time_in_ms();
