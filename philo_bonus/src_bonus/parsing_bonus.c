@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 18:09:39 by mait-you         ###   ########.fr       */
+/*   Created: 2025/05/02 09:57:23 by mait-you          #+#    #+#             */
+/*   Updated: 2025/05/02 09:57:26 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include_bonus/philo_bonus.h"
 
 int	get_arg_as_num(const char *str)
 {

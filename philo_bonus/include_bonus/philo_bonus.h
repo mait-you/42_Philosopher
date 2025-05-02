@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 18:08:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:47:16 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -19,8 +19,12 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <stdbool.h>
 # include <string.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <semaphore.h>
 
 /* ************************************************************************** */
 /* 							Status Codes and Messages                         */
@@ -39,16 +43,21 @@
 # define RESET   "\e[0m"
 
 /* Errors messages */
-# define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
+# define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "memory allocation failed"
+
+/* Semaphore names */
+# define SEM_FORKS "/philo_forks"
+# define SEM_PRINT "/philo_print"
+# define SEM_MEAL "/philo_meal"
+# define SEM_DONE "/philo_done"
 
 /* ************************************************************************** */
 /* 							Data Structures                                   */
 /* ************************************************************************** */
 
 /* Typedef for all elements */
-typedef pthread_mutex_t		t_mtx;
 typedef enum e_state		t_state;
 typedef struct s_table		t_table;
 typedef struct s_philo		t_philo;
@@ -67,11 +76,9 @@ struct s_philo
 {
 	int				id;
 	int				num_times_to_eat;
-	t_mtx			*left_fork;
-	t_mtx			*right_fork;
-	t_mtx			meal_lock;
+	pid_t			pid;
 	time_t			last_meal;
-	pthread_t		philo_thread;
+	pthread_t		monitor_thread;
 	t_table			*table;
 };
 
@@ -84,11 +91,10 @@ struct s_table
 	int				eat_count;
 	int				simulation_done;
 	time_t			simulation_start;
-	t_mtx			print_lock;
-	t_mtx			simulation_mutex;
-	t_mtx			*forks;
+	sem_t			*forks;
+	sem_t			*print_lock;
+	sem_t			*meal_lock;
 	t_philo			*philos;
-	pthread_t		monitor_thread;
 };
 
 /* ************************************************************************** */
@@ -96,9 +102,9 @@ struct s_table
 /* ************************************************************************** */
 
 void	print_status(t_philo *philo, t_state status);
-void	*philosopher_routine(void *arg);
+void	philosopher_routine(t_philo *philo);
 void	*monitor_routine(void *arg);
-void	smart_usleep_check_simulation(t_philo *philo, time_t time);
+void	smart_usleep(time_t time);
 int		init_table(t_table *table, int ac, char **av);
 time_t	get_time_in_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);
@@ -106,7 +112,10 @@ int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
 int		get_arg_as_num(const char *str);
-int		check_simulation_done(t_philo *philo);
 void	table_cleanup(t_table *table);
+void	kill_all_processes(t_table *table);
+void	close_semaphores(t_table *table);
+void	unlink_semaphores(void);
+void	cleanup_and_exit(t_table *table);
 
 #endif

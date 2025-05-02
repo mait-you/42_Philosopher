@@ -1,67 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:53:59 by mait-you         ###   ########.fr       */
+/*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
+/*   Updated: 2025/05/02 11:14:21 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/philo.h"
+#include "include_bonus/philo_bonus.h"
 
 static int	start_simulation(t_table *table)
 {
-	int	i;
+	int		i;
+	pid_t	pid;
 
 	i = 0;
 	while (i < table->num_of_philos)
 	{
-		if (pthread_create(&table->philos[i].philo_thread, NULL,
-				philosopher_routine, &table->philos[i]) != 0)
+		pid = fork();
+		if (pid == -1)
 			return (ERROR);
+		if (pid == 0)
+			philosopher_routine(&table->philos[i]);
+		else
+			table->philos[i].pid = pid;
 		i++;
 	}
-	if (table->num_of_philos > 1)
-	{
-		if (pthread_create(&table->monitor_thread, NULL,
-				monitor_routine, table) != 0)
-			return (ERROR);
-	}
-	return (0);
+	return (SUCCESS);
 }
 
-static int	stop_simulation(t_table *table)
+static int	wait_for_processes(t_table *table)
 {
 	int	i;
+	int	status;
 
 	i = 0;
 	while (i < table->num_of_philos)
 	{
-		pthread_join(table->philos[i].philo_thread, NULL);
+		waitpid(-1, &status, 0);
+		if (WEXITSTATUS(status) == ERROR)
+			return (kill_all_processes(table), ERROR);
 		i++;
 	}
-	if (table->num_of_philos > 1)
-		pthread_join(table->monitor_thread, NULL);
-	return (0);
+	return (SUCCESS);
 }
 
 int	main(int ac, char **av)
 {
 	t_table	table;
 
+	unlink_semaphores();
 	if (parsing(ac, av) == ERROR)
 		return (ERROR);
 	if (init_table(&table, ac, av) == ERROR)
 		return (ERROR);
 	if (start_simulation(&table) == ERROR)
 	{
-		table_cleanup(&table);
+		kill_all_processes(&table);
+		cleanup_and_exit(&table);
 		return (ERROR);
 	}
-	stop_simulation(&table);
-	table_cleanup(&table);
-	return (0);
+	wait_for_processes(&table);
+	cleanup_and_exit(&table);
+	return (SUCCESS);
 }

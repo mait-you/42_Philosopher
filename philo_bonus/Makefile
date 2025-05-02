@@ -11,12 +11,12 @@ NAME		:= philo_bonus
 
 ### Source Files
 SRCS =	main_bonus.c \
-	src/monitor_bonus.c \
-	src/init_bonus.c \
-	src/parsing_bonus.c \
-	src/cleanup_bonus.c \
-	src/philosophers_bonus.c \
-	src/utils_bonus.c \
+	src_bonus/monitor_bonus.c \
+	src_bonus/init_bonus.c \
+	src_bonus/parsing_bonus.c \
+	src_bonus/cleanup_bonus.c \
+	src_bonus/philosophers_bonus.c \
+	src_bonus/utils_bonus.c \
 
 ### Object Files
 OBJS		:= $(SRCS:%.c=$(OBJS_DIR)/%.o)
@@ -37,7 +37,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(RED)$(BOLD)$(NAME) $(GREEN)compiled successfully!$(RESET)"
 
-$(OBJS_DIR)/%.o: %.c include/philo_bonus.h | $(OBJS_DIR)
+$(OBJS_DIR)/%.o: %.c include_bonus/philo_bonus.h | $(OBJS_DIR)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(BLUE)Compiling: $(WHITE)$<$(RESET)"

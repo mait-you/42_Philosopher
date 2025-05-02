@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
+/*   cleanup_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:31:48 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:47:18 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include_bonus/philo_bonus.h"
 
-void	table_cleanup(t_table *table)
+void	unlink_semaphores(void)
 {
-	int	i;
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_PRINT);
+	sem_unlink(SEM_MEAL);
+	sem_unlink(SEM_DONE);
+}
 
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->philos[i].meal_lock);
-		i++;
-	}
-	pthread_mutex_destroy(&table->print_lock);
-	pthread_mutex_destroy(&table->simulation_mutex);
-	if (table->philos)
-		free(table->philos);
+void	close_semaphores(t_table *table)
+{
 	if (table->forks)
-		free(table->forks);
+		sem_close(table->forks);
+	if (table->print_lock)
+		sem_close(table->print_lock);
+	if (table->meal_lock)
+		sem_close(table->meal_lock);
+}
+
+void	cleanup_and_exit(t_table *table)
+{
+	close_semaphores(table);
+	unlink_semaphores();
+	free(table->philos);
 }
 
 int	error_msg(char *msg_type, char *the_error, char *msg)
