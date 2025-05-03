@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/02 11:56:26 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:21:48 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	eat(t_philo *philo)
 	print_status(philo, EATING);
 	philo->last_meal = get_time_in_ms();
 	philo->num_times_to_eat++;
-	pthread_mutex_unlock(&philo->meal_lock);
 	smart_usleep_check_simulation(philo, philo->table->time_to_eat);
+	pthread_mutex_unlock(&philo->meal_lock);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	return ;
