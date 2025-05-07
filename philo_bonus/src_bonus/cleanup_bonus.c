@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/02 11:47:18 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:38:05 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ void	close_semaphores(t_table *table)
 		sem_close(table->forks);
 	if (table->print_lock)
 		sem_close(table->print_lock);
-	if (table->meal_lock)
-		sem_close(table->meal_lock);
+	if (table->philos->meal_lock)
+		sem_close(table->philos->meal_lock);
 }
 
 void	cleanup_and_exit(t_table *table)
 {
 	close_semaphores(table);
 	unlink_semaphores();
-	free(table->philos);
+	if (table && table->philos)
+		free(table->philos);
 }
 
 int	error_msg(char *msg_type, char *the_error, char *msg)

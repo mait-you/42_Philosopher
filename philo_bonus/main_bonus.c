@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/02 11:14:21 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:39:45 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	main(int ac, char **av)
 	unlink_semaphores();
 	if (parsing(ac, av) == ERROR)
 		return (ERROR);
-	if (init_table(&table, ac, av) == ERROR)
-		return (ERROR);
+	if (init_table(&table, ac, av) != ERROR)
+		return (cleanup_and_exit(&table), ERROR);
 	if (start_simulation(&table) == ERROR)
 	{
 		kill_all_processes(&table);

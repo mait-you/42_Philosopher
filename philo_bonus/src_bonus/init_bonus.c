@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/02 11:47:27 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:39:35 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static int	init_philosophers(t_table *table)
 		table->philos[i].last_meal = get_time_in_ms();
 		table->philos[i].table = table;
 		table->philos[i].pid = -1;
+		table->philos[i].meal_lock = sem_open(SEM_MEAL, O_CREAT | O_EXCL, 0644, 1);
+		if (table->philos[i].meal_lock == SEM_FAILED)
+			return (ERROR);
 		i++;
 	}
 	return (SUCCESS);
@@ -37,9 +40,6 @@ static int	init_semaphores(t_table *table)
 		return (ERROR);
 	table->print_lock = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
 	if (table->print_lock == SEM_FAILED)
-		return (ERROR);
-	table->meal_lock = sem_open(SEM_MEAL, O_CREAT | O_EXCL, 0644, 1);
-	if (table->meal_lock == SEM_FAILED)
 		return (ERROR);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/03 09:47:43 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:27:21 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	print_status(t_philo *philo, t_state status)
 	else if (status == DIED)
 	{
 		printf("%ld %d died\n", current_time, philo->id);
+		sem_post(philo->table->print_lock);
 		return;
 	}
 	sem_post(philo->table->print_lock);
