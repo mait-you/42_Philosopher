@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enoki <enoki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/07 16:39:35 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/08 12:02:30 by enoki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 static int	init_philosophers(t_table *table)
 {
-	int	i;
+	int		i;
+	char	*sem_name;
 
 	i = 0;
+	sem_name = NULL;
 	while (i < table->num_of_philos)
 	{
 		table->philos[i].id = i + 1;
@@ -24,10 +26,17 @@ static int	init_philosophers(t_table *table)
 		table->philos[i].last_meal = get_time_in_ms();
 		table->philos[i].table = table;
 		table->philos[i].pid = -1;
-		table->philos[i].meal_lock = sem_open(SEM_MEAL, O_CREAT | O_EXCL, 0644, 1);
+		sem_name = ft_strjoin(SEM_MEAL, ft_itoa(table->philos[i].id));
+		table->philos[i].meal_lock = sem_open(sem_name, O_CREAT | O_EXCL, 0644, 1);
+		if (sem_name)
+		{
+			free(sem_name);
+			sem_name = NULL;
+		}
 		if (table->philos[i].meal_lock == SEM_FAILED)
 			return (ERROR);
 		i++;
+		
 	}
 	return (SUCCESS);
 }
@@ -70,6 +79,7 @@ int	init_table(t_table *table, int ac, char **av)
 	table->philos = (t_philo *)malloc(table->num_of_philos * sizeof(t_philo));
 	if (!table->philos)
 		return (error_cleanup(table, NULL, NULL, MALLOC_ERROR));
+	unlink_semaphores(table);
 	if (init_philosophers(table) == ERROR)
 		return (ERROR);
 	return (SUCCESS);

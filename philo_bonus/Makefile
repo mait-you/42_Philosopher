@@ -17,6 +17,7 @@ SRCS =	main_bonus.c \
 	src_bonus/cleanup_bonus.c \
 	src_bonus/philosophers_bonus.c \
 	src_bonus/utils_bonus.c \
+	src_bonus/utils_2_bonus.c
 
 ### Object Files
 OBJS		:= $(SRCS:%.c=$(OBJS_DIR)/%.o)

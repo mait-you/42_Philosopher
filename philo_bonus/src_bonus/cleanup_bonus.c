@@ -3,17 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enoki <enoki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/07 16:38:05 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/08 11:55:17 by enoki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-void	unlink_semaphores(void)
+void	unlink_semaphores(t_table *table)
 {
+	int		i;
+	char	*sem_name;
+
+
+	i = -1;
+	while (++i < table->num_of_philos)
+	{
+		sem_name = ft_strjoin(SEM_MEAL, ft_itoa(table->philos[i].id));
+		sem_unlink(sem_name);
+		free(sem_name);
+	}
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_MEAL);
@@ -33,7 +44,7 @@ void	close_semaphores(t_table *table)
 void	cleanup_and_exit(t_table *table)
 {
 	close_semaphores(table);
-	unlink_semaphores();
+	unlink_semaphores(table);
 	if (table && table->philos)
 		free(table->philos);
 }

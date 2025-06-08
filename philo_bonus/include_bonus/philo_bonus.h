@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enoki <enoki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/07 16:38:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/08 11:52:49 by enoki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 /* Semaphore names */
 # define SEM_FORKS "/philo_forks"
 # define SEM_PRINT "/philo_print"
-# define SEM_MEAL "/philo_meal"
+# define SEM_MEAL "/philo_meal_"
 # define SEM_DONE "/philo_done"
 
 /* ************************************************************************** */
@@ -116,7 +116,11 @@ int		get_arg_as_num(const char *str);
 void	table_cleanup(t_table *table);
 void	kill_all_processes(t_table *table);
 void	close_semaphores(t_table *table);
-void	unlink_semaphores(void);
+void	unlink_semaphores(t_table *table);
 void	cleanup_and_exit(t_table *table);
+
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_itoa(int n);
 
 #endif

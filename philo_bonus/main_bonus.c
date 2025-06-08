@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enoki <enoki@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/07 16:39:45 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/08 12:03:53 by enoki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ int	main(int ac, char **av)
 {
 	t_table	table;
 
-	unlink_semaphores();
 	if (parsing(ac, av) == ERROR)
 		return (ERROR);
-	if (init_table(&table, ac, av) != ERROR)
+	if (init_table(&table, ac, av) == ERROR)
 		return (cleanup_and_exit(&table), ERROR);
 	if (start_simulation(&table) == ERROR)
 	{
