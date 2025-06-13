@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/07 16:37:37 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:30:46 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*monitor_routine(void *arg)
 			exit(SUCCESS);
 		}
 		sem_post(philo->meal_lock);
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

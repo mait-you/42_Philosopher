@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enoki <enoki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/08 11:52:49 by enoki            ###   ########.fr       */
+/*   Updated: 2025/06/13 15:41:08 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ struct s_table
 	time_t			simulation_start;
 	sem_t			*forks;
 	sem_t			*print_lock;
+	sem_t			*simulation;
 	t_philo			*philos;
 };
 
@@ -105,7 +106,7 @@ struct s_table
 void	print_status(t_philo *philo, t_state status);
 void	philosopher_routine(t_philo *philo);
 void	*monitor_routine(void *arg);
-void	smart_usleep(time_t time);
+void	smart_usleep(t_philo *philo, time_t time);
 int		init_table(t_table *table, int ac, char **av);
 time_t	get_time_in_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);
@@ -118,6 +119,7 @@ void	kill_all_processes(t_table *table);
 void	close_semaphores(t_table *table);
 void	unlink_semaphores(t_table *table);
 void	cleanup_and_exit(t_table *table);
+int		check_simulation_done(t_philo *philo);
 
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);

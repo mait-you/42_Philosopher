@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enoki <enoki@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/08 12:02:30 by enoki            ###   ########.fr       */
+/*   Updated: 2025/06/13 15:39:59 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static int	init_philosophers(t_table *table)
 		if (table->philos[i].meal_lock == SEM_FAILED)
 			return (ERROR);
 		i++;
-		
 	}
 	return (SUCCESS);
 }
@@ -49,6 +48,9 @@ static int	init_semaphores(t_table *table)
 		return (ERROR);
 	table->print_lock = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
 	if (table->print_lock == SEM_FAILED)
+		return (ERROR);
+	table->simulation = sem_open(SEM_DONE, O_CREAT | O_EXCL, 0644, 1);
+	if (table->simulation == SEM_FAILED)
 		return (ERROR);
 	return (SUCCESS);
 }
