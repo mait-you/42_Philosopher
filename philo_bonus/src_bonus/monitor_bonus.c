@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:30:46 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:57:36 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,17 @@ void	*monitor_routine(void *arg)
 	return (NULL);
 }
 
-void	kill_all_processes(t_table *table)
+void kill_all_processes(t_table *table)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		if (table->philos[i].pid > 0)
-			kill(table->philos[i].pid, SIGTERM);
-		i++;
-	}
+    i = 0;
+    while (i < table->num_of_philos)
+    {
+        if (table->philos[i].pid > 0)
+        {
+            kill(table->philos[i].pid, SIGKILL);  // Use SIGKILL for immediate termination
+        }
+        i++;
+    }
 }
