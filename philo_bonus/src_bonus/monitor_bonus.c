@@ -6,38 +6,43 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:57:36 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:52:29 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
+static void	set_simulation_done(t_philo *philo)
+{
+   sem_wait(philo->table->simulation);
+   philo->table->simulation_done = 1;
+}
+
 void	*monitor_routine(void *arg)
 {
 	t_philo	*philo;
 	time_t	time_lived;
-	time_t	last_meal_time;
 
 	philo = (t_philo *)arg;
 	while (1)
 	{
 		sem_wait(philo->meal_lock);
-		last_meal_time = philo->last_meal;
-		time_lived = get_time_in_ms() - last_meal_time;
+		time_lived = get_time_in_ms() - philo->last_meal;
 		if (time_lived > philo->table->time_to_die)
 		{
 			print_status(philo, DIED);
 			sem_post(philo->meal_lock);
-			exit(ERROR);
+			set_simulation_done(philo);
+			exit(1);
 		}
 		if (philo->table->eat_count > 0
 			&& philo->num_times_to_eat >= philo->table->eat_count)
 		{
 			sem_post(philo->meal_lock);
-			exit(SUCCESS);
+			set_simulation_done(philo);
+			exit(1);
 		}
-		sem_post(philo->meal_lock);
-		usleep(100);
+		(sem_post(philo->meal_lock), usleep(100));
 	}
 	return (NULL);
 }
@@ -50,9 +55,7 @@ void kill_all_processes(t_table *table)
     while (i < table->num_of_philos)
     {
         if (table->philos[i].pid > 0)
-        {
-            kill(table->philos[i].pid, SIGKILL);  // Use SIGKILL for immediate termination
-        }
+            kill(table->philos[i].pid, SIGTERM);
         i++;
     }
 }

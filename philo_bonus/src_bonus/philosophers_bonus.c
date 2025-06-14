@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:42:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:53:58 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	eat_for_one_philo(t_philo *philo)
 {
 	sem_wait(philo->table->forks);
 	print_status(philo, TAKE_FORK);
-	smart_usleep(philo, philo->table->time_to_die);
+	smart_usleep(philo, philo->table->time_to_eat);
 	print_status(philo, DIED);
 	exit(SUCCESS);
 }
@@ -44,15 +44,15 @@ void	philosopher_routine(t_philo *philo)
 		exit(ERROR);
 	pthread_detach(philo->monitor_thread);
 	if (philo->table->num_of_philos == 1)
-	{
 		eat_for_one_philo(philo);
-		return;
-	}
 	if (philo->id % 2 == 0)
 		smart_usleep(philo, 10);
 	while (1)
-	{
+	{	
 		eat(philo);
+		if (philo->table->simulation_done)
+			exit(ERROR);
+		check_simulation_done(philo);
 		print_status(philo, SLEEPING);
 		smart_usleep(philo, philo->table->time_to_sleep);
 		print_status(philo, THINKING);

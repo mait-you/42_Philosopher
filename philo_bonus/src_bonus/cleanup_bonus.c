@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:36:22 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:54:21 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ void	unlink_semaphores(t_table *table)
 	int		i;
 	char	*sem_name;
 
-
 	i = -1;
-	while (++i < table->num_of_philos)
+	while (table->philos && ++i < table->num_of_philos)
 	{
 		sem_name = ft_strjoin(SEM_MEAL, ft_itoa(table->philos[i].id));
 		sem_unlink(sem_name);
@@ -27,18 +26,22 @@ void	unlink_semaphores(t_table *table)
 	}
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
-	sem_unlink(SEM_MEAL);
 	sem_unlink(SEM_DONE);
 }
 
 void	close_semaphores(t_table *table)
 {
+	int		i;
+
+	i = -1;
+	while (table->philos && ++i < table->num_of_philos)
+		sem_close(table->philos[i].meal_lock);
 	if (table->forks)
 		sem_close(table->forks);
 	if (table->print_lock)
 		sem_close(table->print_lock);
-	if (table->philos->meal_lock)
-		sem_close(table->philos->meal_lock);
+	if (table->simulation)
+		sem_close(table->simulation);
 }
 
 void	cleanup_and_exit(t_table *table)

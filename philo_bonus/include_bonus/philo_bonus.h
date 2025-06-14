@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:56:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:36:44 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ struct s_philo
 	int				num_times_to_eat;
 	pid_t			pid;
 	time_t			last_meal;
-	// sem_t			last_meal_lock;
 	sem_t			*meal_lock;
 	pthread_t		monitor_thread;
 	t_table			*table;
@@ -119,7 +118,7 @@ void	kill_all_processes(t_table *table);
 void	close_semaphores(t_table *table);
 void	unlink_semaphores(t_table *table);
 void	cleanup_and_exit(t_table *table);
-int		check_simulation_done(t_philo *philo);
+void	check_simulation_done(t_philo *philo);
 
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);

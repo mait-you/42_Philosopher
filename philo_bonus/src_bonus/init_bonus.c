@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:39:59 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:59:24 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	init_philosophers(t_table *table)
 		table->philos[i].table = table;
 		table->philos[i].pid = -1;
 		sem_name = ft_strjoin(SEM_MEAL, ft_itoa(table->philos[i].id));
+		sem_unlink(sem_name);
 		table->philos[i].meal_lock = sem_open(sem_name, O_CREAT | O_EXCL, 0644, 1);
 		if (sem_name)
 		{
@@ -76,13 +77,13 @@ int	init_table(t_table *table, int ac, char **av)
 		return (ERROR);
 	table->simulation_start = get_time_in_ms();
 	table->simulation_done = 0;
+	unlink_semaphores(table);
 	if (init_semaphores(table) == ERROR)
 		return (error_msg("semaphore", NULL, "failed to initialize semaphores"));
 	table->philos = (t_philo *)malloc(table->num_of_philos * sizeof(t_philo));
 	if (!table->philos)
 		return (error_cleanup(table, NULL, NULL, MALLOC_ERROR));
-	unlink_semaphores(table);
 	if (init_philosophers(table) == ERROR)
-		return (ERROR);
+		return (ERROR);	
 	return (SUCCESS);
 }
