@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:31:43 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:52:57 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	init_forks_and_philos(t_table *table)
 	{
 		table->philos[i].id = i + 1;
 		table->philos[i].num_times_to_eat = 0;
-		table->philos[i].last_meal = get_time_in_ms();
 		table->philos[i].table = table;
 		if (pthread_mutex_init(&table->philos[i].meal_lock, NULL) != 0)
 			return (ERROR);
@@ -68,7 +67,6 @@ int	init_table(t_table *table, int ac, char **av)
 		return (ERROR);
 	if (init_mutexes(table) == ERROR)
 		return (ERROR);
-	table->simulation_start = get_time_in_ms();
 	table->forks
 		= (t_mtx *)malloc(table->num_of_philos * sizeof(t_mtx));
 	if (!table->forks)

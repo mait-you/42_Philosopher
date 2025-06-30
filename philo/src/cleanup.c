@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/05/01 17:31:48 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:52:20 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,24 @@ void	table_cleanup(t_table *table)
 	i = 0;
 	while (i < table->num_of_philos)
 	{
-		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->philos[i].meal_lock);
+		if (table->forks)
+			pthread_mutex_destroy(&table->forks[i]);
+		if (table->philos)
+			pthread_mutex_destroy(&table->philos[i].meal_lock);
 		i++;
 	}
 	pthread_mutex_destroy(&table->print_lock);
 	pthread_mutex_destroy(&table->simulation_mutex);
 	if (table->philos)
+	{
 		free(table->philos);
+		table->philos = NULL;
+	}
 	if (table->forks)
+	{
 		free(table->forks);
+		table->forks = NULL;
+	}
 }
 
 int	error_msg(char *msg_type, char *the_error, char *msg)

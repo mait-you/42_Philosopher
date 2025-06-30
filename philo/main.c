@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:36:10 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:26:14 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ static int	start_simulation(t_table *table)
 	int	i;
 
 	i = 0;
+	table->simulation_start = get_time_in_ms();
 	while (i < table->num_of_philos)
 	{
+		table->philos[i].last_meal = get_time_in_ms();
 		if (pthread_create(&table->philos[i].philo_thread, NULL,
 				philosopher_routine, &table->philos[i]) != 0)
 			return (ERROR);
@@ -30,7 +32,7 @@ static int	start_simulation(t_table *table)
 				monitor_routine, table) != 0)
 			return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 static int	stop_simulation(t_table *table)
@@ -45,7 +47,7 @@ static int	stop_simulation(t_table *table)
 	}
 	if (table->num_of_philos > 1)
 		pthread_join(table->monitor_thread, NULL);
-	return (0);
+	return (SUCCESS);
 }
 
 int	main(int ac, char **av)
@@ -63,5 +65,5 @@ int	main(int ac, char **av)
 	}
 	stop_simulation(&table);
 	table_cleanup(&table);
-	return (0);
+	return (SUCCESS);
 }
