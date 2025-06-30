@@ -6,64 +6,75 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:30:58 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:44:25 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int	reaper_of_souls(t_table *table, int *philos_done_eating)
+static int	check_death(t_table *table)
 {
-	time_t	time_lived;
 	int		i;
+	long	time_since_meal;
+	long	current_time;
 
 	i = 0;
+	current_time = get_time_ms();
 	while (i < table->num_of_philos)
 	{
 		pthread_mutex_lock(&table->philos[i].meal_lock);
-		time_lived = get_time_in_ms() - table->philos[i].last_meal;
-		if (time_lived >= table->time_to_die)
+		time_since_meal = current_time - table->philos[i].last_meal;
+		if (time_since_meal >= table->time_to_die)
 		{
-			print_status(&table->philos[i], DIED);
 			pthread_mutex_unlock(&table->philos[i].meal_lock);
-			return (ERROR);
+			print_status(&table->philos[i], DIED);
+			return (1);
 		}
-		if (table->eat_count > 0 \
-			&& table->philos[i].num_times_to_eat >= table->eat_count)
-			(*philos_done_eating)++;
 		pthread_mutex_unlock(&table->philos[i].meal_lock);
 		i++;
 	}
-	return (SUCCESS);
+	return (0);
 }
 
-static int	should_stop(t_table *table, int philos_done_eating)
+static int	check_all_ate(t_table *table)
 {
-	if (table->eat_count > 0 \
-			&& philos_done_eating == table->num_of_philos)
+	int	i;
+	int	finished_eating;
+
+	if (table->eat_count <= 0)
+		return (0);
+	i = 0;
+	finished_eating = 0;
+	while (i < table->num_of_philos)
+	{
+		pthread_mutex_lock(&table->philos[i].meal_lock);
+		if (table->philos[i].num_times_to_eat >= table->eat_count)
+			finished_eating++;
+		pthread_mutex_unlock(&table->philos[i].meal_lock);
+		i++;
+	}
+	if (finished_eating == table->num_of_philos)
 	{
 		pthread_mutex_lock(&table->simulation_mutex);
 		table->simulation_done = 1;
 		pthread_mutex_unlock(&table->simulation_mutex);
-		return (ERROR);
+		return (1);
 	}
-	return (SUCCESS);
+	return (0);
 }
 
 void	*monitor_routine(void *arg)
 {
 	t_table	*table;
-	int		philos_done_eating;
 
 	table = (t_table *)arg;
 	while (!check_simulation_done(table->philos))
 	{
-		philos_done_eating = 0;
-		if (reaper_of_souls(table, &philos_done_eating) == ERROR)
+		if (check_death(table))
 			return (NULL);
-		if (should_stop(table, philos_done_eating) == ERROR)
+		if (check_all_ate(table))
 			return (NULL);
-		usleep(100);
+		usleep(1000);
 	}
 	return (NULL);
 }

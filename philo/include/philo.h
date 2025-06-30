@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:08:09 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:43:14 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,11 @@
 # include <stdbool.h>
 # include <string.h>
 
-/* ************************************************************************** */
-/* 							Status Codes and Messages                         */
-/* ************************************************************************** */
-
-/* Max philosophers */
+/* Status Codes */
 # define SUCCESS 0
 # define ERROR 1
 
-/* ANSI color codes for terminal */
+/* ANSI color codes */
 # define RED     "\e[1;31m"
 # define GREEN   "\e[1;32m"
 # define YELLOW  "\e[1;35m"
@@ -38,22 +34,18 @@
 # define GRAYL   "\e[90m"
 # define RESET   "\e[0m"
 
-/* Errors messages */
+/* Error messages */
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "memory allocation failed"
 
-/* ************************************************************************** */
-/* 							Data Structures                                   */
-/* ************************************************************************** */
-
-/* Typedef for all elements */
+/* Typedefs */
 typedef pthread_mutex_t		t_mtx;
 typedef enum e_state		t_state;
 typedef struct s_table		t_table;
 typedef struct s_philo		t_philo;
 
-/* Philosopher state */
+/* Philosopher states */
 enum e_state
 {
 	TAKE_FORK,
@@ -70,7 +62,7 @@ struct s_philo
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
 	t_mtx			meal_lock;
-	time_t			last_meal;
+	long			last_meal;
 	pthread_t		philo_thread;
 	t_table			*table;
 };
@@ -83,7 +75,7 @@ struct s_table
 	int				time_to_sleep;
 	int				eat_count;
 	int				simulation_done;
-	time_t			simulation_start;
+	long			simulation_start;
 	t_mtx			print_lock;
 	t_mtx			simulation_mutex;
 	t_mtx			*forks;
@@ -91,19 +83,15 @@ struct s_table
 	pthread_t		monitor_thread;
 };
 
-/* ************************************************************************** */
-/* 							Function Prototypes                               */
-/* ************************************************************************** */
-
+/* Function prototypes */
 void	print_status(t_philo *philo, t_state status);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
-void	smart_usleep_check_simulation(t_philo *philo, time_t time);
+void	smart_sleep(t_philo *philo, long time);
 int		init_table(t_table *table, int ac, char **av);
-time_t	get_time_in_ms(void);
+long	get_time_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);
-int		error_cleanup(\
-	t_table *table, char *msg_type, char *the_error, char *msg);
+int		error_cleanup(t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
 int		get_arg_as_num(const char *str);
 int		check_simulation_done(t_philo *philo);

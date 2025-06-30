@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:26:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:43:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ static int	start_simulation(t_table *table)
 	int	i;
 
 	i = 0;
-	table->simulation_start = get_time_in_ms();
+	table->simulation_start = get_time_ms();
 	while (i < table->num_of_philos)
 	{
-		table->philos[i].last_meal = get_time_in_ms();
+		pthread_mutex_lock(&table->philos[i].meal_lock);
+		table->philos[i].last_meal = get_time_ms();
+		pthread_mutex_unlock(&table->philos[i].meal_lock);
 		if (pthread_create(&table->philos[i].philo_thread, NULL,
 				philosopher_routine, &table->philos[i]) != 0)
 			return (ERROR);

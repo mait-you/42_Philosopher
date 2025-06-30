@@ -6,13 +6,14 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:28:02 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:44:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-time_t	get_time_in_ms(void)
+
+long	get_time_ms(void)
 {
 	struct timeval	tv;
 
@@ -20,55 +21,56 @@ time_t	get_time_in_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	smart_usleep_check_simulation(t_philo *philo, time_t time)
+void	smart_sleep(t_philo *philo, long time)
 {
-	time_t	start;
+	long	start;
+	long	elapsed;
 
-	start = get_time_in_ms();
-	while ((get_time_in_ms() - start) < time)
+	start = get_time_ms();
+	while (!check_simulation_done(philo))
 	{
-		if (check_simulation_done(philo))
+		elapsed = get_time_ms() - start;
+		if (elapsed >= time)
 			break ;
-		usleep(100);
+		usleep(500);
 	}
-	return ;
 }
 
 void	print_status(t_philo *philo, t_state status)
 {
-	time_t	current_time;
+	long	timestamp;
 
-	if (check_simulation_done(philo))
-		return ;
 	pthread_mutex_lock(&philo->table->print_lock);
-	current_time = get_time_in_ms() - philo->table->simulation_start;
-	if (!philo->table->simulation_done && status == TAKE_FORK)
-		printf("%ld %u has taken a fork\n", current_time, philo->id);
-	else if (!philo->table->simulation_done && status == EATING)
-		printf("%ld %u is eating\n", current_time, philo->id);
-	else if (!philo->table->simulation_done && status == SLEEPING)
-		printf("%ld %u is sleeping\n", current_time, philo->id);
-	else if (!philo->table->simulation_done && status == THINKING)
-		printf("%ld %u is thinking\n", current_time, philo->id);
-	else if (!philo->table->simulation_done && status == DIED)
+	if (check_simulation_done(philo) && status != DIED)
 	{
-		printf("%ld %u died\n", current_time, philo->id);
+		pthread_mutex_unlock(&philo->table->print_lock);
+		return ;
+	}
+	timestamp = get_time_ms() - philo->table->simulation_start;
+	if (status == TAKE_FORK)
+		printf("%ld %d has taken a fork\n", timestamp, philo->id);
+	else if (status == EATING)
+		printf("%ld %d is eating\n", timestamp, philo->id);
+	else if (status == SLEEPING)
+		printf("%ld %d is sleeping\n", timestamp, philo->id);
+	else if (status == THINKING)
+		printf("%ld %d is thinking\n", timestamp, philo->id);
+	else if (status == DIED)
+	{
+		printf("%ld %d died\n", timestamp, philo->id);
 		pthread_mutex_lock(&philo->table->simulation_mutex);
 		philo->table->simulation_done = 1;
 		pthread_mutex_unlock(&philo->table->simulation_mutex);
-		pthread_mutex_unlock(&philo->table->print_lock);
-		return ;
-		
 	}
 	pthread_mutex_unlock(&philo->table->print_lock);
 }
 
 int	check_simulation_done(t_philo *philo)
 {
-	int	should_stop;
+	int	done;
 
 	pthread_mutex_lock(&philo->table->simulation_mutex);
-	should_stop = philo->table->simulation_done;
+	done = philo->table->simulation_done;
 	pthread_mutex_unlock(&philo->table->simulation_mutex);
-	return (should_stop);
+	return (done);
 }
