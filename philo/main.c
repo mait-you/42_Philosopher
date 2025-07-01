@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:43:52 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 07:59:13 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ int	main(int ac, char **av)
 		return (ERROR);
 	if (start_simulation(&table) == ERROR)
 	{
-		table_cleanup(&table);
+		cleanup_table(&table);
 		return (ERROR);
 	}
 	stop_simulation(&table);
-	table_cleanup(&table);
+	cleanup_table(&table);
 	return (SUCCESS);
 }

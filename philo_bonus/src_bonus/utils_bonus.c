@@ -6,14 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 17:53:36 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 08:05:40 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-
-time_t	get_time_in_ms(void)
+long	get_time_ms(void)
 {
 	struct timeval	tv;
 
@@ -21,47 +20,45 @@ time_t	get_time_in_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	smart_usleep(t_philo *philo, time_t time)
+void	precise_usleep(long time)
 {
-	time_t	start;
+	long	start;
+	long	elapsed;
 
-	start = get_time_in_ms();
-	while ((get_time_in_ms() - start) < time)
+	start = get_time_ms();
+	while (1)
 	{
-		check_simulation_done(philo);
-		usleep(100);
+		elapsed = get_time_ms() - start;
+		if (elapsed >= time)
+			break ;
+		if (time - elapsed > 10)
+			usleep((time - elapsed) * 500);
+		else
+		{
+			while (get_time_ms() - start < time)
+				;
+		}
 	}
 }
 
 void	print_status(t_philo *philo, t_state status)
 {
-	time_t	current_time;
+	long	timestamp;
 
-	sem_wait(philo->table->print_lock);
-	check_simulation_done(philo);
-	current_time = get_time_in_ms() - philo->table->simulation_start;
+	sem_wait(philo->table->print_sem);
+	timestamp = get_time_ms() - philo->table->start_time;
 	if (status == TAKE_FORK)
-		printf("%ld %d has taken a fork\n", current_time, philo->id);
+		printf("%ld %d has taken a fork\n", timestamp, philo->id);
 	else if (status == EATING)
-		printf("%ld %d is eating\n", current_time, philo->id);
+		printf("%ld %d is eating\n", timestamp, philo->id);
 	else if (status == SLEEPING)
-		printf("%ld %d is sleeping\n", current_time, philo->id);
+		printf("%ld %d is sleeping\n", timestamp, philo->id);
 	else if (status == THINKING)
-		printf("%ld %d is thinking\n", current_time, philo->id);
+		printf("%ld %d is thinking\n", timestamp, philo->id);
 	else if (status == DIED)
-		printf("%ld %d died\n", current_time, philo->id);
-	sem_post(philo->table->print_lock);
-}
-
-void	table_cleanup(t_table *table)
-{
-	close_semaphores(table);
-	if (table->philos)
-		free(table->philos);
-}
-
-void	check_simulation_done(t_philo *philo)
-{
-	sem_wait(philo->table->simulation);
-	sem_post(philo->table->simulation);
+	{
+		printf("%ld %d died\n", timestamp, philo->id);
+		sem_post(philo->table->stop_sem);
+	}
+	sem_post(philo->table->print_sem);
 }

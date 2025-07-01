@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 16:52:20 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 07:59:13 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	table_cleanup(t_table *table)
+void	cleanup_table(t_table *table)
 {
 	int	i;
 
@@ -72,6 +72,6 @@ int	error_cleanup(
 	)
 {
 	error_msg(msg_type, the_error, msg);
-	table_cleanup(table);
+	cleanup_table(table);
 	return (ERROR);
 }

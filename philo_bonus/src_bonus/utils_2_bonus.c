@@ -6,86 +6,89 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:36:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:03:14 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-size_t	ft_strlen(const char *s)
+static int	ft_strlen(const char *s)
 {
-	size_t	l;
+	int	len;
 
-	l = 0;
-	while (*(s++))
-		l++;
-	return (l);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	char	*ptr;
-	size_t	i;
-	size_t	j;
+	char	*result;
+	int		i;
+	int		j;
 
 	if (!s1 || !s2)
 		return (NULL);
-	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!ptr)
+	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!result)
 		return (NULL);
-	i = -1;
-	while (s1 && s1[++i])
-		ptr[i] = s1[i];
-	j = -1;
-	while (s2 && s2[++j])
-		ptr[i] = s2[j];
-	if (s2)
-		free(s2);
-	return (ptr);
+	i = 0;
+	while (s1[i])
+	{
+		result[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		result[i + j] = s2[j];
+		j++;
+	}
+	result[i + j] = '\0';
+	return (result);
 }
 
-static int	n_len(long int n)
+static int	count_digits(int n)
 {
-	int	l;
+	int	count;
 
-	l = 0;
-	if (n <= 0)
-	{
-		n = -n;
-		l++;
-	}
-	while (n > 0)
+	if (n == 0)
+		return (1);
+	count = 0;
+	if (n < 0)
+		count++;
+	while (n != 0)
 	{
 		n /= 10;
-		l++;
+		count++;
 	}
-	return (l);
-}
-
-static void	ft_putnb(char *s, long n)
-{
-	if (n > 9)
-		ft_putnb(s - 1, n / 10);
-	*s = '0' + (n % 10);
+	return (count);
 }
 
 char	*ft_itoa(int n)
 {
-	long		nb;
-	int			len;
-	char		*str;
+	char	*str;
+	int		len;
+	long	num;
 
-	nb = n;
-	len = n_len(nb);
-	str = (char *)malloc(len + 1);
+	len = count_digits(n);
+	str = malloc(len + 1);
 	if (!str)
 		return (NULL);
-	if (nb < 0)
-	{
-		*str = '-';
-		nb = -nb;
-	}
-	ft_putnb(str + len - 1, nb);
 	str[len] = '\0';
+	num = n;
+	if (num < 0)
+	{
+		str[0] = '-';
+		num = -num;
+	}
+	if (num == 0)
+		str[0] = '0';
+	while (num > 0)
+	{
+		str[--len] = (num % 10) + '0';
+		num /= 10;
+	}
 	return (str);
 }

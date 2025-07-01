@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:44:25 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:27:19 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static int	check_death(t_table *table)
 		{
 			pthread_mutex_unlock(&table->philos[i].meal_lock);
 			print_status(&table->philos[i], DIED);
-			return (1);
+			return (ERROR);
 		}
 		pthread_mutex_unlock(&table->philos[i].meal_lock);
 		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 static int	check_all_ate(t_table *table)

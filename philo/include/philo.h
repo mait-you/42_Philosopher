@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 17:43:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 07:59:13 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ int		error_cleanup(t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
 int		get_arg_as_num(const char *str);
 int		check_simulation_done(t_philo *philo);
-void	table_cleanup(t_table *table);
+void	cleanup_table(t_table *table);
 
 #endif
