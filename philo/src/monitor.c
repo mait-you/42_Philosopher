@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 19:27:19 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:11:41 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ static int	check_death(t_table *table)
 	current_time = get_time_ms();
 	while (i < table->num_of_philos)
 	{
-		pthread_mutex_lock(&table->philos[i].meal_lock);
-		time_since_meal = current_time - table->philos[i].last_meal;
+		pthread_mutex_lock(&table->philos[i].meal_lock_mutex);
+		time_since_meal = current_time - table->philos[i].last_meal_time;
 		if (time_since_meal >= table->time_to_die)
 		{
-			pthread_mutex_unlock(&table->philos[i].meal_lock);
+			pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 			print_status(&table->philos[i], DIED);
 			return (ERROR);
 		}
-		pthread_mutex_unlock(&table->philos[i].meal_lock);
+		pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 		i++;
 	}
 	return (SUCCESS);
@@ -47,10 +47,10 @@ static int	check_all_ate(t_table *table)
 	finished_eating = 0;
 	while (i < table->num_of_philos)
 	{
-		pthread_mutex_lock(&table->philos[i].meal_lock);
+		pthread_mutex_lock(&table->philos[i].meal_lock_mutex);
 		if (table->philos[i].num_times_to_eat >= table->eat_count)
 			finished_eating++;
-		pthread_mutex_unlock(&table->philos[i].meal_lock);
+		pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 		i++;
 	}
 	if (finished_eating == table->num_of_philos)

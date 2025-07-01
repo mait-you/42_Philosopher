@@ -6,9 +6,10 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 18:20:55 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:06:22 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
@@ -26,11 +27,9 @@
 # include <fcntl.h>
 # include <semaphore.h>
 
-/* Status Codes */
 # define SUCCESS 0
 # define ERROR 1
 
-/* ANSI color codes */
 # define RED     "\e[1;31m"
 # define GREEN   "\e[1;32m"
 # define YELLOW  "\e[1;35m"
@@ -38,23 +37,20 @@
 # define GRAYL   "\e[90m"
 # define RESET   "\e[0m"
 
-/* Error messages */
 # define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "memory allocation failed"
 
-/* Semaphore names */
 # define SEM_FORKS "/philo_forks"
 # define SEM_PRINT "/philo_print"
 # define SEM_MEAL "/philo_meal_"
 # define SEM_STOP "/philo_stop"
+# define SEM_FINISHED "/philo_finished"
 
-/* Typedefs */
 typedef enum e_state		t_state;
 typedef struct s_table		t_table;
 typedef struct s_philo		t_philo;
 
-/* Philosopher state */
 enum e_state
 {
 	TAKE_FORK,
@@ -77,25 +73,26 @@ struct s_philo
 
 struct s_table
 {
-	int				nb_philos;
+	int				num_of_philos;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
-	int				must_eat_count;
+	int				eat_count;
 	long			start_time;
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
+	sem_t			*finished_sem;
 	t_philo			*philos;
+	int				finished_count;
 };
 
-/* Function prototypes */
 int		parsing(int ac, char **av);
 void	philosopher_routine(t_philo *philo);
-int	init_table(t_table *table, int ac, char **av);
+int		init_table(t_table *table, int ac, char **av);
 void	*monitor_routine(void *arg);
 void	print_status(t_philo *philo, t_state status);
-void	precise_usleep(long time);
+void	smart_sleep(long time);
 long	get_time_ms(void);
 char	*ft_itoa(int n);
 char	*ft_strjoin(const char *s1, const char *s2);
@@ -105,5 +102,6 @@ int		error_msg(char *msg_type, char *the_error, char *msg);
 int		get_arg_as_num(const char *str);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
+void	unlink_semaphores(t_table *table);
 
 #endif

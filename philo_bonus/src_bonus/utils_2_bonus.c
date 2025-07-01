@@ -6,12 +6,11 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/30 18:03:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 08:34:23 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
-
 static int	ft_strlen(const char *s)
 {
 	int	len;
@@ -46,6 +45,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		j++;
 	}
 	result[i + j] = '\0';
+	free((void *)s2);
 	return (result);
 }
 

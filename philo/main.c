@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 07:59:13 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:20:44 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static int	start_simulation(t_table *table)
 	table->simulation_start = get_time_ms();
 	while (i < table->num_of_philos)
 	{
-		pthread_mutex_lock(&table->philos[i].meal_lock);
-		table->philos[i].last_meal = get_time_ms();
-		pthread_mutex_unlock(&table->philos[i].meal_lock);
+		pthread_mutex_lock(&table->philos[i].meal_lock_mutex);
+		table->philos[i].last_meal_time = get_time_ms();
+		pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 		if (pthread_create(&table->philos[i].philo_thread, NULL,
 				philosopher_routine, &table->philos[i]) != 0)
 			return (ERROR);
@@ -59,7 +59,11 @@ int	main(int ac, char **av)
 	if (parsing(ac, av) == ERROR)
 		return (ERROR);
 	if (init_table(&table, ac, av) == ERROR)
+	{
+		if (table.eat_count == 0)
+			return (SUCCESS);
 		return (ERROR);
+	}
 	if (start_simulation(&table) == ERROR)
 	{
 		cleanup_table(&table);

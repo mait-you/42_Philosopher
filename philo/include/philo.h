@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 07:59:13 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:14:07 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 /* Error messages */
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
-# define MALLOC_ERROR "memory allocation failed"
+# define MALLOC_ERROR "Memory allocation failed"
 
 /* Typedefs */
 typedef pthread_mutex_t		t_mtx;
@@ -61,8 +61,8 @@ struct s_philo
 	int				num_times_to_eat;
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
-	t_mtx			meal_lock;
-	long			last_meal;
+	t_mtx			meal_lock_mutex;
+	long			last_meal_time;
 	pthread_t		philo_thread;
 	t_table			*table;
 };
@@ -76,7 +76,9 @@ struct s_table
 	int				eat_count;
 	int				simulation_done;
 	long			simulation_start;
-	t_mtx			print_lock;
+	bool			print_mutex_initialized;
+	t_mtx			print_mutex;
+	bool			simulation_mutex_initialized;
 	t_mtx			simulation_mutex;
 	t_mtx			*forks;
 	t_philo			*philos;
