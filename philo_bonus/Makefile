@@ -6,6 +6,8 @@ RM			:= rm -rf
 ### Executable Name
 NAME		:= philo_bonus
 
+OBJS_DIR 	= obj
+
 ### Source Files
 SRCS =	main_bonus.c \
 	src_bonus/monitor_bonus.c \

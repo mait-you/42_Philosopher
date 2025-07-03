@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 14:06:22 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:22:48 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "memory allocation failed"
+
+# define THINKING_DELAY 400
 
 # define SEM_FORKS "/philo_forks"
 # define SEM_PRINT "/philo_print"
@@ -99,7 +101,7 @@ char	*ft_strjoin(const char *s1, const char *s2);
 void	cleanup_table(t_table *table);
 void	kill_all_processes(t_table *table);
 int		error_msg(char *msg_type, char *the_error, char *msg);
-int		get_arg_as_num(const char *str);
+int		get_arg_as_num(char *str);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 void	unlink_semaphores(t_table *table);

@@ -6,12 +6,11 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 14:11:13 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:26:28 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
-
 
 static void	eat(t_philo *philo)
 {
@@ -51,6 +50,7 @@ void	philosopher_routine(t_philo *philo)
 		print_status(philo, SLEEPING);
 		smart_sleep(philo->table->time_to_sleep);
 		print_status(philo, THINKING);
+		usleep(THINKING_DELAY);
 	}
 	exit(SUCCESS);
 }

@@ -1,13 +1,13 @@
 ### Compiler and Flags
-CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror
-RM			:= rm -rf
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+RM			= rm -rf
 
 ### dirs
-OBJS_DIR	:= obj
+OBJS_DIR	= obj
 
 ### Executable Name
-NAME		:= philo
+NAME		= philo
 
 ### Source Files
 SRCS =	main.c \
@@ -18,16 +18,16 @@ SRCS =	main.c \
 	src/philosophers.c \
 	src/utils.c 
 ### Object Files
-OBJS		:= $(SRCS:%.c=$(OBJS_DIR)/%.o)
+OBJS		= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
 ### Colors and Formatting
-RESET		:= \033[0m
-RED			:= \033[31m
-GREEN		:= \033[32m
-BLUE		:= \033[34m
-WHITE		:= \033[37m
-BOLD		:= \033[1m
-UP			:= \033[F
+RESET		= \033[0m
+RED			= \033[31m
+GREEN		= \033[32m
+BLUE		= \033[34m
+WHITE		= \033[37m
+BOLD		= \033[1m
+UP			= \033[F
 
 ### Rules
 all: $(NAME)
@@ -40,9 +40,6 @@ $(OBJS_DIR)/%.o: %.c include/philo.h | $(OBJS_DIR)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(BLUE)Compiling: $(WHITE)$<$(RESET)"
-
-$(OBJS_DIR):
-	@mkdir -p $(OBJS_DIR)
 
 clean:
 	@$(RM) $(OBJS_DIR)
