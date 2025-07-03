@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 13:13:20 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:56:09 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static int	init_semaphores(t_table *table)
 	if (table->stop_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create stop semaphore"));
-	table->finished_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
-	if (table->finished_sem == SEM_FAILED)
+	table->simulation_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
+	if (table->simulation_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create finished semaphore"));
 	return (SUCCESS);
@@ -79,6 +79,7 @@ static int	get_args(t_table *table, int ac, char **av)
 int	init_table(t_table *table, int ac, char **av)
 {
 	memset(table, 0, sizeof(t_table));
+	table->simulation_done = 0;
 	if (get_args(table, ac, av) == ERROR)
 		return (ERROR);
 	if (init_semaphores(table) == ERROR)

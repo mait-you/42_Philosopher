@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 10:11:41 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:13:46 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	check_all_ate(t_table *table)
 	int	finished_eating;
 
 	if (table->eat_count <= 0)
-		return (0);
+		return (SUCCESS);
 	i = 0;
 	finished_eating = 0;
 	while (i < table->num_of_philos)
@@ -55,12 +55,10 @@ static int	check_all_ate(t_table *table)
 	}
 	if (finished_eating == table->num_of_philos)
 	{
-		pthread_mutex_lock(&table->simulation_mutex);
-		table->simulation_done = 1;
-		pthread_mutex_unlock(&table->simulation_mutex);
-		return (1);
+		set_simulation_done(table);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 void	*monitor_routine(void *arg)

@@ -6,10 +6,9 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 13:22:48 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:23:04 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
@@ -65,28 +64,29 @@ enum e_state
 struct s_philo
 {
 	int				id;
-	int				meals_eaten;
-	long			last_meal_time;
 	pid_t			pid;
+	int				num_times_to_eat;
+	time_t			last_meal_time;
 	sem_t			*meal_sem;
-	pthread_t		monitor_thread;
 	t_table			*table;
 };
 
 struct s_table
 {
 	int				num_of_philos;
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
 	int				eat_count;
-	long			start_time;
+	bool			simulation_done;
+	time_t			simulation_start;
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
-	sem_t			*finished_sem;
-	t_philo			*philos;
+	sem_t			*simulation_sem;
 	int				finished_count;
+	t_philo			*philos;
+	pthread_t		monitor_thread;
 };
 
 int		parsing(int ac, char **av);
@@ -95,7 +95,7 @@ int		init_table(t_table *table, int ac, char **av);
 void	*monitor_routine(void *arg);
 void	print_status(t_philo *philo, t_state status);
 void	smart_sleep(long time);
-long	get_time_ms(void);
+time_t	get_time_ms(void);
 char	*ft_itoa(int n);
 char	*ft_strjoin(const char *s1, const char *s2);
 void	cleanup_table(t_table *table);
@@ -105,5 +105,6 @@ int		get_arg_as_num(char *str);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 void	unlink_semaphores(t_table *table);
+void	set_simulation_done(t_table *table);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 14:11:00 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:26:28 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	start_simulation(t_table *table)
 	pid_t	pid;
 
 	i = -1;
-	table->start_time = get_time_ms();
+	table->simulation_start = get_time_ms();
 	while (++i < table->num_of_philos)
 	{
 		sem_wait(table->philos[i].meal_sem);
@@ -30,19 +30,21 @@ static int	start_simulation(t_table *table)
 		else if (pid > 0)
 			table->philos[i].pid = pid;
 		else
-		{
-			kill_all_processes(table);
-			return (error_msg("Fork failed", NULL, NULL));
-		}
+			return (kill_all_processes(table),
+				error_msg(NULL, NULL, "Fork failed"));
 	}
+	if (table->num_of_philos > 1
+		&& pthread_create(&table->monitor_thread, NULL,
+			monitor_routine, table) != 0)
+			return (kill_all_processes(table), ERROR);
 	return (SUCCESS);
 }
 
 static void	wait_for_processes(t_table *table)
 {
-	int	i;
-	int	status;
-
+	int			i;
+	int			status;
+	
 	i = 0;
 	while (i < table->num_of_philos)
 	{
@@ -51,12 +53,15 @@ static void	wait_for_processes(t_table *table)
 			if ((WIFEXITED(status) || WIFSIGNALED(status))
 				&& WEXITSTATUS(status) == ERROR)
 			{
+				table->simulation_done = 0;
 				kill_all_processes(table);
 				break ;
 			}
 		}
 		i++;
 	}
+	if (table->num_of_philos > 1)
+		pthread_join(table->monitor_thread, NULL);
 }
 
 int	main(int ac, char **av)

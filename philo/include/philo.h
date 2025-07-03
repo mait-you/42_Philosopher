@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 12:24:28 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:21:19 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,9 @@
 # include <stdbool.h>
 # include <string.h>
 
-/* Status Codes */
 # define SUCCESS 0
 # define ERROR 1
 
-/* Thinking Delay */
-# define THINKING_DELAY 400
-
-/* ANSI color codes */
 # define RED     "\e[1;31m"
 # define GREEN   "\e[1;32m"
 # define YELLOW  "\e[1;35m"
@@ -37,18 +32,15 @@
 # define GRAYL   "\e[90m"
 # define RESET   "\e[0m"
 
-/* Error messages */
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "Memory allocation failed"
 
-/* Typedefs */
 typedef pthread_mutex_t		t_mtx;
 typedef enum e_state		t_state;
 typedef struct s_table		t_table;
 typedef struct s_philo		t_philo;
 
-/* Philosopher states */
 enum e_state
 {
 	TAKE_FORK,
@@ -65,7 +57,7 @@ struct s_philo
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
 	t_mtx			meal_lock_mutex;
-	long			last_meal_time;
+	time_t			last_meal_time;
 	pthread_t		philo_thread;
 	t_table			*table;
 };
@@ -73,12 +65,12 @@ struct s_philo
 struct s_table
 {
 	int				num_of_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
 	int				eat_count;
-	int				simulation_done;
-	long			simulation_start;
+	bool			simulation_done;
+	time_t			simulation_start;
 	bool			print_mutex_initialized;
 	t_mtx			print_mutex;
 	bool			simulation_mutex_initialized;
@@ -88,19 +80,19 @@ struct s_table
 	pthread_t		monitor_thread;
 };
 
-/* Function prototypes */
 void	print_status(t_philo *philo, t_state status);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
 void	smart_sleep(t_philo *philo, long time);
 int		init_table(t_table *table, int ac, char **av);
-long	get_time_ms(void);
+time_t	get_time_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
 int		get_arg_as_num(const char *str);
 int		check_simulation_done(t_philo *philo);
+void	set_simulation_done(t_table *table);
 void	cleanup_table(t_table *table);
 
 #endif

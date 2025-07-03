@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 12:24:46 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 14:13:29 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ void	print_status(t_philo *philo, t_state status)
 	else if (status == DIED)
 	{
 		printf(RED"%ld %d died\n"RESET, timestamp, philo->id);
-		pthread_mutex_lock(&philo->table->simulation_mutex);
-		philo->table->simulation_done = 1;
-		pthread_mutex_unlock(&philo->table->simulation_mutex);
+		set_simulation_done(philo->table);
 	}
 	pthread_mutex_unlock(&philo->table->print_mutex);
 }
@@ -71,3 +69,11 @@ int	check_simulation_done(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->simulation_mutex);
 	return (done);
 }
+
+void	set_simulation_done(t_table *table)
+{
+	pthread_mutex_lock(&table->simulation_mutex);
+	table->simulation_done = true;
+	pthread_mutex_unlock(&table->simulation_mutex);
+}
+

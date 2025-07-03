@@ -36,7 +36,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(RED)$(BOLD)$(NAME) $(GREEN)compiled successfully!$(RESET)"
 
-$(OBJS_DIR)/%.o: %.c include/philo.h | $(OBJS_DIR)
+$(OBJS_DIR)/%.o: %.c include/philo.h
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(BLUE)Compiling: $(WHITE)$<$(RESET)"
@@ -50,5 +50,3 @@ fclean:
 	@echo "$(RED)$(UP)Cleaned object files and $(PURPLE)$(BOLD)$(LIBFT)$(RESET)$(RED), $(RED)$(BOLD)$(NAME)$(RESET)"
 
 re: fclean all
-
-.PHONY: clean fclean
