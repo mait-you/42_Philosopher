@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 09:50:06 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:24:50 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	get_arg_as_num(const char *str)
 
 	i = 0;
 	r = 0;
-
 	if (str && str[i] == '+')
 		i++;
 	while (str && str[i] >= '0' && str[i] <= '9')

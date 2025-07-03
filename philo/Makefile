@@ -16,8 +16,7 @@ SRCS =	main.c \
 	src/parsing.c \
 	src/cleanup.c \
 	src/philosophers.c \
-	src/utils.c \
-
+	src/utils.c 
 ### Object Files
 OBJS		:= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

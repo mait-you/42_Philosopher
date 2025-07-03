@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 14:16:36 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:25:07 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,17 @@ static int	init_philos(t_table *table)
 	return (SUCCESS);
 }
 
-static int init_mutex(t_table *table)
+static int	init_mutex(t_table *table)
 {
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
 		return (error_cleanup(\
 			table, "pthread_mutex_init", "table->print_mutex",
-			"mutex init failed"));
+				"mutex init failed"));
 	table->print_mutex_initialized = true;
 	if (pthread_mutex_init(&table->simulation_mutex, NULL) != 0)
 		return (error_cleanup(\
 			table, "pthread_mutex_init", "table->simulation_mutex",
-			"mutex init failed"));
+				"mutex init failed"));
 	table->simulation_mutex_initialized = true;
 	return (SUCCESS);
 }
@@ -93,10 +93,11 @@ int	init_table(t_table *table, int ac, char **av)
 			table, "malloc()", "table->philos", MALLOC_ERROR));
 	if (init_forks(table) == ERROR)
 		return (error_cleanup(\
-			table, "pthread_mutex_init", "table->forks[i]", "mutex init failed"));
+			table, "pthread_mutex_init", "table->forks[i]",
+				"mutex init failed"));
 	if (init_philos(table) == ERROR)
 		return (error_cleanup(\
 			table, "pthread_mutex_init", "table->philos[i].meal_lock_mutex",
-			"mutex init failed"));
+				"mutex init failed"));
 	return (SUCCESS);
 }

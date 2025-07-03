@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/01 14:14:07 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:24:28 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 /* Status Codes */
 # define SUCCESS 0
 # define ERROR 1
+
+/* Thinking Delay */
+# define THINKING_DELAY 400
 
 /* ANSI color codes */
 # define RED     "\e[1;31m"
@@ -93,7 +96,8 @@ void	smart_sleep(t_philo *philo, long time);
 int		init_table(t_table *table, int ac, char **av);
 long	get_time_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);
-int		error_cleanup(t_table *table, char *msg_type, char *the_error, char *msg);
+int		error_cleanup(\
+	t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
 int		get_arg_as_num(const char *str);
 int		check_simulation_done(t_philo *philo);
