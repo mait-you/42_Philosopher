@@ -20,16 +20,21 @@ long	get_time_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	smart_sleep(t_philo *philo, long time)
+void	smart_sleep(t_philo *philo, time_t time)
 {
-	long	start;
+	time_t	start;
+	time_t	sleep_chunk;
 
+	if (time > 10)
+		sleep_chunk = 500;
+	else
+		sleep_chunk = 100;
 	start = get_time_ms();
 	while ((get_time_ms() - start) < time)
 	{
 		if (check_simulation_done(philo))
 			break ;
-		usleep(500);
+		usleep(sleep_chunk);
 	}
 }
 

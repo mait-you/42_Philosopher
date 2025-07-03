@@ -60,6 +60,8 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
+	if (philo->id % 2 == 0)
+		smart_sleep(philo, 1);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);
