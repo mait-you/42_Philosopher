@@ -26,7 +26,6 @@ void	*monitor_routine(void *arg)
 		{
 			sem_post(philo->meal_sem);
 			print_status(philo, DIED);
-			set_simulation_done(philo);
 			exit(SUCCESS);
 		}
 		if (philo->table->eat_count > 0

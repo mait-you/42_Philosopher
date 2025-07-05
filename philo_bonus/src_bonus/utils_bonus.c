@@ -34,8 +34,7 @@ void	print_status(t_philo *philo, t_state status)
 	time_t	current_time;
 
 	sem_wait(philo->table->print_sem);
-	if (status != DIED)
-		check_simulation_done(philo);
+	check_simulation_done(philo);
 	current_time = get_time_ms() - philo->table->simulation_start;
 	if (status == TAKE_FORK)
 		printf(GRAYL"%ld %d has taken a fork\n"RESET, current_time, philo->id);
@@ -49,18 +48,18 @@ void	print_status(t_philo *philo, t_state status)
 	{
 		printf(RED"%ld %d died\n"RESET, current_time, philo->id);
 		set_simulation_done(philo);
-		return ;
 	}
 	sem_post(philo->table->print_sem);
 }
 
 void	set_simulation_done(t_philo *philo)
 {
-	sem_wait(philo->table->simulation_done_sem);
+	sem_post(philo->table->stop_sem);
 }
 
 void	check_simulation_done(t_philo *philo)
 {
-	sem_wait(philo->table->simulation_done_sem);
-	sem_post(philo->table->simulation_done_sem);
+	sem_wait(philo->table->stop_sem);
+	sem_post(philo->table->stop_sem);
+	
 }

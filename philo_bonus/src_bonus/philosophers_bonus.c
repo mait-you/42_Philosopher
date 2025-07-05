@@ -50,13 +50,10 @@ void	philosopher_routine(t_philo *philo)
 	while (true)
 	{
 		eat(philo);
-		check_simulation_done(philo);
 		print_status(philo, SLEEPING);
 		ms_sleep(philo, philo->table->time_to_sleep);
-		check_simulation_done(philo);
 		print_status(philo, THINKING);
 		usleep(philo->table->time_to_thinking);
-		check_simulation_done(philo);
 	}
 	exit(SUCCESS);
 }
