@@ -61,7 +61,7 @@ void	*philosopher_routine(void *arg)
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
 	if (philo->id % 2 == 0)
-		ms_sleep(philo, 1);
+		usleep(200);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);
