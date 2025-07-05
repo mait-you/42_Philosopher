@@ -1,6 +1,6 @@
 ### Compiler and Flags
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror #-fsanitize=thread -g
+CFLAGS		:= -Wall -Wextra -Werror -fsanitize=thread -g
 RM			:= rm -rf
 
 ### Executable Name

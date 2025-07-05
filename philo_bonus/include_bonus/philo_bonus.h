@@ -29,12 +29,24 @@
 # define SUCCESS 0
 # define ERROR 1
 
+#define DIBAG true
+
+#if DIBAG == 1
 # define RED     "\e[1;31m"
 # define GREEN   "\e[1;32m"
-# define YELLOW  "\e[1;35m"
+# define YELLOW  "\e[1;33m"
 # define CYAN    "\e[1;36m"
 # define GRAYL   "\e[90m"
 # define RESET   "\e[0m"
+#else
+# define RED     ""
+# define GREEN   ""
+# define YELLOW  ""
+# define CYAN    ""
+# define GRAYL   ""
+# define RESET   ""
+#endif
+
 
 # define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
@@ -75,6 +87,8 @@ struct s_table
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
+	time_t			time_to_thinking;
+	time_t			sleep_chunk;
 	int				eat_count;
 	bool			simulation_done;
 	time_t			simulation_start;
@@ -92,7 +106,7 @@ void	philosopher_routine(t_philo *philo);
 int		init_table(t_table *table, int ac, char **av);
 void	*monitor_routine(void *arg);
 void	print_status(t_philo *philo, t_state status);
-void	smart_sleep(long time);
+void	ms_sleep(t_philo *philo, time_t time);
 time_t	get_time_ms(void);
 char	*ft_itoa(int n);
 char	*ft_strjoin(const char *s1, const char *s2);

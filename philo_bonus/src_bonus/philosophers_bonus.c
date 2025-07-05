@@ -27,7 +27,7 @@ static int	check_eat_count(t_philo *philo)
 	int	times_eaten;
 
 	if (philo->table->eat_count <= 0)
-		return (0);
+		return (SUCCESS);
 	sem_wait(philo->meal_sem);
 	times_eaten = philo->num_times_to_eat;
 	sem_post(philo->meal_sem);
@@ -45,7 +45,7 @@ static void	eat(t_philo *philo)
 	philo->last_meal_time = get_time_ms();
 	philo->num_times_to_eat++;
 	sem_post(philo->meal_sem);
-	smart_sleep(philo->table->time_to_eat);
+	ms_sleep(philo, philo->table->time_to_eat);
 	sem_post(philo->table->forks_sem);
 	sem_post(philo->table->forks_sem);
 }
@@ -54,7 +54,7 @@ static void	single_philo_routine(t_philo *philo)
 {
 	sem_wait(philo->table->forks_sem);
 	print_status(philo, TAKE_FORK);
-	smart_sleep(philo->table->time_to_die);
+	ms_sleep(philo, philo->table->time_to_die);
 	print_status(philo, DIED);
 	exit(SUCCESS);
 }
@@ -65,7 +65,7 @@ void	philosopher_routine(t_philo *philo)
 		single_philo_routine(philo);
 	
 	if (philo->id % 2 == 0)
-		smart_sleep(1);
+		usleep(200);
 	while (!check_simulation_done(philo->table))
 	{
 		eat(philo);
@@ -74,10 +74,11 @@ void	philosopher_routine(t_philo *philo)
 		if (check_simulation_done(philo->table))
 			break ;
 		print_status(philo, SLEEPING);
-		smart_sleep(philo->table->time_to_sleep);
+		ms_sleep(philo, philo->table->time_to_sleep);
 		if (check_simulation_done(philo->table))
 			break ;
 		print_status(philo, THINKING);
+		usleep(philo->table->time_to_thinking);
 	}
 	exit(SUCCESS);
 }

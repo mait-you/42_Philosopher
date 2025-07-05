@@ -20,21 +20,13 @@ long	get_time_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	smart_sleep(long time)
+void	ms_sleep(t_philo *philo, time_t time)
 {
-	long	start;
-	time_t	sleep_chunk;
+	time_t	start;
 
-	if (time > 10)
-		sleep_chunk = 500;
-	else
-		sleep_chunk = 100;
 	start = get_time_ms();
 	while ((get_time_ms() - start) < time)
-	{
-		usleep(sleep_chunk / 2);
-		usleep(sleep_chunk / 2);
-	}
+		usleep(philo->table->sleep_chunk);
 }
 
 void	print_status(t_philo *philo, t_state status)
