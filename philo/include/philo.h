@@ -25,19 +25,23 @@
 # define SUCCESS 0
 # define ERROR 1
 
+#define DIBAG 1
+
+#if DIBAG == true
 # define RED     "\e[1;31m"
 # define GREEN   "\e[1;32m"
-# define YELLOW  "\e[1;35m"
+# define YELLOW  "\e[1;33m"
 # define CYAN    "\e[1;36m"
 # define GRAYL   "\e[90m"
 # define RESET   "\e[0m"
-
-// # define RED     ""
-// # define GREEN   ""
-// # define YELLOW  ""
-// # define CYAN    ""
-// # define GRAYL   ""
-// # define RESET   ""
+#else
+# define RED     ""
+# define GREEN   ""
+# define YELLOW  ""
+# define CYAN    ""
+# define GRAYL   ""
+# define RESET   ""
+#endif
 
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
