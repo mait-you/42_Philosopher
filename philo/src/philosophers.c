@@ -16,16 +16,16 @@ static void	take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 1)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, TAKE_FORK);
 		pthread_mutex_lock(philo->right_fork);
+		print_status(philo, TAKE_FORK);
+		pthread_mutex_lock(philo->left_fork);
 		print_status(philo, TAKE_FORK);
 	}
 	else
 	{
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_FORK);
 		pthread_mutex_lock(philo->left_fork);
+		print_status(philo, TAKE_FORK);
+		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, TAKE_FORK);
 	}
 }
@@ -60,7 +60,7 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 1)
 		smart_sleep(philo, 1);
 	while (!check_simulation_done(philo))
 	{
@@ -72,7 +72,6 @@ void	*philosopher_routine(void *arg)
 		if (check_simulation_done(philo))
 			break ;
 		print_status(philo, THINKING);
-		smart_sleep(philo, 1);
 	}
 	return (NULL);
 }
