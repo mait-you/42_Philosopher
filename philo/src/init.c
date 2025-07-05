@@ -64,6 +64,8 @@ static int	init_mutex(t_table *table)
 
 static int	get_args(t_table *table, int ac, char **av)
 {
+	time_t	cycle_time;
+
 	table->eat_count = -1;
 	table->num_of_philos = get_arg_as_num(av[1]);
 	table->time_to_die = get_arg_as_num(av[2]);
@@ -73,8 +75,18 @@ static int	get_args(t_table *table, int ac, char **av)
 		table->eat_count = get_arg_as_num(av[5]);
 	if (table->eat_count == 0)
 		return (ERROR);
+	if (table->time_to_eat == table->time_to_sleep)
+	{
+		cycle_time = table->time_to_eat + table->time_to_sleep;
+		if (table->time_to_die - cycle_time > 10)
+			table->time_to_thinking = 300;
+		else
+			table->time_to_thinking = 0;
+	}
+	fprintf(stderr, "table->time_to_thinking[%ld]\n", table->time_to_thinking);
 	return (SUCCESS);
 }
+
 
 int	init_table(t_table *table, int ac, char **av)
 {

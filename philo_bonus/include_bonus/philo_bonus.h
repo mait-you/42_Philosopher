@@ -40,8 +40,6 @@
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "memory allocation failed"
 
-# define THINKING_DELAY 400
-
 # define SEM_FORKS "/philo_forks"
 # define SEM_PRINT "/philo_print"
 # define SEM_MEAL "/philo_meal_"

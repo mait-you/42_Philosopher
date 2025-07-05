@@ -41,6 +41,20 @@ void	cleanup_table(t_table *table)
 	}
 }
 
+
+int	join_philos(t_table *table, int num_of_philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_of_philos)
+	{
+		pthread_join(table->philos[i].philo_thread, NULL);
+		i++;
+	}
+	return (SUCCESS);
+}
+
 int	error_msg(char *msg_type, char *the_error, char *msg)
 {
 	if (msg_type && the_error && msg)

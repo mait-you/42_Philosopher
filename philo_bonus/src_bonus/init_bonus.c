@@ -16,6 +16,7 @@ static int	init_philosophers(t_table *table)
 {
 	int		i;
 	char	*sem_name;
+	char	*id_str;
 
 	i = 0;
 	memset(table->philos, 0, sizeof(t_philo) * table->num_of_philos);
@@ -24,7 +25,13 @@ static int	init_philosophers(t_table *table)
 		table->philos[i].id = i + 1;
 		table->philos[i].pid = -1;
 		table->philos[i].table = table;
-		sem_name = ft_strjoin(SEM_MEAL, ft_itoa(i + 1));
+		table->philos[i].num_times_to_eat = 0;
+		id_str = ft_itoa(i + 1);
+		if (!id_str)
+			return (error_cleanup(\
+				table, NULL, NULL, "String allocation failed"));
+		sem_name = ft_strjoin(SEM_MEAL, id_str);
+		free(id_str);
 		if (!sem_name)
 			return (error_cleanup(\
 				table, NULL, NULL, "String allocation failed"));
@@ -79,7 +86,7 @@ static int	get_args(t_table *table, int ac, char **av)
 int	init_table(t_table *table, int ac, char **av)
 {
 	memset(table, 0, sizeof(t_table));
-	table->simulation_done = 0;
+	table->simulation_done = false;
 	if (get_args(table, ac, av) == ERROR)
 		return (ERROR);
 	if (init_semaphores(table) == ERROR)

@@ -12,6 +12,16 @@
 
 #include "../include_bonus/philo_bonus.h"
 
+static int	check_simulation_done(t_table *table)
+{
+	int	done;
+
+	sem_wait(table->simulation_sem);
+	done = table->simulation_done;
+	sem_post(table->simulation_sem);
+	return (done);
+}
+
 static int	check_death(t_table *table)
 {
 	int		i;
@@ -66,12 +76,12 @@ void	*monitor_routine(void *arg)
 	t_table	*table;
 
 	table = (t_table *)arg;
-	while (table->simulation_done)
+	while (!check_simulation_done(table))
 	{
-		if (check_all_ate(table))
-			return (NULL);
 		if (check_death(table))
-			return (NULL);
+			break ;
+		if (check_all_ate(table))
+			break ;
 		usleep(1000);
 	}
 	kill_all_processes(table);

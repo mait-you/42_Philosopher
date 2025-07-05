@@ -34,7 +34,8 @@ void	smart_sleep(t_philo *philo, time_t time)
 	{
 		if (check_simulation_done(philo))
 			break ;
-		usleep(sleep_chunk);
+		usleep(sleep_chunk / 2);
+		usleep(sleep_chunk / 2);
 	}
 }
 

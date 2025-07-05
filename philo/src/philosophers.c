@@ -60,7 +60,7 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 		smart_sleep(philo, 1);
 	while (!check_simulation_done(philo))
 	{
@@ -72,6 +72,7 @@ void	*philosopher_routine(void *arg)
 		if (check_simulation_done(philo))
 			break ;
 		print_status(philo, THINKING);
+		usleep(philo->table->time_to_thinking);
 	}
 	return (NULL);
 }

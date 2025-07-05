@@ -32,6 +32,13 @@
 # define GRAYL   "\e[90m"
 # define RESET   "\e[0m"
 
+// # define RED     ""
+// # define GREEN   ""
+// # define YELLOW  ""
+// # define CYAN    ""
+// # define GRAYL   ""
+// # define RESET   ""
+
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "Memory allocation failed"
@@ -68,6 +75,7 @@ struct s_table
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
+	time_t			time_to_thinking;
 	int				eat_count;
 	bool			simulation_done;
 	time_t			simulation_start;
@@ -94,5 +102,6 @@ int		get_arg_as_num(const char *str);
 int		check_simulation_done(t_philo *philo);
 void	set_simulation_done(t_table *table);
 void	cleanup_table(t_table *table);
+int		join_philos(t_table *table, int num_of_philos);
 
 #endif

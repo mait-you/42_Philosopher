@@ -25,14 +25,14 @@ static int	start_simulation(t_table *table)
 		pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 		if (pthread_create(&table->philos[i].philo_thread, NULL,
 				philosopher_routine, &table->philos[i]) != 0)
-			return (ERROR);
+			return (join_philos(table, i), ERROR);
 		i++;
 	}
 	if (table->num_of_philos > 1)
 	{
 		if (pthread_create(&table->monitor_thread, NULL,
 				monitor_routine, table) != 0)
-			return (ERROR);
+			return (join_philos(table, i), ERROR);
 	}
 	return (SUCCESS);
 }

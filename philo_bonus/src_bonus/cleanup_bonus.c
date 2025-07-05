@@ -7,11 +7,9 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
 /*   Updated: 2025/07/03 13:56:09 by mait-you         ###   ########.fr       */
-/*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
-
 
 static void	close_semaphores(t_table *table)
 {
@@ -41,6 +39,7 @@ void	unlink_semaphores(t_table *table)
 {
 	int		i;
 	char	*sem_name;
+	char	*id_str;
 
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
@@ -49,11 +48,16 @@ void	unlink_semaphores(t_table *table)
 	i = 0;
 	while (i < table->num_of_philos)
 	{
-		sem_name = ft_strjoin(SEM_MEAL, ft_itoa(i + 1));
-		if (sem_name)
+		id_str = ft_itoa(i + 1);
+		if (id_str)
 		{
-			sem_unlink(sem_name);
-			free(sem_name);
+			sem_name = ft_strjoin(SEM_MEAL, id_str);
+			if (sem_name)
+			{
+				sem_unlink(sem_name);
+				free(sem_name);
+			}
+			free(id_str);
 		}
 		i++;
 	}

@@ -12,7 +12,6 @@
 
 #include "../include_bonus/philo_bonus.h"
 
-
 long	get_time_ms(void)
 {
 	struct timeval	tv;
@@ -24,10 +23,18 @@ long	get_time_ms(void)
 void	smart_sleep(long time)
 {
 	long	start;
+	time_t	sleep_chunk;
 
+	if (time > 10)
+		sleep_chunk = 500;
+	else
+		sleep_chunk = 100;
 	start = get_time_ms();
 	while ((get_time_ms() - start) < time)
-		usleep(500);
+	{
+		usleep(sleep_chunk / 2);
+		usleep(sleep_chunk / 2);
+	}
 }
 
 void	print_status(t_philo *philo, t_state status)

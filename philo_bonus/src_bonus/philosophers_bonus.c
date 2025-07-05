@@ -12,6 +12,28 @@
 
 #include "../include_bonus/philo_bonus.h"
 
+static int	check_simulation_done(t_table *table)
+{
+	int	done;
+
+	sem_wait(table->simulation_sem);
+	done = table->simulation_done;
+	sem_post(table->simulation_sem);
+	return (done);
+}
+
+static int	check_eat_count(t_philo *philo)
+{
+	int	times_eaten;
+
+	if (philo->table->eat_count <= 0)
+		return (0);
+	sem_wait(philo->meal_sem);
+	times_eaten = philo->num_times_to_eat;
+	sem_post(philo->meal_sem);
+	return (times_eaten >= philo->table->eat_count);
+}
+
 static void	eat(t_philo *philo)
 {
 	sem_wait(philo->table->forks_sem);
@@ -41,13 +63,21 @@ void	philosopher_routine(t_philo *philo)
 {
 	if (philo->table->num_of_philos == 1)
 		single_philo_routine(philo);
-	while (true)
+	
+	if (philo->id % 2 == 0)
+		smart_sleep(1);
+	while (!check_simulation_done(philo->table))
 	{
 		eat(philo);
+		if (check_eat_count(philo))
+			break ;
+		if (check_simulation_done(philo->table))
+			break ;
 		print_status(philo, SLEEPING);
 		smart_sleep(philo->table->time_to_sleep);
+		if (check_simulation_done(philo->table))
+			break ;
 		print_status(philo, THINKING);
-		usleep(THINKING_DELAY);
 	}
 	exit(SUCCESS);
 }
