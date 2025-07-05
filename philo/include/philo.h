@@ -76,6 +76,7 @@ struct s_table
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
 	time_t			time_to_thinking;
+	time_t			sleep_chunk;
 	int				eat_count;
 	bool			simulation_done;
 	time_t			simulation_start;
@@ -91,7 +92,7 @@ struct s_table
 void	print_status(t_philo *philo, t_state status);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
-void	smart_sleep(t_philo *philo, time_t time);
+void	ms_sleep(t_philo *philo, time_t time);
 int		init_table(t_table *table, int ac, char **av);
 time_t	get_time_ms(void);
 int		error_msg(char *msg_type, char *the_error, char *msg);

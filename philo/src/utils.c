@@ -20,22 +20,16 @@ long	get_time_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	smart_sleep(t_philo *philo, time_t time)
+void	ms_sleep(t_philo *philo, time_t time)
 {
 	time_t	start;
-	time_t	sleep_chunk;
 
-	if (time > 10)
-		sleep_chunk = 500;
-	else
-		sleep_chunk = 100;
 	start = get_time_ms();
 	while ((get_time_ms() - start) < time)
 	{
 		if (check_simulation_done(philo))
 			break ;
-		usleep(sleep_chunk / 2);
-		usleep(sleep_chunk / 2);
+		usleep(philo->table->sleep_chunk);
 	}
 }
 
@@ -82,4 +76,3 @@ void	set_simulation_done(t_table *table)
 	table->simulation_done = true;
 	pthread_mutex_unlock(&table->simulation_mutex);
 }
-

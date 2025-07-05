@@ -41,7 +41,6 @@ void	cleanup_table(t_table *table)
 	}
 }
 
-
 int	join_philos(t_table *table, int num_of_philos)
 {
 	int	i;

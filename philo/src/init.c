@@ -83,10 +83,13 @@ static int	get_args(t_table *table, int ac, char **av)
 		else
 			table->time_to_thinking = 0;
 	}
-	fprintf(stderr, "table->time_to_thinking[%ld]\n", table->time_to_thinking);
+	table->sleep_chunk = table->num_of_philos * 2;
+	if (table->sleep_chunk < 50)
+		table->sleep_chunk = 50;
+	else if (table->sleep_chunk > 500)
+		table->sleep_chunk = 500;
 	return (SUCCESS);
 }
-
 
 int	init_table(t_table *table, int ac, char **av)
 {
