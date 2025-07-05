@@ -62,8 +62,8 @@ static int	init_semaphores(t_table *table)
 	if (table->stop_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create stop semaphore"));
-	table->simulation_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
-	if (table->simulation_sem == SEM_FAILED)
+	table->simulation_done_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
+	if (table->simulation_done_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create finished semaphore"));
 	return (SUCCESS);
@@ -101,7 +101,6 @@ static int	get_args(t_table *table, int ac, char **av)
 int	init_table(t_table *table, int ac, char **av)
 {
 	memset(table, 0, sizeof(t_table));
-	table->simulation_done = false;
 	if (get_args(table, ac, av) == ERROR)
 		return (ERROR);
 	if (init_semaphores(table) == ERROR)

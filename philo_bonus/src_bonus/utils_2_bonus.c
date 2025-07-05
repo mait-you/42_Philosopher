@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *s)
 	return (l);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*ptr;
 	size_t	i;
@@ -38,9 +38,8 @@ char	*ft_strjoin(char *s1, char *s2)
 		ptr[i] = s1[i];
 	j = -1;
 	while (s2 && s2[++j])
-		ptr[i] = s2[j];
-	if (s2)
-		free(s2);
+		ptr[i + j] = s2[j];
+	ptr[i + j] = '\0';
 	return (ptr);
 }
 

@@ -21,8 +21,8 @@ static void	close_semaphores(t_table *table)
 		sem_close(table->print_sem);
 	if (table->stop_sem)
 		sem_close(table->stop_sem);
-	if (table->simulation_sem)
-		sem_close(table->simulation_sem);
+	if (table->simulation_done_sem)
+		sem_close(table->simulation_done_sem);
 	if (table->philos)
 	{
 		i = 0;

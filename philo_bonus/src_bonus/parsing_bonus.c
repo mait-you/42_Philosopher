@@ -12,7 +12,7 @@
 
 #include "../include_bonus/philo_bonus.h"
 
-int	get_arg_as_num(const char *str)
+int	get_arg_as_num(char *str)
 {
 	int		i;
 	long	r;
@@ -31,7 +31,7 @@ int	get_arg_as_num(const char *str)
 	return ((int)(r));
 }
 
-static int	is_contains_non_digits(const char *av)
+static int	is_contains_non_digits(char *av)
 {
 	if (av && *av == '+')
 		av++;

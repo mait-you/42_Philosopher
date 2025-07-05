@@ -95,12 +95,11 @@ struct s_table
 	time_t			time_to_thinking;
 	time_t			sleep_chunk;
 	int				eat_count;
-	bool			simulation_done;
 	time_t			simulation_start;
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
-	sem_t			*simulation_sem;
+	sem_t			*simulation_done_sem;
 	t_philo			*philos;
 };
 
@@ -120,6 +119,7 @@ int		get_arg_as_num(char *str);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 void	unlink_semaphores(t_table *table);
-void	set_simulation_done(t_table *table);
+void	set_simulation_done(t_philo *philo);
+void	check_simulation_done(t_philo *philo);
 
 #endif

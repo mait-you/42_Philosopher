@@ -45,10 +45,8 @@ static void	wait_for_processes(t_table *table)
 	{
 		if (waitpid(-1, &status, 0) > 0)
 		{
-			if ((WIFEXITED(status) || WIFSIGNALED(status))
-				&& WEXITSTATUS(status) == ERROR)
+			if ((WIFEXITED(status) || WIFSIGNALED(status)))
 			{
-				table->simulation_done = 0;
 				kill_all_processes(table);
 				break ;
 			}

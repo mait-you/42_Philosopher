@@ -33,31 +33,34 @@ void	print_status(t_philo *philo, t_state status)
 {
 	time_t	current_time;
 
-	sem_wait(philo->table->print_lock);
-	check_simulation_done(philo);
-	current_time = get_time_in_ms() - philo->table->simulation_start;
+	sem_wait(philo->table->print_sem);
+	if (status != DIED)
+		check_simulation_done(philo);
+	current_time = get_time_ms() - philo->table->simulation_start;
 	if (status == TAKE_FORK)
-		printf("%ld %d has taken a fork\n", current_time, philo->id);
+		printf(GRAYL"%ld %d has taken a fork\n"RESET, current_time, philo->id);
 	else if (status == EATING)
-		printf("%ld %d is eating\n", current_time, philo->id);
+		printf(GREEN"%ld %d is eating\n"RESET, current_time, philo->id);
 	else if (status == SLEEPING)
-		printf("%ld %d is sleeping\n", current_time, philo->id);
+		printf(CYAN"%ld %d is sleeping\n"RESET, current_time, philo->id);
 	else if (status == THINKING)
-		printf("%ld %d is thinking\n", current_time, philo->id);
+		printf(YELLOW"%ld %d is thinking\n"RESET, current_time, philo->id);
 	else if (status == DIED)
-		printf("%ld %d died\n", current_time, philo->id);
-	sem_post(philo->table->print_lock);
+	{
+		printf(RED"%ld %d died\n"RESET, current_time, philo->id);
+		set_simulation_done(philo);
+		return ;
+	}
+	sem_post(philo->table->print_sem);
 }
 
-void	table_cleanup(t_table *table)
+void	set_simulation_done(t_philo *philo)
 {
-	close_semaphores(table);
-	if (table->philos)
-		free(table->philos);
+	sem_wait(philo->table->simulation_done_sem);
 }
 
 void	check_simulation_done(t_philo *philo)
 {
-	sem_wait(philo->table->simulation);
-	sem_post(philo->table->simulation);
+	sem_wait(philo->table->simulation_done_sem);
+	sem_post(philo->table->simulation_done_sem);
 }
