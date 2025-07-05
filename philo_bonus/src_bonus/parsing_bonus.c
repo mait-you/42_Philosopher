@@ -6,20 +6,19 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 13:11:52 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/05/02 09:57:26 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-int	get_arg_as_num(char *str)
+int	get_arg_as_num(const char *str)
 {
 	int		i;
 	long	r;
 
 	i = 0;
 	r = 0;
-
 	if (str && str[i] == '+')
 		i++;
 	while (str && str[i] >= '0' && str[i] <= '9')
@@ -32,7 +31,7 @@ int	get_arg_as_num(char *str)
 	return ((int)(r));
 }
 
-static int	is_contains_non_digits(char *av)
+static int	is_contains_non_digits(const char *av)
 {
 	if (av && *av == '+')
 		av++;

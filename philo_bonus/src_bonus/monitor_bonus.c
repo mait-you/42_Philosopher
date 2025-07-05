@@ -6,84 +6,56 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:10:25 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:52:29 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-static int	check_simulation_done(t_table *table)
+static void	set_simulation_done(t_philo *philo)
 {
-	int	done;
-
-	sem_wait(table->simulation_sem);
-	done = table->simulation_done;
-	sem_post(table->simulation_sem);
-	return (done);
-}
-
-static int	check_death(t_table *table)
-{
-	int		i;
-	long	time_since_meal;
-	long	current_time;
-
-	i = 0;
-	current_time = get_time_ms();
-	while (i < table->num_of_philos)
-	{
-		sem_wait(table->philos[i].meal_sem);
-		time_since_meal = current_time - table->philos[i].last_meal_time;
-		if (time_since_meal >= table->time_to_die)
-		{
-			sem_post(table->philos[i].meal_sem);
-			print_status(&table->philos[i], DIED);
-			return (ERROR);
-		}
-		sem_post(table->philos[i].meal_sem);
-		i++;
-	}
-	return (SUCCESS);
-}
-
-static int	check_all_ate(t_table *table)
-{
-	int	finished_eating;
-	int	i;
-
-	if (table->eat_count <= 0)
-		return (SUCCESS);
-	finished_eating = 0;
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		sem_wait(table->philos[i].meal_sem);
-		if (table->philos[i].num_times_to_eat >= table->eat_count)
-			finished_eating++;
-		sem_post(table->philos[i].meal_sem);
-		i++;
-	}
-	if (finished_eating == table->num_of_philos)
-	{
-		set_simulation_done(table);
-		return (ERROR);
-	}
-	return (SUCCESS);
+   sem_wait(philo->table->simulation_sem);
+   philo->table->simulation_done = true;
 }
 
 void	*monitor_routine(void *arg)
 {
-	t_table	*table;
+	t_philo	*philo;
+	time_t	time_lived;
 
-	table = (t_table *)arg;
-	while (!check_simulation_done(table))
+	philo = (t_philo *)arg;
+	while (1)
 	{
-		if (check_death(table))
-			break ;
-		if (check_all_ate(table))
-			break ;
-		usleep(1000);
+		sem_wait(philo->meal_sem);
+		time_lived = get_time_ms() - philo->last_meal_time;
+		if (time_lived > philo->table->time_to_die)
+		{
+			print_status(philo, DIED);
+			sem_post(philo->meal_sem);
+			set_simulation_done(philo);
+			exit(1);
+		}
+		if (philo->table->eat_count > 0
+			&& philo->num_times_to_eat >= philo->table->eat_count)
+		{
+			sem_post(philo->meal_sem);
+			set_simulation_done(philo);
+			exit(1);
+		}
+		(sem_post(philo->meal_sem), usleep(100));
 	}
-	kill_all_processes(table);
 	return (NULL);
+}
+
+void kill_all_processes(t_table *table)
+{
+    int i;
+
+    i = 0;
+    while (i < table->num_of_philos)
+    {
+        if (table->philos[i].pid > 0)
+            kill(table->philos[i].pid, SIGTERM);
+        i++;
+    }
 }

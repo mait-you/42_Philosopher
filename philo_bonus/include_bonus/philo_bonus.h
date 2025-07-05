@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:23:04 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:36:44 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,25 @@
 # include <fcntl.h>
 # include <semaphore.h>
 
+/* Max philosophers */
 # define SUCCESS 0
 # define ERROR 1
 
+/* Errors messages */
+# define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
+<time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
+# define MALLOC_ERROR "memory allocation failed"
+
+/* Semaphore names */
+# define SEM_FORKS "/philo_forks"
+# define SEM_PRINT "/philo_print"
+# define SEM_MEAL "/philo_meal_"
+# define SEM_STOP "/philo_stop"
+# define SEM_FINISHED "/philo_finished"
+
 #define DIBAG true
 
-#if DIBAG == 1
+#if DIBAG == true
 # define RED     "\e[1;31m"
 # define GREEN   "\e[1;32m"
 # define YELLOW  "\e[1;33m"
@@ -47,21 +60,12 @@
 # define RESET   ""
 #endif
 
-
-# define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
-<time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
-# define MALLOC_ERROR "memory allocation failed"
-
-# define SEM_FORKS "/philo_forks"
-# define SEM_PRINT "/philo_print"
-# define SEM_MEAL "/philo_meal_"
-# define SEM_STOP "/philo_stop"
-# define SEM_FINISHED "/philo_finished"
-
+/* Typedef for all elements */
 typedef enum e_state		t_state;
 typedef struct s_table		t_table;
 typedef struct s_philo		t_philo;
 
+/* Philosopher state */
 enum e_state
 {
 	TAKE_FORK,
@@ -78,6 +82,7 @@ struct s_philo
 	int				num_times_to_eat;
 	time_t			last_meal_time;
 	sem_t			*meal_sem;
+	pthread_t		monitor_thread;
 	t_table			*table;
 };
 
@@ -96,9 +101,7 @@ struct s_table
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
 	sem_t			*simulation_sem;
-	int				finished_count;
 	t_philo			*philos;
-	pthread_t		monitor_thread;
 };
 
 int		parsing(int ac, char **av);

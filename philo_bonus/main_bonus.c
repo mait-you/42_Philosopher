@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:26:28 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:20:44 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,8 @@ static int	start_simulation(t_table *table)
 		else if (pid > 0)
 			table->philos[i].pid = pid;
 		else
-			return (kill_all_processes(table),
-				error_msg(NULL, NULL, "Fork failed"));
+			return (error_msg(NULL, NULL, "Fork failed"));
 	}
-	if (table->num_of_philos > 1
-		&& pthread_create(&table->monitor_thread, NULL,
-			monitor_routine, table) != 0)
-			return (kill_all_processes(table), ERROR);
 	return (SUCCESS);
 }
 
@@ -60,8 +55,6 @@ static void	wait_for_processes(t_table *table)
 		}
 		i++;
 	}
-	if (table->num_of_philos > 1)
-		pthread_join(table->monitor_thread, NULL);
 }
 
 int	main(int ac, char **av)

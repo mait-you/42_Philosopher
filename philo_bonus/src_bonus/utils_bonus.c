@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:23:31 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:53:36 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-long	get_time_ms(void)
+time_t	get_time_ms(void)
 {
 	struct timeval	tv;
 
@@ -31,43 +31,33 @@ void	ms_sleep(t_philo *philo, time_t time)
 
 void	print_status(t_philo *philo, t_state status)
 {
-	long	timestamp;
+	time_t	current_time;
 
-	sem_wait(philo->table->print_sem);
-	timestamp = get_time_ms() - philo->table->simulation_start;
+	sem_wait(philo->table->print_lock);
+	check_simulation_done(philo);
+	current_time = get_time_in_ms() - philo->table->simulation_start;
 	if (status == TAKE_FORK)
-		printf(GRAYL"%ld %d has taken a fork\n"RESET, timestamp, philo->id);
+		printf("%ld %d has taken a fork\n", current_time, philo->id);
 	else if (status == EATING)
-		printf(GREEN"%ld %d is eating\n"RESET, timestamp, philo->id);
+		printf("%ld %d is eating\n", current_time, philo->id);
 	else if (status == SLEEPING)
-		printf(CYAN"%ld %d is sleeping\n"RESET, timestamp, philo->id);
+		printf("%ld %d is sleeping\n", current_time, philo->id);
 	else if (status == THINKING)
-		printf(YELLOW"%ld %d is thinking\n"RESET, timestamp, philo->id);
+		printf("%ld %d is thinking\n", current_time, philo->id);
 	else if (status == DIED)
-	{
-		printf(RED"%ld %d died\n"RESET, timestamp, philo->id);
-		set_simulation_done(philo->table);
-	}
-	if (status != DIED)
-		sem_post(philo->table->print_sem);
+		printf("%ld %d died\n", current_time, philo->id);
+	sem_post(philo->table->print_lock);
 }
 
-void	kill_all_processes(t_table *table)
+void	table_cleanup(t_table *table)
 {
-	int	i;
-
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		if (table->philos[i].pid > 0)
-			kill(table->philos[i].pid, SIGKILL);
-		i++;
-	}
+	close_semaphores(table);
+	if (table->philos)
+		free(table->philos);
 }
 
-void	set_simulation_done(t_table *table)
+void	check_simulation_done(t_philo *philo)
 {
-	sem_wait(table->simulation_sem);
-	table->simulation_done = true;	
-	sem_post(table->simulation_sem);
+	sem_wait(philo->table->simulation);
+	sem_post(philo->table->simulation);
 }

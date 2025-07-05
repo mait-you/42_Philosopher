@@ -1,87 +1,91 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*   utils_2_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:23:31 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:36:24 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-static int	ft_numlen(int n)
+size_t	ft_strlen(const char *s)
 {
-	int	len;
+	size_t	l;
 
-	len = 0;
+	l = 0;
+	while (*(s++))
+		l++;
+	return (l);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*ptr;
+	size_t	i;
+	size_t	j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!ptr)
+		return (NULL);
+	i = -1;
+	while (s1 && s1[++i])
+		ptr[i] = s1[i];
+	j = -1;
+	while (s2 && s2[++j])
+		ptr[i] = s2[j];
+	if (s2)
+		free(s2);
+	return (ptr);
+}
+
+static int	n_len(long int n)
+{
+	int	l;
+
+	l = 0;
 	if (n <= 0)
-		len = 1;
-	while (n != 0)
+	{
+		n = -n;
+		l++;
+	}
+	while (n > 0)
 	{
 		n /= 10;
-		len++;
+		l++;
 	}
-	return (len);
+	return (l);
+}
+
+static void	ft_putnb(char *s, long n)
+{
+	if (n > 9)
+		ft_putnb(s - 1, n / 10);
+	*s = '0' + (n % 10);
 }
 
 char	*ft_itoa(int n)
 {
-	char		*str;
+	long		nb;
 	int			len;
-	long		num;
+	char		*str;
 
-	num = n;
-	len = ft_numlen(n);
-	str = malloc(sizeof(char) * (len + 1));
+	nb = n;
+	len = n_len(nb);
+	str = (char *)malloc(len + 1);
 	if (!str)
 		return (NULL);
+	if (nb < 0)
+	{
+		*str = '-';
+		nb = -nb;
+	}
+	ft_putnb(str + len - 1, nb);
 	str[len] = '\0';
-	if (num == 0)
-		str[0] = '0';
-	if (num < 0)
-	{
-		str[0] = '-';
-		num = -num;
-	}
-	while (num > 0)
-	{
-		str[len - 1] = (num % 10) + '0';
-		num /= 10;
-		len--;
-	}
 	return (str);
-}
-
-char	*ft_strjoin(const char *s1, const char *s2)
-{
-	char	*result;
-	int		i;
-	int		j;
-	int		len1;
-	int		len2;
-
-	if (!s1 || !s2)
-		return (NULL);
-	len1 = strlen(s1);
-	len2 = strlen(s2);
-	result = malloc(sizeof(char) * (len1 + len2 + 1));
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (i < len1)
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (j < len2)
-	{
-		result[i + j] = s2[j];
-		j++;
-	}
-	result[i + j] = '\0';
-	return (result);
 }
