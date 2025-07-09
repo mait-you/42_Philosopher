@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 12:24:50 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:46:12 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	get_arg_as_num(const char *str)
+int	get_arg_as_num(char *str)
 {
 	int		i;
 	long	r;
@@ -31,7 +31,7 @@ int	get_arg_as_num(const char *str)
 	return ((int)(r));
 }
 
-static int	is_contains_non_digits(const char *av)
+static int	is_contains_non_digits(char *av)
 {
 	if (av && *av == '+')
 		av++;

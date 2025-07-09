@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 17:20:44 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:43:06 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	wait_for_processes(t_table *table)
 {
 	int			i;
 	int			status;
-	
+
 	i = 0;
 	while (i < table->num_of_philos)
 	{

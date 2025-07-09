@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 17:52:29 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:44:19 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,27 @@ void	*monitor_routine(void *arg)
 	{
 		sem_wait(philo->meal_sem);
 		time_lived = get_time_ms() - philo->last_meal_time;
+		sem_post(philo->meal_sem);
 		if (time_lived > philo->table->time_to_die)
 		{
-			sem_post(philo->meal_sem);
 			print_status(philo, DIED);
+			sem_wait(philo->table->stop_sem);
 			exit(SUCCESS);
 		}
 		if (philo->table->eat_count > 0
 			&& philo->num_times_to_eat >= philo->table->eat_count)
 		{
-			sem_post(philo->meal_sem);
-			set_simulation_done(philo);
+			sem_wait(philo->table->stop_sem);
 			exit(SUCCESS);
 		}
-		sem_post(philo->meal_sem);
 		usleep(1000);
 	}
 	return (NULL);
 }
 
-void kill_all_processes(t_table *table)
+void	kill_all_processes(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < table->num_of_philos)

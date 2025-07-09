@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:21:19 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:57:57 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,23 @@
 # define SUCCESS 0
 # define ERROR 1
 
-#define DIBAG 1
+# define DIBAG 1
 
-#if DIBAG == true
-# define RED     "\e[1;31m"
-# define GREEN   "\e[1;32m"
-# define YELLOW  "\e[1;33m"
-# define CYAN    "\e[1;36m"
-# define GRAYL   "\e[90m"
-# define RESET   "\e[0m"
-#else
-# define RED     ""
-# define GREEN   ""
-# define YELLOW  ""
-# define CYAN    ""
-# define GRAYL   ""
-# define RESET   ""
-#endif
+# if DIBAG == 1
+#  define RED     "\e[1;31m"
+#  define GREEN   "\e[1;32m"
+#  define YELLOW  "\e[1;33m"
+#  define CYAN    "\e[1;36m"
+#  define GRAYL   "\e[90m"
+#  define RESET   "\e[0m"
+# else
+#  define RED     ""
+#  define GREEN   ""
+#  define YELLOW  ""
+#  define CYAN    ""
+#  define GRAYL   ""
+#  define RESET   ""
+# endif
 
 # define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
@@ -103,7 +103,7 @@ int		error_msg(char *msg_type, char *the_error, char *msg);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 int		parsing(int ac, char **av);
-int		get_arg_as_num(const char *str);
+int		get_arg_as_num(char *str);
 int		check_simulation_done(t_philo *philo);
 void	set_simulation_done(t_table *table);
 void	cleanup_table(t_table *table);

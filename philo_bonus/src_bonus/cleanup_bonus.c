@@ -5,8 +5,9 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 13:56:09 by mait-you         ###   ########.fr       */
+/*   Created: 2025/07/05 18:43:29 by mait-you          #+#    #+#             */
+/*   Updated: 2025/07/05 18:43:31 by mait-you         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
@@ -21,8 +22,8 @@ static void	close_semaphores(t_table *table)
 		sem_close(table->print_sem);
 	if (table->stop_sem)
 		sem_close(table->stop_sem);
-	if (table->simulation_done_sem)
-		sem_close(table->simulation_done_sem);
+	if (table->finished_sem)
+		sem_close(table->finished_sem);
 	if (table->philos)
 	{
 		i = 0;

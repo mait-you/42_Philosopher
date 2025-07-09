@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/03 14:13:29 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:57:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ms_sleep(t_philo *philo, time_t time)
 
 void	print_status(t_philo *philo, t_state status)
 {
-	long	timestamp;
+	time_t	current_time;
 
 	pthread_mutex_lock(&philo->table->print_mutex);
 	if (check_simulation_done(philo) && status != DIED)
@@ -43,18 +43,18 @@ void	print_status(t_philo *philo, t_state status)
 		pthread_mutex_unlock(&philo->table->print_mutex);
 		return ;
 	}
-	timestamp = get_time_ms() - philo->table->simulation_start;
+	current_time = get_time_ms() - philo->table->simulation_start;
 	if (status == TAKE_FORK)
-		printf(GRAYL"%ld %d has taken a fork\n"RESET, timestamp, philo->id);
+		printf(GRAYL"%ld %d has taken a fork\n"RESET, current_time, philo->id);
 	else if (status == EATING)
-		printf(GREEN"%ld %d is eating\n"RESET, timestamp, philo->id);
+		printf(GREEN"%ld %d is eating\n"RESET, current_time, philo->id);
 	else if (status == SLEEPING)
-		printf(CYAN"%ld %d is sleeping\n"RESET, timestamp, philo->id);
+		printf(CYAN"%ld %d is sleeping\n"RESET, current_time, philo->id);
 	else if (status == THINKING)
-		printf(YELLOW"%ld %d is thinking\n"RESET, timestamp, philo->id);
+		printf(YELLOW"%ld %d is thinking\n"RESET, current_time, philo->id);
 	else if (status == DIED)
 	{
-		printf(RED"%ld %d died\n"RESET, timestamp, philo->id);
+		printf(RED"%ld %d died\n"RESET, current_time, philo->id);
 		set_simulation_done(philo->table);
 	}
 	pthread_mutex_unlock(&philo->table->print_mutex);

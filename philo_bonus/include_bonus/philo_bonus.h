@@ -42,23 +42,23 @@
 # define SEM_STOP "/philo_stop"
 # define SEM_FINISHED "/philo_finished"
 
-#define DIBAG true
+# define DIBAG 1
 
-#if DIBAG == true
-# define RED     "\e[1;31m"
-# define GREEN   "\e[1;32m"
-# define YELLOW  "\e[1;33m"
-# define CYAN    "\e[1;36m"
-# define GRAYL   "\e[90m"
-# define RESET   "\e[0m"
-#else
-# define RED     ""
-# define GREEN   ""
-# define YELLOW  ""
-# define CYAN    ""
-# define GRAYL   ""
-# define RESET   ""
-#endif
+# if DIBAG == 1
+#  define RED     "\e[1;31m"
+#  define GREEN   "\e[1;32m"
+#  define YELLOW  "\e[1;33m"
+#  define CYAN    "\e[1;36m"
+#  define GRAYL   "\e[90m"
+#  define RESET   "\e[0m"
+# else
+#  define RED     ""
+#  define GREEN   ""
+#  define YELLOW  ""
+#  define CYAN    ""
+#  define GRAYL   ""
+#  define RESET   ""
+# endif
 
 /* Typedef for all elements */
 typedef enum e_state		t_state;
@@ -99,7 +99,7 @@ struct s_table
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
-	sem_t			*simulation_done_sem;
+	sem_t			*finished_sem;
 	t_philo			*philos;
 };
 
@@ -111,7 +111,7 @@ void	print_status(t_philo *philo, t_state status);
 void	ms_sleep(t_philo *philo, time_t time);
 time_t	get_time_ms(void);
 char	*ft_itoa(int n);
-char	*ft_strjoin(const char *s1, const char *s2);
+char	*ft_strjoin(char *s1, char *s2);
 void	cleanup_table(t_table *table);
 void	kill_all_processes(t_table *table);
 int		error_msg(char *msg_type, char *the_error, char *msg);
@@ -119,7 +119,6 @@ int		get_arg_as_num(char *str);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 void	unlink_semaphores(t_table *table);
-void	set_simulation_done(t_philo *philo);
 void	check_simulation_done(t_philo *philo);
 
 #endif

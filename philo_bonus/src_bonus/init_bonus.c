@@ -25,22 +25,17 @@ static int	init_philosophers(t_table *table)
 		table->philos[i].id = i + 1;
 		table->philos[i].pid = -1;
 		table->philos[i].table = table;
-		table->philos[i].num_times_to_eat = 0;
 		id_str = ft_itoa(i + 1);
 		if (!id_str)
-			return (error_cleanup(\
-				table, NULL, NULL, "String allocation failed"));
+			return (error_cleanup(table, NULL, NULL, "allocation failed"));
 		sem_name = ft_strjoin(SEM_MEAL, id_str);
-		free(id_str);
 		if (!sem_name)
-			return (error_cleanup(\
-				table, NULL, NULL, "String allocation failed"));
+			return (error_cleanup(table, NULL, NULL, "allocation failed"));
 		table->philos[i].meal_sem = sem_open(\
 			sem_name, O_CREAT | O_EXCL, 0644, 1);
 		free(sem_name);
 		if (table->philos[i].meal_sem == SEM_FAILED)
-			return (error_cleanup(\
-				table, NULL, NULL, "Failed to create meal semaphore"));
+			return (error_cleanup(table, NULL, NULL, "meal semaphore failed"));
 		i++;
 	}
 	return (SUCCESS);
@@ -58,12 +53,12 @@ static int	init_semaphores(t_table *table)
 	if (table->print_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create print semaphore"));
-	table->stop_sem = sem_open(SEM_STOP, O_CREAT | O_EXCL, 0644, 0);
+	table->stop_sem = sem_open(SEM_STOP, O_CREAT | O_EXCL, 0644, 1);
 	if (table->stop_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create stop semaphore"));
-	table->simulation_done_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
-	if (table->simulation_done_sem == SEM_FAILED)
+	table->finished_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
+	if (table->finished_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create finished semaphore"));
 	return (SUCCESS);

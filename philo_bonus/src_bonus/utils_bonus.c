@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 17:53:36 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:44:26 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,12 @@ void	print_status(t_philo *philo, t_state status)
 	else if (status == THINKING)
 		printf(YELLOW"%ld %d is thinking\n"RESET, current_time, philo->id);
 	else if (status == DIED)
-	{
 		printf(RED"%ld %d died\n"RESET, current_time, philo->id);
-		set_simulation_done(philo);
-	}
 	sem_post(philo->table->print_sem);
-}
-
-void	set_simulation_done(t_philo *philo)
-{
-	sem_post(philo->table->stop_sem);
 }
 
 void	check_simulation_done(t_philo *philo)
 {
 	sem_wait(philo->table->stop_sem);
 	sem_post(philo->table->stop_sem);
-	
 }

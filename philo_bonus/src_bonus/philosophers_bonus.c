@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 17:53:58 by mait-you         ###   ########.fr       */
+/*   Created: 2025/07/05 18:43:16 by mait-you          #+#    #+#             */
+/*   Updated: 2025/07/05 18:43:22 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,14 @@ void	philosopher_routine(t_philo *philo)
 	while (true)
 	{
 		eat(philo);
+		check_simulation_done(philo);
 		print_status(philo, SLEEPING);
+		check_simulation_done(philo);
 		ms_sleep(philo, philo->table->time_to_sleep);
 		print_status(philo, THINKING);
+		check_simulation_done(philo);
 		usleep(philo->table->time_to_thinking);
+		check_simulation_done(philo);
 	}
 	exit(SUCCESS);
 }
