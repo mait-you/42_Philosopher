@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 14:02:26 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:10:27 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	*philosopher_routine(void *arg)
 		if (check_simulation_done(philo))
 			break ;
 		print_status(philo, THINKING);
+		if (philo->id % 2 == 1)
+			usleep(philo->table->sleep_chunk);
 	}
 	return (NULL);
 }

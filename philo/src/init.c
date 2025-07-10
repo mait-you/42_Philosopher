@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 13:36:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:06:29 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ static int	get_args(t_table *table, int ac, char **av)
 		table->eat_count = get_arg_as_num(av[5]);
 	if (table->eat_count == 0)
 		return (ERROR);
+	table->sleep_chunk = table->num_of_philos + 100;
+	// if (table->num_of_philos < 10)
+	// 	table->sleep_chunk = 50;
 	return (SUCCESS);
 }
 

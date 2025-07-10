@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 13:36:56 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:07:10 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ms_sleep(t_philo *philo, time_t time)
 	{
 		if (check_simulation_done(philo))
 			break ;
-		usleep(100);
+		usleep(philo->table->sleep_chunk);
 	}
 }
 
