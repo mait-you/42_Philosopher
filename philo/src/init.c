@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 10:50:38 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:36:47 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ static int	init_mutex(t_table *table)
 
 static int	get_args(t_table *table, int ac, char **av)
 {
-	time_t	cycle_time;
-
 	table->eat_count = -1;
 	table->num_of_philos = get_arg_as_num(av[1]);
 	table->time_to_die = get_arg_as_num(av[2]);
@@ -75,19 +73,6 @@ static int	get_args(t_table *table, int ac, char **av)
 		table->eat_count = get_arg_as_num(av[5]);
 	if (table->eat_count == 0)
 		return (ERROR);
-	if (table->time_to_eat == table->time_to_sleep)
-	{
-		cycle_time = table->time_to_eat + table->time_to_sleep;
-		if (table->time_to_die - cycle_time > 10)
-			table->time_to_thinking = 300;
-		else
-			table->time_to_thinking = 0;
-	}
-	table->sleep_chunk = table->num_of_philos * 2;
-	if (table->sleep_chunk < 50)
-		table->sleep_chunk = 50;
-	else if (table->sleep_chunk > 500)
-		table->sleep_chunk = 500;
 	return (SUCCESS);
 }
 

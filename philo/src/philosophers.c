@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 10:55:40 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:02:26 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
-	if (philo->id % 2 == 0)
-		usleep(200);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);
@@ -72,7 +70,6 @@ void	*philosopher_routine(void *arg)
 		if (check_simulation_done(philo))
 			break ;
 		print_status(philo, THINKING);
-		usleep(philo->table->time_to_thinking);
 	}
 	return (NULL);
 }

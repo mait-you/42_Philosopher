@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 09:59:03 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:40:42 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define SUCCESS 0
 # define ERROR 1
 
-# define COLORS 0
+# define COLORS 1
 
 # if COLORS == 1
 #  define RED     "\e[1;31m"
@@ -79,8 +79,6 @@ struct s_table
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
-	time_t			time_to_thinking;
-	time_t			sleep_chunk;
 	int				eat_count;
 	bool			simulation_done;
 	time_t			simulation_start;
