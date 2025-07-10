@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/09 14:57:57 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 09:59:03 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 # define SUCCESS 0
 # define ERROR 1
 
-# define DIBAG 1
+# define COLORS 0
 
-# if DIBAG == 1
+# if COLORS == 1
 #  define RED     "\e[1;31m"
 #  define GREEN   "\e[1;32m"
 #  define YELLOW  "\e[1;33m"

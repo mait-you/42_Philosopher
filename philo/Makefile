@@ -27,7 +27,6 @@ GREEN		= \033[32m
 BLUE		= \033[34m
 WHITE		= \033[37m
 BOLD		= \033[1m
-UP			= \033[F
 
 ### Rules
 all: $(NAME)
@@ -47,6 +46,6 @@ clean:
 
 fclean:
 	@$(RM) $(NAME) $(OBJS_DIR)
-	@echo "$(RED)$(UP)Cleaned object files and $(PURPLE)$(BOLD)$(LIBFT)$(RESET)$(RED), $(RED)$(BOLD)$(NAME)$(RESET)"
+	@echo "$(RED)Cleaned object files and $(PURPLE)$(BOLD)$(LIBFT)$(RESET)$(RED), $(RED)$(BOLD)$(NAME)$(RESET)"
 
 re: fclean all

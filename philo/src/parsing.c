@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/05 18:46:12 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/10 10:17:13 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	is_contains_non_digits(char *av)
 	if (av && *av == '+')
 		av++;
 	if (av && *av == '-')
+		return (ERROR);
+	if (!*av)
 		return (ERROR);
 	while (av && *av)
 	{

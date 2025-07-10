@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 17:36:44 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:28:02 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <sys/wait.h>
 # include <stdbool.h>
 # include <string.h>
-# include <signal.h>
 # include <fcntl.h>
 # include <semaphore.h>
 

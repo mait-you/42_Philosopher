@@ -1,10 +1,10 @@
 ### Compiler and Flags
-CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror #-fsanitize=thread -g
-RM			:= rm -rf
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+RM			= rm -rf
 
 ### Executable Name
-NAME		:= philo_bonus
+NAME		= philo_bonus
 
 OBJS_DIR 	= obj
 
@@ -19,16 +19,15 @@ SRCS =	main_bonus.c \
 	src_bonus/utils_2_bonus.c
 
 ### Object Files
-OBJS		:= $(SRCS:%.c=$(OBJS_DIR)/%.o)
+OBJS		= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
 ### Colors and Formatting
-RESET		:= \033[0m
-RED			:= \033[31m
-GREEN		:= \033[32m
-BLUE		:= \033[34m
-WHITE		:= \033[37m
-BOLD		:= \033[1m
-UP			:= \033[F
+RESET		= \033[0m
+RED			= \033[31m
+GREEN		= \033[32m
+BLUE		= \033[34m
+WHITE		= \033[37m
+BOLD		= \033[1m
 
 ### Rules
 all: $(NAME)
@@ -48,6 +47,6 @@ clean:
 
 fclean:
 	@$(RM) $(NAME) $(OBJS_DIR)
-	@echo "$(RED)$(UP)Cleaned object files and $(PURPLE)$(BOLD)$(LIBFT)$(RESET)$(RED), $(RED)$(BOLD)$(NAME)$(RESET)"
+	@echo "$(RED)Cleaned object files and $(PURPLE)$(BOLD)$(LIBFT)$(RESET)$(RED), $(RED)$(BOLD)$(NAME)$(RESET)"
 
 re: fclean all
