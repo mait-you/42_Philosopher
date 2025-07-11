@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 08:42:01 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:25:43 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,27 @@ static void	wait_for_processes(t_table *table)
 {
 	int			i;
 	int			status;
+	int			finished_count;
 
 	i = 0;
+	if (table->eat_count >0)
+	{
+		finished_count = 0;
+		while (finished_count < table->num_of_philos)
+		{
+			sem_post(table->finished_sem);
+			finished_count++;
+			fprintf(stderr, "finished_count[%d]\n", finished_count);
+		}
+		sem_wait(table->stop_sem);
+	}
 	while (i < table->num_of_philos)
 	{
 		if (waitpid(-1, &status, 0) > 0)
 		{
-			if ((WIFEXITED(status) || WIFSIGNALED(status)))
-			{
+			if (WEXITSTATUS(status) == ERROR)
 				kill_all_processes(table);
-				break ;
-			}
+			break ;
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 18:09:06 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:26:12 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ void	*monitor_routine(void *arg)
 		{
 			print_status(philo, DIED);
 			sem_wait(philo->table->stop_sem);
-			exit(SUCCESS);
+			exit(ERROR);
 		}
 		if (philo->table->eat_count > 0
 			&& philo->num_times_to_eat >= philo->table->eat_count)
 		{
-			sem_wait(philo->table->stop_sem);
-			exit(SUCCESS);
+			sem_wait(philo->table->finished_sem);
+			fprintf(stderr, "philo[%d]\n", philo->id);
 		}
 		usleep(100);
 	}
