@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 10:04:57 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 08:52:12 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,10 @@ int	main(int ac, char **av)
 	{
 		if (table.eat_count == 0)
 			return (SUCCESS);
-		return (ERROR);
+		return (cleanup_table(&table));
 	}
 	if (start_simulation(&table) == ERROR)
-	{
-		cleanup_table(&table);
-		return (ERROR);
-	}
+		return (cleanup_table(&table));
 	stop_simulation(&table);
 	cleanup_table(&table);
 	return (SUCCESS);

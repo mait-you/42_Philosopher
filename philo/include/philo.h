@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 14:59:33 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 09:47:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define SUCCESS 0
 # define ERROR 1
 
-# define COLORS 1
+# define COLORS 0
 
 # if COLORS == 1
 #  define RED     "\e[1;31m"
@@ -43,8 +43,6 @@
 #  define RESET   ""
 # endif
 
-# define ARGS_ERROR "./philo <number_of_philosophers> <time_to_die> \
-<time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
 # define MALLOC_ERROR "Memory allocation failed"
 
 typedef pthread_mutex_t		t_mtx;
@@ -105,7 +103,7 @@ int		parsing(int ac, char **av);
 int		get_arg_as_num(char *str);
 int		check_simulation_done(t_philo *philo);
 void	set_simulation_done(t_table *table);
-void	cleanup_table(t_table *table);
+int		cleanup_table(t_table *table);
 int		join_philos(t_table *table, int num_of_philos);
 
 #endif

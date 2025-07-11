@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 09:58:15 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 08:31:41 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	cleanup_table(t_table *table)
+int	cleanup_table(t_table *table)
 {
 	int	i;
 
@@ -30,15 +30,14 @@ void	cleanup_table(t_table *table)
 	if (table->simulation_mutex_initialized)
 		pthread_mutex_destroy(&table->simulation_mutex);
 	if (table->philos)
-	{
 		free(table->philos);
-		table->philos = NULL;
-	}
 	if (table->forks)
-	{
 		free(table->forks);
-		table->forks = NULL;
-	}
+	table->forks = NULL;
+	table->philos = NULL;
+	table->print_mutex_initialized = false;
+	table->simulation_mutex_initialized = false;
+	return (ERROR);
 }
 
 int	join_philos(t_table *table, int num_of_philos)

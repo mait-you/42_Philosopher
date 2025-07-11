@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 10:17:13 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 08:10:07 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ int	parsing(int ac, char **av)
 	int	num;
 
 	if (ac != 5 && ac != 6)
-		return (error_msg("Usage", NULL, ARGS_ERROR));
+		return (error_msg("Usage", NULL,
+		"./philo <number_of_philosophers> <time_to_die> <time_to_eat> \
+<time_to_sleep> [number_of_times_each_philosopher_must_eat]"));
 	i = 1;
 	while (i < ac)
 	{

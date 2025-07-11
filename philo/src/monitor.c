@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/09 14:57:43 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 09:39:11 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	*monitor_routine(void *arg)
 			return (NULL);
 		if (check_all_ate(table))
 			return (NULL);
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }
