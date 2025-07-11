@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/09 19:28:02 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 10:08:24 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <string.h>
 # include <fcntl.h>
 # include <semaphore.h>
+# include <signal.h>
 
 /* Max philosophers */
 # define SUCCESS 0
@@ -41,9 +42,9 @@
 # define SEM_STOP "/philo_stop"
 # define SEM_FINISHED "/philo_finished"
 
-# define DIBAG 1
+# define COLORS 1
 
-# if DIBAG == 1
+# if COLORS == 1
 #  define RED     "\e[1;31m"
 #  define GREEN   "\e[1;32m"
 #  define YELLOW  "\e[1;33m"
@@ -91,7 +92,6 @@ struct s_table
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
-	time_t			time_to_thinking;
 	time_t			sleep_chunk;
 	int				eat_count;
 	time_t			simulation_start;
@@ -111,7 +111,7 @@ void	ms_sleep(t_philo *philo, time_t time);
 time_t	get_time_ms(void);
 char	*ft_itoa(int n);
 char	*ft_strjoin(char *s1, char *s2);
-void	cleanup_table(t_table *table);
+int		cleanup_table(t_table *table);
 void	kill_all_processes(t_table *table);
 int		error_msg(char *msg_type, char *the_error, char *msg);
 int		get_arg_as_num(char *str);

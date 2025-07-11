@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 18:43:29 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/10 09:58:30 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/11 08:41:47 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	unlink_semaphores(t_table *table)
 	}
 }
 
-void	cleanup_table(t_table *table)
+int	cleanup_table(t_table *table)
 {
 	close_semaphores(table);
 	unlink_semaphores(table);
@@ -72,6 +72,7 @@ void	cleanup_table(t_table *table)
 		free(table->philos);
 		table->philos = NULL;
 	}
+	return (ERROR);
 }
 
 int	error_msg(char *msg_type, char *the_error, char *msg)
