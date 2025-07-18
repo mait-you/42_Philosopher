@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 09:13:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:37:00 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	init_philosophers(t_table *table)
 		if (!sem_name)
 			return (error_cleanup(table, NULL, NULL, "allocation failed"));
 		table->philos[i].meal_sem = sem_open(\
-			sem_name, O_CREAT | O_EXCL, 0644, 1);
+			sem_name, O_CREAT | O_EXCL, S_IRWXU, 1);
 		free(sem_name);
 		if (table->philos[i].meal_sem == SEM_FAILED)
 			return (error_cleanup(table, NULL, NULL, "meal semaphore failed"));
@@ -44,23 +44,27 @@ static int	init_philosophers(t_table *table)
 static int	init_semaphores(t_table *table)
 {
 	unlink_semaphores(table);
-	table->forks_sem = sem_open(SEM_FORKS, O_CREAT | O_EXCL, 0644,
+	table->forks_sem = sem_open(SEM_FORKS, O_CREAT | O_EXCL, S_IRWXU,
 			table->num_of_philos);
 	if (table->forks_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create forks semaphore"));
-	table->print_sem = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
+	table->print_sem = sem_open(SEM_PRINT, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (table->print_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create print semaphore"));
-	table->stop_sem = sem_open(SEM_STOP, O_CREAT | O_EXCL, 0644, 1);
+	table->stop_sem = sem_open(SEM_STOP, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (table->stop_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create stop semaphore"));
-	table->finished_sem = sem_open(SEM_FINISHED, O_CREAT | O_EXCL, 0644, 1);
-	if (table->finished_sem == SEM_FAILED)
-		return (error_cleanup(\
-			table, NULL, NULL, "Failed to create finished semaphore"));
+	if (table->eat_count > 0)
+	{
+		table->finished_eating_sem = sem_open(\
+			SEM_FINISHED, O_CREAT | O_EXCL, S_IRWXU, table->eat_count);
+		if (table->finished_eating_sem == SEM_FAILED)
+			return (error_cleanup(\
+				table, NULL, NULL, "Failed to create finished semaphore"));
+	}
 	return (SUCCESS);
 }
 
@@ -75,7 +79,7 @@ static int	get_args(t_table *table, int ac, char **av)
 		table->eat_count = get_arg_as_num(av[5]);
 	if (table->eat_count == 0)
 		return (ERROR);
-	table->sleep_chunk = table->num_of_philos + 150;
+	table->sleep_chunk = table->num_of_philos + 100;
 	return (SUCCESS);
 }
 
@@ -88,8 +92,22 @@ int	init_table(t_table *table, int ac, char **av)
 		return (ERROR);
 	table->philos = malloc(sizeof(t_philo) * table->num_of_philos);
 	if (!table->philos)
-		return (error_cleanup(table, NULL, NULL, MALLOC_ERROR));
+		return (error_cleanup(table, NULL, NULL, "memory allocation failed"));
 	if (init_philosophers(table) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	size_t	l;
+
+	if (!s)
+		return (ft_putstr_fd("(null)", fd));
+	l = 0;
+	if (fd == -1)
+		return ;
+	while (s[l])
+		l++;
+	write(fd, s, l);
 }

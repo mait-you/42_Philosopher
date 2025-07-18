@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:35 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 08:31:41 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/13 11:09:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	cleanup_table(t_table *table)
 	i = 0;
 	while (i < table->num_of_philos)
 	{
-		if (table->forks)
+		if (table->forks && table->forks_initialized-- > 0)
 			pthread_mutex_destroy(&table->forks[i]);
-		if (table->philos)
+		if (table->philos && table->philos[i].meal_lock_mutex_initialized)
 			pthread_mutex_destroy(&table->philos[i].meal_lock_mutex);
 		i++;
 	}
@@ -53,16 +53,44 @@ int	join_philos(t_table *table, int num_of_philos)
 	return (SUCCESS);
 }
 
+static void	ft_putstr_fd(char *s, int fd)
+{
+	size_t	l;
+
+	if (!s)
+		return (ft_putstr_fd("(null)", fd));
+	l = 0;
+	if (fd == -1)
+		return ;
+	while (s[l])
+		l++;
+	write(fd, s, l);
+}
+
 int	error_msg(char *msg_type, char *the_error, char *msg)
 {
-	printf("%sphilo: ", RED);
+	ft_putstr_fd(RED, STDERR_FILENO);
+	ft_putstr_fd("philo: ", STDERR_FILENO);
 	if (msg_type)
-		printf("%s%s", YELLOW, msg_type);
+	{
+		ft_putstr_fd(YELLOW, STDERR_FILENO);
+		ft_putstr_fd(msg_type, STDERR_FILENO);
+	}
 	if (the_error)
-		printf("%s: '%s'", CYAN, the_error);
+	{
+		ft_putstr_fd(CYAN, STDERR_FILENO);
+		ft_putstr_fd(": '", STDERR_FILENO);
+		ft_putstr_fd(the_error, STDERR_FILENO);
+		ft_putstr_fd("'", STDERR_FILENO);
+	}
 	if (msg)
-		printf("%s: %s", GRAYL, msg);
-	printf("%s\n", RESET);
+	{
+		ft_putstr_fd(GRAYL, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(msg, STDERR_FILENO);
+	}
+	ft_putstr_fd(RESET, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	return (ERROR);
 }
 

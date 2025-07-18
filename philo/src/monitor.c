@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 09:39:11 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/17 08:57:09 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	check_death(t_table *table)
 {
 	int		i;
-	long	time_since_meal;
+	long	time_lived;
 	long	current_time;
 
 	i = 0;
@@ -23,8 +23,8 @@ static int	check_death(t_table *table)
 	while (i < table->num_of_philos)
 	{
 		pthread_mutex_lock(&table->philos[i].meal_lock_mutex);
-		time_since_meal = current_time - table->philos[i].last_meal_time;
-		if (time_since_meal >= table->time_to_die)
+		time_lived = current_time - table->philos[i].last_meal_time;
+		if (time_lived > table->time_to_die)
 		{
 			pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 			print_status(&table->philos[i], DIED);
@@ -36,7 +36,7 @@ static int	check_death(t_table *table)
 	return (SUCCESS);
 }
 
-static int	check_all_ate(t_table *table)
+static int	check_all_eat(t_table *table)
 {
 	int	i;
 	int	finished_eating;
@@ -70,9 +70,9 @@ void	*monitor_routine(void *arg)
 	{
 		if (check_death(table))
 			return (NULL);
-		if (check_all_ate(table))
+		if (check_all_eat(table))
 			return (NULL);
-		usleep(100);
+		usleep(500);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 08:49:18 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/17 12:59:27 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ static int	init_philos(t_table *table)
 		table->philos[i].table = table;
 		if (pthread_mutex_init(&table->philos[i].meal_lock_mutex, NULL) != 0)
 			return (ERROR);
-		table->philos[i].right_fork = &table->forks[\
+		table->philos[i].meal_lock_mutex_initialized = true;
+		table->philos[i].right_fork = &table->forks[i];
+		table->philos[i].left_fork = &table->forks[\
 			(i + 1) % table->num_of_philos];
-		table->philos[i].left_fork = &table->forks[i];
 		i++;
 	}
 	return (SUCCESS);
@@ -42,6 +43,7 @@ static int	init_forks(t_table *table)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 			return (ERROR);
+		table->forks_initialized++;
 		i++;
 	}
 	return (SUCCESS);
@@ -73,7 +75,7 @@ static int	get_args(t_table *table, int ac, char **av)
 		table->eat_count = get_arg_as_num(av[5]);
 	if (table->eat_count == 0)
 		return (ERROR);
-	table->sleep_chunk = table->num_of_philos + 150;
+	table->sleep_chunk = table->num_of_philos + 100;
 	return (SUCCESS);
 }
 
@@ -87,11 +89,11 @@ int	init_table(t_table *table, int ac, char **av)
 	table->forks = malloc(table->num_of_philos * sizeof(t_mtx));
 	if (!table->forks)
 		return (error_cleanup(\
-			table, "malloc()", "forks", MALLOC_ERROR));
+			table, "malloc()", "forks", "Memory allocation failed"));
 	table->philos = malloc(table->num_of_philos * sizeof(t_philo));
 	if (!table->philos)
 		return (error_cleanup(\
-			table, "malloc()", "philos", MALLOC_ERROR));
+			table, "malloc()", "philos", "Memory allocation failed"));
 	if (init_forks(table) == ERROR)
 		return (error_cleanup(\
 			table, "pthread_mutex_init()", "forks",

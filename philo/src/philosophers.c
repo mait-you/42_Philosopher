@@ -6,38 +6,23 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 10:43:54 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:25:30 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static void	take_forks(t_philo *philo)
-{
-	if (philo->id % 2 == 1)
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_FORK);
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, TAKE_FORK);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, TAKE_FORK);
-		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, TAKE_FORK);
-	}
-}
-
 static void	eat(t_philo *philo)
 {
-	take_forks(philo);
-	print_status(philo, EATING);
+	pthread_mutex_lock(philo->right_fork);
+	print_status(philo, TAKE_FORK);
+	pthread_mutex_lock(philo->left_fork);
+	print_status(philo, TAKE_FORK);
 	pthread_mutex_lock(&philo->meal_lock_mutex);
 	philo->last_meal_time = get_time_ms();
 	philo->num_times_to_eat++;
 	pthread_mutex_unlock(&philo->meal_lock_mutex);
+	print_status(philo, EATING);
 	ms_sleep(philo, philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -45,11 +30,11 @@ static void	eat(t_philo *philo)
 
 static void	*single_philo(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->right_fork);
 	print_status(philo, TAKE_FORK);
 	ms_sleep(philo, philo->table->time_to_die);
 	print_status(philo, DIED);
-	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	return (NULL);
 }
 
@@ -60,6 +45,8 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
+	if (philo->id % 2 == 0)
+		usleep(philo->table->sleep_chunk);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);
@@ -70,8 +57,6 @@ void	*philosopher_routine(void *arg)
 		if (check_simulation_done(philo))
 			break ;
 		print_status(philo, THINKING);
-		if (philo->id % 2 == 1)
-			usleep(philo->table->sleep_chunk);
 	}
 	return (NULL);
 }

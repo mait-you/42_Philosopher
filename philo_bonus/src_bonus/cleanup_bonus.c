@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 18:43:29 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 08:41:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:35:36 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static void	close_semaphores(t_table *table)
 		sem_close(table->print_sem);
 	if (table->stop_sem)
 		sem_close(table->stop_sem);
-	if (table->finished_sem)
-		sem_close(table->finished_sem);
+	if (table->finished_eating_sem)
+		sem_close(table->finished_eating_sem);
 	if (table->philos)
 	{
 		i = 0;
@@ -75,22 +75,36 @@ int	cleanup_table(t_table *table)
 	return (ERROR);
 }
 
-int	error_msg(char *msg_type, char *the_error, char *msg)
-{
-	printf("%sphilo: ", RED);
-	if (msg_type)
-		printf("%s%s", YELLOW, msg_type);
-	if (the_error)
-		printf("%s: '%s'", CYAN, the_error);
-	if (msg)
-		printf("%s: %s", GRAYL, msg);
-	printf("%s\n", RESET);
-	return (ERROR);
-}
-
 int	error_cleanup(t_table *table, char *msg_type, char *the_error, char *msg)
 {
 	error_msg(msg_type, the_error, msg);
 	cleanup_table(table);
+	return (ERROR);
+}
+
+int	error_msg(char *msg_type, char *the_error, char *msg)
+{
+	ft_putstr_fd(RED, STDERR_FILENO);
+	ft_putstr_fd("philo: ", STDERR_FILENO);
+	if (msg_type)
+	{
+		ft_putstr_fd(YELLOW, STDERR_FILENO);
+		ft_putstr_fd(msg_type, STDERR_FILENO);
+	}
+	if (the_error)
+	{
+		ft_putstr_fd(CYAN, STDERR_FILENO);
+		ft_putstr_fd(": '", STDERR_FILENO);
+		ft_putstr_fd(the_error, STDERR_FILENO);
+		ft_putstr_fd("'", STDERR_FILENO);
+	}
+	if (msg)
+	{
+		ft_putstr_fd(GRAYL, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(msg, STDERR_FILENO);
+	}
+	ft_putstr_fd(RESET, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	return (ERROR);
 }

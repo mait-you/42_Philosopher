@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 10:08:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:33:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,37 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include <sys/wait.h>
 # include <stdbool.h>
 # include <string.h>
-# include <fcntl.h>
 # include <semaphore.h>
 # include <signal.h>
 
-/* Max philosophers */
-# define SUCCESS 0
-# define ERROR 1
+# ifndef SUCCESS
+#  define SUCCESS 0
+# endif
+# ifndef ERROR
+#  define ERROR 1
+# endif
 
-/* Errors messages */
-# define ARGS_ERROR "./philo_bonus <number_of_philosophers> <time_to_die> \
-<time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]"
-# define MALLOC_ERROR "memory allocation failed"
+# ifndef SEM_FORKS
+#  define SEM_FORKS "/philo_forks"
+# endif
+# ifndef SEM_PRINT
+#  define SEM_PRINT "/philo_print"
+# endif
+# ifndef SEM_MEAL
+#  define SEM_MEAL "/philo_meal_"
+# endif
+# ifndef SEM_STOP
+#  define SEM_STOP "/philo_stop"
+# endif
+# ifndef SEM_FINISHED
+#  define SEM_FINISHED "/philo_finished_eating"
+# endif
 
-/* Semaphore names */
-# define SEM_FORKS "/philo_forks"
-# define SEM_PRINT "/philo_print"
-# define SEM_MEAL "/philo_meal_"
-# define SEM_STOP "/philo_stop"
-# define SEM_FINISHED "/philo_finished"
-
-# define COLORS 1
+# ifndef COLORS
+#  define COLORS 1
+# endif
 
 # if COLORS == 1
 #  define RED     "\e[1;31m"
@@ -50,22 +57,20 @@
 #  define YELLOW  "\e[1;33m"
 #  define CYAN    "\e[1;36m"
 #  define GRAYL   "\e[90m"
-#  define RESET   "\e[0m"
+#  define RESET   "\e[0m\n"
 # else
 #  define RED     ""
 #  define GREEN   ""
 #  define YELLOW  ""
 #  define CYAN    ""
 #  define GRAYL   ""
-#  define RESET   ""
+#  define RESET   "\n"
 # endif
 
-/* Typedef for all elements */
 typedef enum e_state		t_state;
 typedef struct s_table		t_table;
 typedef struct s_philo		t_philo;
 
-/* Philosopher state */
 enum e_state
 {
 	TAKE_FORK,
@@ -98,7 +103,7 @@ struct s_table
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
-	sem_t			*finished_sem;
+	sem_t			*finished_eating_sem;
 	t_philo			*philos;
 };
 
@@ -112,12 +117,13 @@ time_t	get_time_ms(void);
 char	*ft_itoa(int n);
 char	*ft_strjoin(char *s1, char *s2);
 int		cleanup_table(t_table *table);
-void	kill_all_processes(t_table *table);
+int		kill_all_processes(t_table *table, pid_t ignore);
 int		error_msg(char *msg_type, char *the_error, char *msg);
 int		get_arg_as_num(char *str);
 int		error_cleanup(\
 	t_table *table, char *msg_type, char *the_error, char *msg);
 void	unlink_semaphores(t_table *table);
 void	check_simulation_done(t_philo *philo);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif

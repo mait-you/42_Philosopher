@@ -1,15 +1,9 @@
-### Compiler and Flags
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -rf
-
-### dirs
 OBJS_DIR	= obj
-
-### Executable Name
 NAME		= philo
 
-### Source Files
 SRCS =	main.c \
 	src/monitor.c \
 	src/init.c \
@@ -17,10 +11,8 @@ SRCS =	main.c \
 	src/cleanup.c \
 	src/philosophers.c \
 	src/utils.c 
-### Object Files
 OBJS		= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
-### Colors and Formatting
 RESET		= \033[0m
 RED			= \033[31m
 GREEN		= \033[32m
@@ -28,7 +20,6 @@ BLUE		= \033[34m
 WHITE		= \033[37m
 BOLD		= \033[1m
 
-### Rules
 all: $(NAME)
 
 $(NAME): $(OBJS) 

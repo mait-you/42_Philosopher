@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/06/13 15:36:24 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/13 10:52:23 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-size_t	ft_strlen(const char *s)
+static size_t	ft_strlen(const char *s)
 {
 	size_t	l;
 

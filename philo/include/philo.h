@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/11 10:44:46 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:28:50 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,16 @@
 # include <stdbool.h>
 # include <string.h>
 
-# define SUCCESS 0
-# define ERROR 1
+# ifndef SUCCESS
+#  define SUCCESS 0
+# endif
+# ifndef ERROR
+#  define ERROR 1
+# endif
 
-# define COLORS 0
+# ifndef COLORS
+#  define COLORS 0
+# endif
 
 # if COLORS == 1
 #  define RED     "\e[1;31m"
@@ -33,17 +39,15 @@
 #  define YELLOW  "\e[1;33m"
 #  define CYAN    "\e[1;36m"
 #  define GRAYL   "\e[90m"
-#  define RESET   "\e[0m"
+#  define RESET   "\e[0m\n"
 # else
 #  define RED     ""
 #  define GREEN   ""
 #  define YELLOW  ""
 #  define CYAN    ""
 #  define GRAYL   ""
-#  define RESET   ""
+#  define RESET   "\n"
 # endif
-
-# define MALLOC_ERROR "Memory allocation failed"
 
 typedef pthread_mutex_t		t_mtx;
 typedef enum e_state		t_state;
@@ -66,6 +70,7 @@ struct s_philo
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
 	t_mtx			meal_lock_mutex;
+	bool			meal_lock_mutex_initialized;
 	time_t			last_meal_time;
 	pthread_t		philo_thread;
 	t_table			*table;
@@ -86,6 +91,7 @@ struct s_table
 	bool			simulation_mutex_initialized;
 	t_mtx			simulation_mutex;
 	t_mtx			*forks;
+	int				forks_initialized;
 	t_philo			*philos;
 	pthread_t		monitor_thread;
 };
