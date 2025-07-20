@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 14:28:42 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:10:13 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_status(t_philo *philo, t_state status)
 		pthread_mutex_unlock(&philo->table->print_mutex);
 		return ;
 	}
-	current_time = get_time_ms() - philo->table->simulation_start;
+	current_time = get_time_ms() - philo->table->time_simulation_start;
 	if (status == TAKE_FORK)
 		printf(GRAYL"%ld %d has taken a fork"RESET, current_time, philo->id);
 	else if (status == EATING)

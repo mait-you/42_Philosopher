@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 14:28:50 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:09:58 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,18 @@
 # ifndef ERROR
 #  define ERROR 1
 # endif
+# ifndef MAX_SLEEP_CHUNK
+#  define MAX_SLEEP_CHUNK 300
+# endif
+# ifndef MIN_SLEEP_CHUNK
+#  define MIN_SLEEP_CHUNK 10
+# endif
+# ifndef MAX_PHILOS
+#  define MAX_PHILOS 200
+# endif
 
 # ifndef COLORS
-#  define COLORS 0
+#  define COLORS 1
 # endif
 
 # if COLORS == 1
@@ -85,7 +94,7 @@ struct s_table
 	time_t			sleep_chunk;
 	int				eat_count;
 	bool			simulation_done;
-	time_t			simulation_start;
+	time_t			time_simulation_start;
 	bool			print_mutex_initialized;
 	t_mtx			print_mutex;
 	bool			simulation_mutex_initialized;

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/17 08:57:09 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:02:30 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	check_death(t_table *table)
 	{
 		pthread_mutex_lock(&table->philos[i].meal_lock_mutex);
 		time_lived = current_time - table->philos[i].last_meal_time;
-		if (time_lived > table->time_to_die)
+		if (time_lived >= table->time_to_die)
 		{
 			pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 			print_status(&table->philos[i], DIED);
@@ -72,7 +72,7 @@ void	*monitor_routine(void *arg)
 			return (NULL);
 		if (check_all_eat(table))
 			return (NULL);
-		usleep(500);
+		usleep(MIN_SLEEP_CHUNK);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:34:23 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/13 13:57:42 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:10:06 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	start_simulation(t_table *table)
 	int	i;
 
 	i = 0;
-	table->simulation_start = get_time_ms();
+	table->time_simulation_start = get_time_ms();
 	while (i < table->num_of_philos)
 	{
 		table->philos[i].last_meal_time = get_time_ms();

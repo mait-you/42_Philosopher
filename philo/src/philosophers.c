@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 14:25:30 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/20 17:09:26 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	*philosopher_routine(void *arg)
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
 	if (philo->id % 2 == 0)
-		usleep(philo->table->sleep_chunk);
+		ms_sleep(philo, 10);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);
