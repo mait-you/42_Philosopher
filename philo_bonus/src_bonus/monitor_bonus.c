@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 15:34:29 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:12:59 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	check_meal_limit(t_philo *philo, bool *key)
 	sem_wait(philo->meal_sem);
 	if (philo->num_times_to_eat >= philo->table->eat_count)
 	{
-		sem_wait(philo->table->finished_eating_sem);
+		sem_post(philo->table->finished_eating_sem);
 		*key = false;
 	}
 	sem_post(philo->meal_sem);
@@ -37,7 +37,7 @@ void	*monitor_routine(void *arg)
 	{
 		sem_wait(philo->meal_sem);
 		time_lived = get_time_ms() - philo->last_meal_time;
-		if (time_lived > philo->table->time_to_die)
+		if (time_lived >= philo->table->time_to_die)
 		{
 			print_status(philo, DIED);
 			sem_post(philo->meal_sem);
@@ -47,6 +47,26 @@ void	*monitor_routine(void *arg)
 		check_meal_limit(philo, &key);
 		usleep(100);
 	}
+	return (NULL);
+}
+
+void	*check_all_eat(void *arg)
+{
+	t_table	*table;
+	int		finished_eating;
+
+	table = (t_table *)arg;
+	finished_eating = 0;
+	while (finished_eating < table->num_of_philos)
+	{
+		if (table->simulation_done)
+			break;
+		sem_wait(table->finished_eating_sem);
+		if (!table->simulation_done)
+			finished_eating++;
+	}
+	if (finished_eating >= table->num_of_philos)
+		kill_all_processes(table, 0);
 	return (NULL);
 }
 
@@ -69,5 +89,6 @@ int	kill_all_processes(t_table *table, pid_t ignore)
 	i = 0;
 	while (++i < table->num_of_philos)
 		waitpid(-1, NULL, 0);
+	table->simulation_done = true;
 	return (SUCCESS);
 }

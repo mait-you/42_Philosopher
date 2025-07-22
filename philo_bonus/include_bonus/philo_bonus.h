@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 15:33:52 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:57:45 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@
 # ifndef ERROR
 #  define ERROR 1
 # endif
+# ifndef MAX_SLEEP_CHUNK
+#  define MAX_SLEEP_CHUNK 300
+# endif
+# ifndef MIN_SLEEP_CHUNK
+#  define MIN_SLEEP_CHUNK 10
+# endif
+# ifndef MAX_PHILOS
+#  define MAX_PHILOS 200
+# endif
 
 # ifndef SEM_FORKS
 #  define SEM_FORKS "/philo_forks"
@@ -48,7 +57,7 @@
 # endif
 
 # ifndef COLORS
-#  define COLORS 1
+#  define COLORS 90
 # endif
 
 # if COLORS == 1
@@ -99,11 +108,13 @@ struct s_table
 	time_t			time_to_sleep;
 	time_t			sleep_chunk;
 	int				eat_count;
+	bool			simulation_done;
 	time_t			simulation_start;
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
 	sem_t			*finished_eating_sem;
+	pthread_t		checker;
 	t_philo			*philos;
 };
 
@@ -125,5 +136,6 @@ int		error_cleanup(\
 void	unlink_semaphores(t_table *table);
 void	check_simulation_done(t_philo *philo);
 void	ft_putstr_fd(char *s, int fd);
+void	*check_all_eat(void *arg);
 
 #endif

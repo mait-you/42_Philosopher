@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 15:34:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/21 09:30:49 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	start_simulation(t_table *table)
 {
-	int		i;
-	pid_t	pid;
+	int			i;
+	pid_t		pid;
 
 	i = -1;
 	table->simulation_start = get_time_ms();
@@ -31,23 +31,10 @@ static int	start_simulation(t_table *table)
 			return (kill_all_processes(table, 0),
 				error_msg(NULL, NULL, "Fork failed"));
 	}
+	if (table->finished_eating_sem && pthread_create(&table->checker, NULL, \
+		check_all_eat, table) != 0)
+		return (error_msg(NULL, NULL, "pthread_create failed"));
 	return (SUCCESS);
-}
-
-static void	*check_all_eat(void *arg)
-{
-	t_table	*table;
-	int		finished_eating;
-
-	table = (t_table *)arg;
-	finished_eating = 0;
-	while (finished_eating <= table->num_of_philos)
-	{
-		sem_post(table->finished_eating_sem);
-			finished_eating++;
-	}
-	kill_all_processes(table, 0);
-	return (NULL);
 }
 
 static int	wait_for_processes(t_table *table)
@@ -55,25 +42,26 @@ static int	wait_for_processes(t_table *table)
 	int			i;
 	int			status;
 	pid_t		pid;
-	pthread_t	checker;
 
 	i = -1;
-	if (pthread_create(&checker, NULL, \
-		check_all_eat, table) != 0)
-		return (error_msg(NULL, NULL, "pthread_create failed"));
-	while (++i < table->num_of_philos)
+	pid = 1;
+	while (pid != -1 && ++i < table->num_of_philos)
 	{
 		pid = waitpid(-1, &status, 0);
-		if (pid == -1)
-			return (error_msg(NULL, NULL, "Waitpid failed"),
-				kill_all_processes(table, 0));
 		if (pid > 0)
 		{
 			if (WIFEXITED(status) && WEXITSTATUS(status) == ERROR)
-				return (kill_all_processes(table, pid));
+			{
+				kill_all_processes(table, pid);
+				break ;
+			}
 		}
 	}
-	pthread_join(checker, NULL);
+	i = -1;
+	while (++i < table->num_of_philos)
+		sem_post(table->finished_eating_sem);
+	if (table->finished_eating_sem)
+		pthread_join(table->checker, NULL);
 	return (SUCCESS);
 }
 

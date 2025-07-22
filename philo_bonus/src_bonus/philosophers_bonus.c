@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 18:43:16 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 15:05:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:21:09 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	eat(t_philo *philo)
 	sem_wait(philo->meal_sem);
 	philo->last_meal_time = get_time_ms();
 	philo->num_times_to_eat++;
-	sem_post(philo->meal_sem);
 	print_status(philo, EATING);
+	sem_post(philo->meal_sem);
 	ms_sleep(philo, philo->table->time_to_eat);
 	sem_post(philo->table->forks_sem);
 	sem_post(philo->table->forks_sem);
@@ -34,7 +34,7 @@ void	philosopher_routine(t_philo *philo)
 		monitor_routine, philo) != 0)
 		exit(ERROR);
 	pthread_detach(philo->monitor_thread);
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 		usleep(philo->table->sleep_chunk);
 	while (true)
 	{
@@ -45,5 +45,4 @@ void	philosopher_routine(t_philo *philo)
 		print_status(philo, THINKING);
 		check_simulation_done(philo);
 	}
-	exit(SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 15:37:00 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/21 11:02:22 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	init_semaphores(t_table *table)
 	if (table->eat_count > 0)
 	{
 		table->finished_eating_sem = sem_open(\
-			SEM_FINISHED, O_CREAT | O_EXCL, S_IRWXU, table->eat_count);
+			SEM_FINISHED, O_CREAT | O_EXCL, S_IRWXU, table->num_of_philos);
 		if (table->finished_eating_sem == SEM_FAILED)
 			return (error_cleanup(\
 				table, NULL, NULL, "Failed to create finished semaphore"));
@@ -70,6 +70,9 @@ static int	init_semaphores(t_table *table)
 
 static int	get_args(t_table *table, int ac, char **av)
 {
+	float	a;
+	int		b;
+
 	table->eat_count = -1;
 	table->num_of_philos = get_arg_as_num(av[1]);
 	table->time_to_die = get_arg_as_num(av[2]);
@@ -79,17 +82,24 @@ static int	get_args(t_table *table, int ac, char **av)
 		table->eat_count = get_arg_as_num(av[5]);
 	if (table->eat_count == 0)
 		return (ERROR);
-	table->sleep_chunk = table->num_of_philos + 100;
+	a = (float)(MAX_SLEEP_CHUNK - MIN_SLEEP_CHUNK) / MAX_PHILOS;
+	b = MIN_SLEEP_CHUNK;
+	table->sleep_chunk = (int)(a * table->num_of_philos + b);
 	return (SUCCESS);
 }
 
 int	init_table(t_table *table, int ac, char **av)
 {
+	int	i;
+
 	memset(table, 0, sizeof(t_table));
 	if (get_args(table, ac, av) == ERROR)
 		return (ERROR);
 	if (init_semaphores(table) == ERROR)
 		return (ERROR);
+	i = -1;
+	while (++i < table->num_of_philos)
+		sem_wait(table->finished_eating_sem);
 	table->philos = malloc(sizeof(t_philo) * table->num_of_philos);
 	if (!table->philos)
 		return (error_cleanup(table, NULL, NULL, "memory allocation failed"));
