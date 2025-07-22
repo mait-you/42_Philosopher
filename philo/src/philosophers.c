@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/20 17:09:26 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:00:13 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	eat(t_philo *philo)
 	pthread_mutex_lock(&philo->meal_lock_mutex);
 	philo->last_meal_time = get_time_ms();
 	philo->num_times_to_eat++;
-	pthread_mutex_unlock(&philo->meal_lock_mutex);
 	print_status(philo, EATING);
+	pthread_mutex_unlock(&philo->meal_lock_mutex);
 	ms_sleep(philo, philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -45,8 +45,9 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->num_of_philos == 1)
 		return (single_philo(philo));
+	philo->last_meal_time = get_time_ms();
 	if (philo->id % 2 == 0)
-		ms_sleep(philo, 10);
+		ms_sleep(philo, 1);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);

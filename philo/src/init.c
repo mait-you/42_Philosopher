@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:47:55 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/20 17:12:04 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:03:52 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static int	init_philos(t_table *table)
 		table->philos[i].table = table;
 		if (pthread_mutex_init(&table->philos[i].meal_lock_mutex, NULL) != 0)
 			return (ERROR);
-		table->philos[i].meal_lock_mutex_initialized = true;
 		table->philos[i].right_fork = &table->forks[i];
 		table->philos[i].left_fork = &table->forks[\
 			(i + 1) % table->num_of_philos];
@@ -43,7 +42,6 @@ static int	init_forks(t_table *table)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 			return (ERROR);
-		table->forks_initialized++;
 		i++;
 	}
 	return (SUCCESS);
@@ -55,12 +53,10 @@ static int	init_mutex(t_table *table)
 		return (error_cleanup(\
 			table, "pthread_mutex_init", "table->print_mutex",
 				"mutex init failed"));
-	table->print_mutex_initialized = true;
 	if (pthread_mutex_init(&table->simulation_mutex, NULL) != 0)
 		return (error_cleanup(\
 			table, "pthread_mutex_init", "table->simulation_mutex",
 				"mutex init failed"));
-	table->simulation_mutex_initialized = true;
 	return (SUCCESS);
 }
 

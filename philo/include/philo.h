@@ -6,12 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/20 17:09:58 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:03:23 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
 
 # include <stdio.h>
 # include <unistd.h>
@@ -39,7 +40,7 @@
 # endif
 
 # ifndef COLORS
-#  define COLORS 1
+#  define COLORS 0
 # endif
 
 # if COLORS == 1
@@ -79,7 +80,6 @@ struct s_philo
 	t_mtx			*left_fork;
 	t_mtx			*right_fork;
 	t_mtx			meal_lock_mutex;
-	bool			meal_lock_mutex_initialized;
 	time_t			last_meal_time;
 	pthread_t		philo_thread;
 	t_table			*table;
@@ -95,12 +95,9 @@ struct s_table
 	int				eat_count;
 	bool			simulation_done;
 	time_t			time_simulation_start;
-	bool			print_mutex_initialized;
 	t_mtx			print_mutex;
-	bool			simulation_mutex_initialized;
 	t_mtx			simulation_mutex;
 	t_mtx			*forks;
-	int				forks_initialized;
 	t_philo			*philos;
 	pthread_t		monitor_thread;
 };
