@@ -6,13 +6,13 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/13 10:52:23 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:08:20 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/philo_bonus.h"
 
-static size_t	ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	l;
 
@@ -44,16 +44,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (ptr);
 }
 
-static int	n_len(long int n)
+static int	n_len(unsigned long n)
 {
-	int	l;
+	int		l;
 
 	l = 0;
-	if (n <= 0)
-	{
-		n = -n;
-		l++;
-	}
+	if (n == 0)
+		return (1);
 	while (n > 0)
 	{
 		n /= 10;
@@ -62,29 +59,22 @@ static int	n_len(long int n)
 	return (l);
 }
 
-static void	ft_putnb(char *s, long n)
+static void	ft_putnb(char *s, unsigned long n)
 {
 	if (n > 9)
 		ft_putnb(s - 1, n / 10);
 	*s = '0' + (n % 10);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(unsigned long nb)
 {
-	long		nb;
-	int			len;
-	char		*str;
+	int		len;
+	char	*str;
 
-	nb = n;
 	len = n_len(nb);
 	str = (char *)malloc(len + 1);
 	if (!str)
 		return (NULL);
-	if (nb < 0)
-	{
-		*str = '-';
-		nb = -nb;
-	}
 	ft_putnb(str + len - 1, nb);
 	str[len] = '\0';
 	return (str);

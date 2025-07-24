@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/22 15:57:45 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:49:05 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 # endif
 
 # ifndef COLORS
-#  define COLORS 90
+#  define COLORS 0
 # endif
 
 # if COLORS == 1
@@ -125,7 +125,7 @@ void	*monitor_routine(void *arg);
 void	print_status(t_philo *philo, t_state status);
 void	ms_sleep(t_philo *philo, time_t time);
 time_t	get_time_ms(void);
-char	*ft_itoa(int n);
+char	*ft_itoa(unsigned long nb);
 char	*ft_strjoin(char *s1, char *s2);
 int		cleanup_table(t_table *table);
 int		kill_all_processes(t_table *table, pid_t ignore);
@@ -137,5 +137,6 @@ void	unlink_semaphores(t_table *table);
 void	check_simulation_done(t_philo *philo);
 void	ft_putstr_fd(char *s, int fd);
 void	*check_all_eat(void *arg);
+size_t	ft_strlen(const char *s);
 
 #endif

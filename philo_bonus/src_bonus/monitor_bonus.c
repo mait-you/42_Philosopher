@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/22 16:12:59 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:07:53 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	*check_all_eat(void *arg)
 	while (finished_eating < table->num_of_philos)
 	{
 		if (table->simulation_done)
-			break;
+			break ;
 		sem_wait(table->finished_eating_sem);
 		if (!table->simulation_done)
 			finished_eating++;

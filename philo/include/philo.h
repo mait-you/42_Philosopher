@@ -6,13 +6,12 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/22 16:03:23 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:35:35 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-
 
 # include <stdio.h>
 # include <unistd.h>
@@ -40,7 +39,7 @@
 # endif
 
 # ifndef COLORS
-#  define COLORS 0
+#  define COLORS 1
 # endif
 
 # if COLORS == 1
@@ -49,14 +48,14 @@
 #  define YELLOW  "\e[1;33m"
 #  define CYAN    "\e[1;36m"
 #  define GRAYL   "\e[90m"
-#  define RESET   "\e[0m\n"
+#  define RESET   "\e[0m"
 # else
 #  define RED     ""
 #  define GREEN   ""
 #  define YELLOW  ""
 #  define CYAN    ""
 #  define GRAYL   ""
-#  define RESET   "\n"
+#  define RESET   ""
 # endif
 
 typedef pthread_mutex_t		t_mtx;

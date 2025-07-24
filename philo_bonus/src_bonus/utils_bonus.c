@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/19 15:42:51 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:10:47 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,61 @@ void	ms_sleep(t_philo *philo, time_t time)
 		usleep(philo->table->sleep_chunk);
 }
 
+static int	format_message(char *str_time, char *str_id, char *status)
+{
+	int			i;
+	int			j;
+	char		*buffer;
+
+	i = 0;
+	j = 0;
+	buffer = malloc(ft_strlen(str_time) + ft_strlen(str_id) \
+		+ ft_strlen(status) + 2);
+	if (!buffer)
+		return (free(str_time), free(str_id), 0);
+	while (str_time && str_time[j])
+		buffer[i++] = str_time[j++];
+	buffer[i++] = ' ';
+	j = 0;
+	while (str_id && str_id[j])
+		buffer[i++] = str_id[j++];
+	j = 0;
+	while (status[j])
+		buffer[i++] = status[j++];
+	buffer[i] = '\0';
+	free(str_time);
+	free(str_id);
+	write(STDOUT_FILENO, buffer, ft_strlen(buffer));
+	free(buffer);
+	return (i);
+}
+
 void	print_status(t_philo *philo, t_state status)
 {
-	time_t	current_time;
+	char		*color;
+	const char	*str_status[] = {" has taken a fork\n"RESET, \
+" is eating\n"RESET, " is sleeping\n"RESET, " is thinking\n"RESET, \
+" died\n"RESET};
 
 	sem_wait(philo->table->print_sem);
 	check_simulation_done(philo);
-	current_time = get_time_ms() - philo->table->simulation_start;
+	color = NULL;
 	if (status == TAKE_FORK)
-		printf(GRAYL"%ld %d has taken a fork"RESET, current_time, philo->id);
+		color = GRAYL;
 	else if (status == EATING)
-		printf(GREEN"%ld %d is eating"RESET, current_time, philo->id);
+		color = GREEN;
 	else if (status == SLEEPING)
-		printf(CYAN"%ld %d is sleeping"RESET, current_time, philo->id);
+		color = CYAN;
 	else if (status == THINKING)
-		printf(YELLOW"%ld %d is thinking"RESET, current_time, philo->id);
+		color = YELLOW;
 	else if (status == DIED)
 	{
-		printf(RED"%ld %d died"RESET, current_time, philo->id);
+		color = RED;
 		sem_wait(philo->table->stop_sem);
 	}
+	format_message(ft_strjoin(color, \
+		ft_itoa(get_time_ms() - philo->table->simulation_start)), \
+		ft_itoa(philo->id), (char *)str_status[status]);
 	sem_post(philo->table->print_sem);
 }
 
