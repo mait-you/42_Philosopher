@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/24 11:35:35 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 21:02:19 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # endif
 
 # ifndef COLORS
-#  define COLORS 1
+#  define COLORS 0
 # endif
 
 # if COLORS == 1

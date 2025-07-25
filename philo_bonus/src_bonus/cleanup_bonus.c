@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 18:43:29 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/18 15:35:36 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 08:36:25 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	close_semaphores(t_table *table)
 		sem_close(table->stop_sem);
 	if (table->finished_eating_sem)
 		sem_close(table->finished_eating_sem);
+	if (table->simulation_sem)
+		sem_close(table->simulation_sem);
 	if (table->philos)
 	{
 		i = 0;
@@ -45,6 +47,7 @@ void	unlink_semaphores(t_table *table)
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_STOP);
+	sem_unlink(SEM_SIMUL);
 	sem_unlink(SEM_FINISHED);
 	i = 0;
 	while (i < table->num_of_philos)

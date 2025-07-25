@@ -1,5 +1,5 @@
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror 
 RM			= rm -rf
 NAME		= philo_bonus
 OBJS_DIR 	= obj
@@ -11,7 +11,8 @@ SRCS =	main_bonus.c \
 	src_bonus/cleanup_bonus.c \
 	src_bonus/philosophers_bonus.c \
 	src_bonus/utils_bonus.c \
-	src_bonus/utils_2_bonus.c
+	src_bonus/utils_2_bonus.c \
+	src_bonus/utils_3_bonus.c
 
 OBJS		= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

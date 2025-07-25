@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 18:43:16 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/22 15:21:09 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 08:28:49 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	philosopher_routine(t_philo *philo)
 		exit(ERROR);
 	pthread_detach(philo->monitor_thread);
 	if (philo->id % 2 == 0)
-		usleep(philo->table->sleep_chunk);
+		ms_sleep(philo, 10);
 	while (true)
 	{
 		eat(philo);

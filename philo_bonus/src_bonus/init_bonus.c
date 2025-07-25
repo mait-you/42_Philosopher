@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:57:15 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/21 11:02:22 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:02:10 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	init_philosophers(t_table *table)
 
 static int	init_semaphores(t_table *table)
 {
-	unlink_semaphores(table);
 	table->forks_sem = sem_open(SEM_FORKS, O_CREAT | O_EXCL, S_IRWXU,
 			table->num_of_philos);
 	if (table->forks_sem == SEM_FAILED)
@@ -57,14 +56,17 @@ static int	init_semaphores(t_table *table)
 	if (table->stop_sem == SEM_FAILED)
 		return (error_cleanup(\
 			table, NULL, NULL, "Failed to create stop semaphore"));
-	if (table->eat_count > 0)
-	{
-		table->finished_eating_sem = sem_open(\
-			SEM_FINISHED, O_CREAT | O_EXCL, S_IRWXU, table->num_of_philos);
-		if (table->finished_eating_sem == SEM_FAILED)
-			return (error_cleanup(\
-				table, NULL, NULL, "Failed to create finished semaphore"));
-	}
+	table->simulation_sem = sem_open(SEM_SIMUL, O_CREAT | O_EXCL, S_IRWXU, 1);
+	if (table->simulation_sem == SEM_FAILED)
+		return (error_cleanup(\
+			table, NULL, NULL, "Failed to create simulation semaphore"));
+	if (table->eat_count <= 0)
+		return (SUCCESS);
+	table->finished_eating_sem = sem_open(\
+		SEM_FINISHED, O_CREAT | O_EXCL, S_IRWXU, table->num_of_philos);
+	if (table->finished_eating_sem == SEM_FAILED)
+		return (error_cleanup(\
+			table, NULL, NULL, "Failed to create finished semaphore"));
 	return (SUCCESS);
 }
 
@@ -95,6 +97,7 @@ int	init_table(t_table *table, int ac, char **av)
 	memset(table, 0, sizeof(t_table));
 	if (get_args(table, ac, av) == ERROR)
 		return (ERROR);
+	unlink_semaphores(table);
 	if (init_semaphores(table) == ERROR)
 		return (ERROR);
 	i = -1;
@@ -106,18 +109,4 @@ int	init_table(t_table *table, int ac, char **av)
 	if (init_philosophers(table) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	size_t	l;
-
-	if (!s)
-		return (ft_putstr_fd("(null)", fd));
-	l = 0;
-	if (fd == -1)
-		return ;
-	while (s[l])
-		l++;
-	write(fd, s, l);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/24 10:49:05 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 08:36:44 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,20 @@
 #  define MAX_PHILOS 200
 # endif
 
+# ifndef SEM_MEAL
+#  define SEM_MEAL "/philo_meal_"
+# endif
 # ifndef SEM_FORKS
 #  define SEM_FORKS "/philo_forks"
 # endif
 # ifndef SEM_PRINT
 #  define SEM_PRINT "/philo_print"
 # endif
-# ifndef SEM_MEAL
-#  define SEM_MEAL "/philo_meal_"
-# endif
 # ifndef SEM_STOP
 #  define SEM_STOP "/philo_stop"
+# endif
+# ifndef SEM_SIMUL
+#  define SEM_SIMUL "/philo_simulation"
 # endif
 # ifndef SEM_FINISHED
 #  define SEM_FINISHED "/philo_finished_eating"
@@ -110,6 +113,7 @@ struct s_table
 	int				eat_count;
 	bool			simulation_done;
 	time_t			simulation_start;
+	sem_t			*simulation_sem;
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
 	sem_t			*stop_sem;
@@ -136,7 +140,6 @@ int		error_cleanup(\
 void	unlink_semaphores(t_table *table);
 void	check_simulation_done(t_philo *philo);
 void	ft_putstr_fd(char *s, int fd);
-void	*check_all_eat(void *arg);
 size_t	ft_strlen(const char *s);
 
 #endif

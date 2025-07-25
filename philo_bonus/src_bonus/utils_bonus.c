@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:20:39 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/24 11:10:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:02:54 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ms_sleep(t_philo *philo, time_t time)
 		usleep(philo->table->sleep_chunk);
 }
 
-static int	format_message(char *str_time, char *str_id, char *status)
+static void	format_message(char *str_time, char *str_id, char *status)
 {
 	int			i;
 	int			j;
@@ -37,10 +37,13 @@ static int	format_message(char *str_time, char *str_id, char *status)
 
 	i = 0;
 	j = 0;
+	if (!str_time || !str_id)
+		exit(error_msg("malloc", NULL, "Failed to allocate"));
 	buffer = malloc(ft_strlen(str_time) + ft_strlen(str_id) \
 		+ ft_strlen(status) + 2);
 	if (!buffer)
-		return (free(str_time), free(str_id), 0);
+		return (free(str_time), free(str_id),
+			exit(error_msg("malloc", NULL, "Failed to allocate")));
 	while (str_time && str_time[j])
 		buffer[i++] = str_time[j++];
 	buffer[i++] = ' ';
@@ -48,22 +51,19 @@ static int	format_message(char *str_time, char *str_id, char *status)
 	while (str_id && str_id[j])
 		buffer[i++] = str_id[j++];
 	j = 0;
-	while (status[j])
+	while (status && status[j])
 		buffer[i++] = status[j++];
-	buffer[i] = '\0';
-	free(str_time);
-	free(str_id);
-	write(STDOUT_FILENO, buffer, ft_strlen(buffer));
-	free(buffer);
-	return (i);
+	buffer[i] = 0;
+	ft_putstr_fd(buffer, STDOUT_FILENO);
+	return (free(str_time), free(str_id), free(buffer));
 }
 
 void	print_status(t_philo *philo, t_state status)
 {
 	char		*color;
-	const char	*str_status[] = {" has taken a fork\n"RESET, \
-" is eating\n"RESET, " is sleeping\n"RESET, " is thinking\n"RESET, \
-" died\n"RESET};
+	const char	*str_status[] = {" has taken a fork"RESET, \
+" is eating"RESET, " is sleeping"RESET, " is thinking"RESET, \
+" died"RESET};
 
 	sem_wait(philo->table->print_sem);
 	check_simulation_done(philo);
@@ -85,10 +85,4 @@ void	print_status(t_philo *philo, t_state status)
 		ft_itoa(get_time_ms() - philo->table->simulation_start)), \
 		ft_itoa(philo->id), (char *)str_status[status]);
 	sem_post(philo->table->print_sem);
-}
-
-void	check_simulation_done(t_philo *philo)
-{
-	sem_wait(philo->table->stop_sem);
-	sem_post(philo->table->stop_sem);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/22 16:00:13 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:36:09 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	*philosopher_routine(void *arg)
 		return (single_philo(philo));
 	philo->last_meal_time = get_time_ms();
 	if (philo->id % 2 == 0)
-		ms_sleep(philo, 1);
+		ms_sleep(philo, 10);
 	while (!check_simulation_done(philo))
 	{
 		eat(philo);

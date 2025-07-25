@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/22 16:12:56 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:29:43 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static int	check_death(t_table *table)
 		time_lived = current_time - table->philos[i].last_meal_time;
 		if (time_lived >= table->time_to_die)
 		{
-			pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 			print_status(&table->philos[i], DIED);
+			pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);
 			return (ERROR);
 		}
 		pthread_mutex_unlock(&table->philos[i].meal_lock_mutex);

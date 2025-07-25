@@ -6,11 +6,35 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 09:55:42 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/21 09:30:49 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:08:42 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include_bonus/philo_bonus.h"
+
+static void	*check_all_eat(void *arg)
+{
+	t_table	*table;
+	int		finished_eating;
+
+	table = (t_table *)arg;
+	finished_eating = 0;
+	while (finished_eating < table->num_of_philos)
+	{
+		sem_wait(table->simulation_sem);
+		if (table->simulation_done)
+		{
+			sem_post(table->simulation_sem);
+			return (NULL);
+		}
+		sem_post(table->simulation_sem);
+		sem_wait(table->finished_eating_sem);
+		finished_eating++;
+	}
+	if (finished_eating >= table->num_of_philos)
+		kill_all_processes(table, 0);
+	return (NULL);
+}
 
 static int	start_simulation(t_table *table)
 {

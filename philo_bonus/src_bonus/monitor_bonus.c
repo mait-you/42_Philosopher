@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/24 11:07:53 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 08:39:38 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,11 @@ void	*monitor_routine(void *arg)
 		}
 		sem_post(philo->meal_sem);
 		check_meal_limit(philo, &key);
-		usleep(100);
+		usleep(MIN_SLEEP_CHUNK);
 	}
 	return (NULL);
 }
 
-void	*check_all_eat(void *arg)
-{
-	t_table	*table;
-	int		finished_eating;
-
-	table = (t_table *)arg;
-	finished_eating = 0;
-	while (finished_eating < table->num_of_philos)
-	{
-		if (table->simulation_done)
-			break ;
-		sem_wait(table->finished_eating_sem);
-		if (!table->simulation_done)
-			finished_eating++;
-	}
-	if (finished_eating >= table->num_of_philos)
-		kill_all_processes(table, 0);
-	return (NULL);
-}
 
 int	kill_all_processes(t_table *table, pid_t ignore)
 {
@@ -89,6 +70,8 @@ int	kill_all_processes(t_table *table, pid_t ignore)
 	i = 0;
 	while (++i < table->num_of_philos)
 		waitpid(-1, NULL, 0);
+	sem_wait(table->simulation_sem);
 	table->simulation_done = true;
+	sem_post(table->simulation_sem);
 	return (SUCCESS);
 }
