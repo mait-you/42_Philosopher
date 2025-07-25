@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:09:37 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/13 09:34:54 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:37:33 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	parsing(int ac, char **av)
 		if (num == -1)
 			return (error_msg("invalid arguments", av[i],
 					"the argument is more than 2147483647"));
-		if (i == 1 && num > 200)
+		if (i == 1 && num > MAX_PHILOS)
 			return (error_msg("invalid arguments", av[i],
 					"the argument is more than 200"));
 		i++;

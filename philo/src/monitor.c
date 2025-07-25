@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:48:28 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/24 20:29:43 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:21:28 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ void	*monitor_routine(void *arg)
 	table = (t_table *)arg;
 	while (!check_simulation_done(table->philos))
 	{
-		if (check_death(table))
+		if (check_death(table) == ERROR)
 			return (NULL);
-		if (table->eat_count > 0 && check_all_eat(table))
+		if (table->eat_count > 0 && check_all_eat(table) == ERROR)
 			return (NULL);
 		usleep(MIN_SLEEP_CHUNK);
 	}

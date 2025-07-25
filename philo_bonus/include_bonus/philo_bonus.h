@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:31:54 by mait-you          #+#    #+#             */
-/*   Updated: 2025/07/25 08:36:44 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:37:08 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #  define ERROR 1
 # endif
 # ifndef MAX_SLEEP_CHUNK
-#  define MAX_SLEEP_CHUNK 300
+#  define MAX_SLEEP_CHUNK 250
 # endif
 # ifndef MIN_SLEEP_CHUNK
 #  define MIN_SLEEP_CHUNK 10
